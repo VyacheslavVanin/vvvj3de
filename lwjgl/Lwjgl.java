@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,11 +21,9 @@ import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.util.glu.GLU.*;
+import vvv.engine.*;
 import static vvv.engine.Consatants.*;
-import vvv.engine.Geometry;
 import vvv.engine.Geometry.VertexAttribute;
-import vvv.engine.ShaderModel;
-import vvv.engine.Texture;
 
 
 /**
@@ -65,11 +65,35 @@ public class Lwjgl
         }
     }
 
+    private static void vvvtest() throws IOException
+    {
+        TextureAtlas ta = new TextureAtlas(2048, 2048,1);
+        List<Image> atlasInputImages = new ArrayList<>();
+        List<Image> notPlaced = new ArrayList<>();
+        
+        for(int i = 0; i < 10; ++i)
+        {
+           // String fileName = "images/generated"+i+".png";
+            String fileName = "images/"+i+".jpg";
+            BufferedImage bi = ImageIO.read( new File(fileName) );
+            TextureAtlas.ImageData  id = 
+                                     new TextureAtlas.ImageData(bi, fileName);
+            
+            atlasInputImages.add(id);
+        }
+        
+        ta.pack(atlasInputImages, notPlaced);
+      //  ta.drawAllToImage();
+        
+    }
+    
     public static void main(String[] args)
     {
         Lwjgl main = null;
+        
         try
         {
+            vvvtest();
             System.out.println( "Keys:" );
             System.out.println( "down  - Shrink" );
             System.out.println( "up    - Grow" );
@@ -80,9 +104,9 @@ public class Lwjgl
             main.create();
             main.run();
         }
-        catch (Exception ex)
+        catch (LWJGLException | IOException ex)
         {
-            LOGGER.log(Level.SEVERE, ex.toString(), ex);
+            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
         {
@@ -118,7 +142,7 @@ public class Lwjgl
 
         //OpenGL
         initGL();
-        resizeGL();
+        resizeGL();  
     }
 
     public void destroy()

@@ -68,14 +68,18 @@ public class TextureLowLevel
         return true;
     }
     
-    public static ByteBuffer getByteBufferFromImageFile( File file) throws IOException
+    public static int getNumComponentsInImage( BufferedImage im)
+    {
+        return im.getData().getNumDataElements();
+    }
+    
+    public static ByteBuffer getByteBufferFromImage( BufferedImage im)
     {
         /** Platform dependent function  */
         int[] pdata;
-        BufferedImage im = ImageIO.read( new File("texture.png") );
         int iheight = im.getHeight();
         int iwidth  = im.getWidth();
-        int nn = im.getData().getNumDataElements();
+        int nn = getNumComponentsInImage(im);
         pdata  = new int[im.getData().getHeight() * im.getData().getWidth()* nn ]; 
         im.getData().getPixels(0, 0, iwidth, iheight, pdata);
 
@@ -93,6 +97,13 @@ public class TextureLowLevel
         }
         bb.position(0);
         return bb;
+    }
+    
+    public static ByteBuffer getByteBufferFromImageFile( File file) throws IOException
+    {
+        /** Platform dependent function  */
+        BufferedImage im = ImageIO.read( new File("texture.png") );
+        return getByteBufferFromImage(im);
     }
     
     
@@ -114,7 +125,69 @@ public class TextureLowLevel
         this.status = STATUS.ON_HOST;
         return true;
     }
-       
+      
+    public boolean loadToHost( ByteBuffer buffer, int width, int height, 
+                         ImageFormat imageFormat, InternalFormat textureFormat)
+    {
+        if(  checkLoadToHostArgs(buffer, width, height, 
+                                0, 0))
+        {
+            return false;
+        }
+        
+        clearDevice();
+        this.buffer = buffer;
+        this.height = height;
+        this.width  = width;
+        this.status = STATUS.ON_HOST;
+        
+        switch(imageFormat)
+        {
+            case GL_RED:
+                this.imageFormat = GL_RED;
+                break;
+            case GL_RG:
+                this.imageFormat = GL_RG;
+                break;
+            case GL_RGB:
+                this.imageFormat = GL_RGB;
+                break;
+            case GL_BGR:
+                this.imageFormat = GL_BGR;
+                break;
+            case GL_RGBA:
+                this.imageFormat = GL_RGBA;
+                break;
+            case GL_BGRA:
+                this.imageFormat = GL_BGRA;
+                break;
+        }
+        
+        switch( textureFormat )
+        {
+            case GL_DEPTH_COMPONENT:
+                this.textureFormat = GL_DEPTH_COMPONENT;
+                break;
+            case GL_DEPTH_STENCIL:
+                this.textureFormat = GL_DEPTH_STENCIL;
+                break;
+            case GL_RED:
+                this.textureFormat = GL_RED;
+                break;
+            case GL_RG:
+                this.textureFormat = GL_RG;
+                break;
+            case GL_RGB:
+                this.textureFormat = GL_RGB;
+                break;
+            case GL_RGBA:
+                this.textureFormat = GL_RGBA;
+                break;
+        }
+        return true;
+    }
+    
+    
     public void hostToDevice() throws TextureNotLoadedException 
     {
         if( status == STATUS.EMPTY )
@@ -258,12 +331,31 @@ public class TextureLowLevel
     private static int[] activeTextures;
     static
     {
-        final int len = MAX_TEXTURE_UNIT_NUMBER+1;
-        activeTextures= new int[ len ];
-        for( int i=0; i < len; ++i )
+        activeTextures= new int[ NUM_TEXTURE_UNITS ];
+        for( int i=0; i < NUM_TEXTURE_UNITS; ++i )
         {
             activeTextures[i] = -1;
         }
+    }
+    
+    public static enum ImageFormat
+    {
+        GL_RED,
+        GL_RG,
+        GL_RGB,
+        GL_BGR,
+        GL_RGBA,
+        GL_BGRA
+    }
+    
+    public static enum InternalFormat
+    {
+        GL_DEPTH_COMPONENT,
+        GL_DEPTH_STENCIL,
+        GL_RED,
+        GL_RG,
+        GL_RGB,
+        GL_RGBA 
     }
     
     public static enum STATUS

@@ -15,7 +15,7 @@ public class Texture
     private TextureLowLevel texture;
     private TexCoordData    coords;
     
-    
+
     TextureLowLevel getTexture()
     {
         return texture;

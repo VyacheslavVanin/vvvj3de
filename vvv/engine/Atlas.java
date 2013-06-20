@@ -5,7 +5,6 @@ import org.lwjgl.util.vector.Vector4f;
 
 public class Atlas
 {
-
     public Atlas(float height, float width)
     {
         if (height <= 0)
@@ -40,6 +39,11 @@ public class Atlas
         return height;
     }
 
+    public float getBorder()
+    {
+        return border;
+    }
+    
     public void pack(List<Image> in, List<Image> notPlaced)
     {
         list = simplePacker.pack(width, height, border, in, notPlaced);
@@ -245,6 +249,7 @@ public class Atlas
             return ret;
         }
     }
+   
     public final float MAX_TEXTURE_SIZE = 2048;
     private float height;
     private float width;

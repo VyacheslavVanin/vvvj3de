@@ -40,4 +40,25 @@ public class TexCoordData
     {
         return data;
     }
+    
+    public float getX()
+    {
+        return data.x;
+    }
+    
+    public float getY()
+    {
+        return data.y;
+    }
+    
+    public float getWidth()
+    {
+        return data.z;
+    }
+    
+    public float getHeight()
+    {
+        return data.w;
+    }
+    
 }
