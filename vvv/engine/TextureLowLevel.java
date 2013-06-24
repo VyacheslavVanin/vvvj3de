@@ -148,7 +148,7 @@ public class TextureLowLevel
                               ImageFormat imageFormat,
                               InternalFormat textureFormat)
     {
-        if (checkLoadToHostArgs(buffer, width, height,
+        if (!checkLoadToHostArgs(buffer, width, height,
                                 0, 0))
         {
             return false;

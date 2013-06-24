@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import org.lwjgl.util.vector.Vector4f;
 
 /**
  *
@@ -68,8 +69,11 @@ public class TextureContainer
             ta.pack(in, out);
             List<Atlas.TextureData> l = ta.getList();
             for(Atlas.TextureData td: l)
-            {
-                Texture t = new Texture(ta.getTexture(),td.getData());
+            {   
+                Vector4f v = td.getData().get();
+                v.y = 1-v.y-v.w;
+               // v.w = v.w;
+                Texture t = new Texture( ta.getTexture(),td.getData() );
                 map.put(td.getName(), t);
             }
             

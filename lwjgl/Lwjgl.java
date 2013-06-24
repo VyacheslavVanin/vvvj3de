@@ -48,7 +48,10 @@ public class Lwjgl
     private int vao;
     private int prog;
     private int tex;
-    private TextureLowLevel tll;
+   // private TextureLowLevel tll;
+    private Texture tll;
+    private Texture[] texlist = new Texture[10];
+    private TextureContainer tcontainer;
     
     private static final int ATTRIB_LOCATION_POSITION = 0; 
     private static final int ATTRIB_LOCATION_TEXCOORD = 1;
@@ -183,14 +186,20 @@ public class Lwjgl
         String vshSource = "#version 330 core\n"
         //    + "uniform mat4 projectionMatrix;\n"
             + "layout(location = 0) in vec3 position;\n"
-            + "layout(location = 2) in vec2 texCoord;\n"
+            + "layout(location = 2) in vec2 texCoord;\n" 
       //      + "in vec3 color;\n"
             + "out vec2 textureCoordinates;\n"
+            + "uniform  vec4 TexCoordData; \n"
             + "void main(void)\n"
             + "{\n"
              // перевод вершинных координат в однородные
             +"       gl_Position   = vec4(position, 1.0); \n"
-            +"       textureCoordinates = texCoord;\n"
+           // +"       textureCoordinates   = texCoord; \n"
+            +"       textureCoordinates.x = TexCoordData.x + texCoord.x*TexCoordData.z;\n"
+            +"       textureCoordinates.y = TexCoordData.y + texCoord.y*TexCoordData.w;\n"
+           // +"       textureCoordinates.x =  texCoord.x;\n"
+           // +"       textureCoordinates.y =  texCoord.y*TexCoordData.w;\n"
+           // +"       textureCoordinates   =  texCoord*TexCoordData.z; \n"
              // передаем цвет вершины в фрагментный шейдер
        //     "      fragmentColor = color;\n"
             + "}\n";
@@ -249,23 +258,24 @@ public class Lwjgl
     
     public void vvvInitTexture()
     {
-        tll = new TextureLowLevel();
+        tcontainer = new TextureContainer();
         try
         {
-            BufferedImage im = ImageIO.read(new File("texture.png"));
-            Image image = new ImageDesktop(im, "texture");
-            tll.loadToHost(image, TextureLowLevel.InternalFormat.GL_RGBA);
-            tll.hostToDevice();
-            tll.setGenerateMipMap(true);
-            tll.setFilter(TextureLowLevel.MINFILTER.LINEAR_MIPMAP_LINEAR,
-                          TextureLowLevel.MAGFILTER.LINEAR);
-            tll.setWraping(TextureLowLevel.WRAP.REPEAT);
- 
+            for(int i = 0; i < 10; ++i)
+            {
+                tcontainer.addTexture("images/"+i+".jpg");
+            }
         }
-        catch (IOException | TextureNotLoadedException ex)
+        catch (IOException ex)
         {
             Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        tcontainer.pack();
+        for(int i=0; i < 10; ++i)
+        {
+            texlist[i] = tcontainer.GetTexture("images/"+i+".jpg");
+        }
+        tll = texlist[0];
     }
     
     public void vvvInit()
@@ -282,12 +292,14 @@ public class Lwjgl
         vvvInit();     
     }
 
+    private int currentImage = 0;
     public void processKeyboard()
     {
         //Square's Size
         if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
         {
             --squareSize;
+            tll = texlist[currentImage++ % 10];
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_UP))
         {
@@ -316,12 +328,20 @@ public class Lwjgl
         shm.activate();
         try
         {
-            tll.activate(0);
-            
-           // shm.setTexture(0, tll);
-           // glUniform1i( loc, 0);
-            int loc = glGetUniformLocation(prog, "Texture0");
-            glUniform1i( loc, 0);
+            shm.setTexture(0, tll);
+    //        try
+    //        {
+    //            tll.activate(0);
+    //            
+    //           // shm.setTexture(0, tll);
+    //           // glUniform1i( loc, 0);
+                //int loc = glGetUniformLocation(prog, "Texture0");
+              //  glUniform1i( loc, 0);
+    //        }
+    //        catch (TextureNotLoadedException ex)
+    //        }
+    //            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
+    //        }
         }
         catch (TextureNotLoadedException ex)
         {

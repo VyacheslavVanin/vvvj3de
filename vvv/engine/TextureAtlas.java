@@ -6,8 +6,13 @@ package vvv.engine;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -29,6 +34,7 @@ public class TextureAtlas extends Atlas
                          TextureLowLevel.InternalFormat format )
     {
         super(height,width,border); 
+        texture = new TextureLowLevel();
         internalFormat = format;
         numChanels = internalFormatToNumChannels(format);
     }
@@ -132,14 +138,14 @@ public class TextureAtlas extends Atlas
         
         ByteBuffer bb = ImageDesktop.getByteBufferFromImage(im);
         
-        texture = new TextureLowLevel();
+        
         texture.loadToHost(bb, (int)w, (int)h, TextureLowLevel.numChannelsToImageFormat(numChanels), 
                                                internalFormat);
         texture.setFilter(minFilter,
                           magFilter);
 //        try
-//        {
-//            ImageIO.write(im, "png", new File("out.png"));
+//        {    
+//            ImageIO.write(im, "png", new File("out"+(filen++)+".png"));
 //        }
 //        catch (IOException ex)
 //        {
@@ -147,6 +153,7 @@ public class TextureAtlas extends Atlas
 //        }
     }
     
+    static int filen = 0;
 
     @Override
     public void pack(List<Image> in, List<Image> notPlaced)
