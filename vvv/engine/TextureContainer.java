@@ -37,6 +37,12 @@ public class TextureContainer
         return true;
     }
     
+    /** equivalent to pack(0,GL_RGBA,false);*/
+    public void pack()
+    {
+        pack(0, TextureLowLevel.InternalFormat.GL_RGBA, false);
+    }
+    
     public void pack(int border, TextureLowLevel.InternalFormat format, boolean useMipMap) 
     {
         List<Image>  in = new LinkedList<>( input.values() );
@@ -75,6 +81,6 @@ public class TextureContainer
         }
     }
 
-    private HashMap<String,Texture> map = new HashMap<>();// map for output and searching
+    private HashMap<String,Texture>   map = new HashMap<>();// map for output and searching
     private HashMap<String,Image>   input = new HashMap<>();// list to accamulate input images before packing 
 }
