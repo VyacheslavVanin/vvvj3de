@@ -284,11 +284,17 @@ public class TextureLowLevel
         this.minFilter = glMinFilter;
         this.magFilter = glMagFilter;
         
+        if( minFilter != MINFILTER.LINEAR || 
+            minFilter != MINFILTER.NEAREST)
+        {
+            generateMipMap = true;
+        }
+         
         if (tex == -1)
         {    
             return;
         }
-        
+         
         glBindTexture(GL_TEXTURE_2D, tex);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this.minFilter);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this.magFilter);
@@ -337,7 +343,7 @@ public class TextureLowLevel
     {
         clearDevice();
         this.buffer = null;
-        this.generateMipMap = true;
+        this.generateMipMap = false;
         status = STATUS.EMPTY;
         imageFormat = 0;
         textureFormat = 0;
@@ -362,7 +368,7 @@ public class TextureLowLevel
     private int height = 0;
     private int width = 0;
     private STATUS status = STATUS.EMPTY;
-    private boolean generateMipMap = true;
+    private boolean generateMipMap = false;
     private int    wrapping = -1;
     private int    minFilter = -1;
     private int    magFilter = -1;

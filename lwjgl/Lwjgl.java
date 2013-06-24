@@ -33,8 +33,8 @@ import vvv.engine.TextureLowLevel.TextureNotLoadedException;
  */
 public class Lwjgl
 {
-    public static final int DISPLAY_HEIGHT = 480;
-    public static final int DISPLAY_WIDTH  = 640;
+    public static final int DISPLAY_HEIGHT = 800;
+    public static final int DISPLAY_WIDTH  = 800;
     public static final Logger LOGGER = Logger.getLogger(Lwjgl.class.getName());
     private int squareSize;
     private int squareX;
@@ -195,8 +195,9 @@ public class Lwjgl
              // перевод вершинных координат в однородные
             +"       gl_Position   = vec4(position, 1.0); \n"
            // +"       textureCoordinates   = texCoord; \n"
-            +"       textureCoordinates.x = TexCoordData.x + texCoord.x*TexCoordData.z;\n"
-            +"       textureCoordinates.y = TexCoordData.y + texCoord.y*TexCoordData.w;\n"
+           // +"       textureCoordinates.x = TexCoordData.x + texCoord.x*TexCoordData.z;\n"
+           // +"       textureCoordinates.y = TexCoordData.y + texCoord.y*TexCoordData.w;\n"
+            +"       textureCoordinates   = TexCoordData.xy + texCoord*TexCoordData.zw; \n"
            // +"       textureCoordinates.x =  texCoord.x;\n"
            // +"       textureCoordinates.y =  texCoord.y*TexCoordData.w;\n"
            // +"       textureCoordinates   =  texCoord*TexCoordData.z; \n"
@@ -256,21 +257,17 @@ public class Lwjgl
         geom.loadToHost( vbb, attribs, ibb, indices.length, GL_UNSIGNED_INT);
     }
     
-    public void vvvInitTexture()
+    public void vvvInitTexture() throws IOException
     {
         tcontainer = new TextureContainer();
-        try
+       
+        for(int i = 0; i < 10; ++i)
         {
-            for(int i = 0; i < 10; ++i)
-            {
-                tcontainer.addTexture("images/"+i+".jpg");
-            }
+            tcontainer.addTexture("images/"+i+".jpg");
         }
-        catch (IOException ex)
-        {
-            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        tcontainer.pack();
+       
+        tcontainer.pack(1, TextureLowLevel.InternalFormat.GL_RGBA, true);
+        
         for(int i=0; i < 10; ++i)
         {
             texlist[i] = tcontainer.GetTexture("images/"+i+".jpg");
@@ -278,7 +275,7 @@ public class Lwjgl
         tll = texlist[0];
     }
     
-    public void vvvInit()
+    public void vvvInit() throws IOException
     {  
         vvvInitGeometry();
         vvvInitShader(); 
@@ -289,7 +286,14 @@ public class Lwjgl
     {
         //2D Initialization
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        vvvInit();     
+        try
+        {
+            vvvInit();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
+        }  
     }
 
     private int currentImage = 0;
@@ -323,38 +327,16 @@ public class Lwjgl
         squareY = Mouse.getY();
     }
 
-    public void vvvRender()
+    public void vvvRender() throws TextureNotLoadedException
     {  
-        shm.activate();
-        try
-        {
-            shm.setTexture(0, tll);
-    //        try
-    //        {
-    //            tll.activate(0);
-    //            
-    //           // shm.setTexture(0, tll);
-    //           // glUniform1i( loc, 0);
-                //int loc = glGetUniformLocation(prog, "Texture0");
-              //  glUniform1i( loc, 0);
-    //        }
-    //        catch (TextureNotLoadedException ex)
-    //        }
-    //            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
-    //        }
-        }
-        catch (TextureNotLoadedException ex)
-        {
-            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      
-        
+        shm.activate();       
+        shm.setTexture(0, tll);
         
         geom.activate();
         geom.draw();      
     }
     
-    public void render()
+    public void render() throws TextureNotLoadedException
     {
         glClear(GL_COLOR_BUFFER_BIT);
         vvvRender();
@@ -378,9 +360,11 @@ public class Lwjgl
 
     public void run()
     {
-        while (!Display.isCloseRequested() && !Keyboard.isKeyDown(
-            Keyboard.KEY_ESCAPE))
+        while (!Display.isCloseRequested() && 
+               !Keyboard.isKeyDown( Keyboard.KEY_ESCAPE))
         {
+            try
+            {
             if (Display.isVisible())
             {
                 processKeyboard();
@@ -394,6 +378,11 @@ public class Lwjgl
                 {
                     render();
                 }
+            }
+            }
+            catch(TextureNotLoadedException ex)
+            {
+                LOGGER.log(Level.SEVERE,ex.toString(),ex);
             }
             Display.update();
             Display.sync(60);

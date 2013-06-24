@@ -56,7 +56,7 @@ public class TextureContainer
                                                border, format);
             if( useMipMap )
             {
-                ta.setFilters(TextureLowLevel.MINFILTER.LINEAR_MIPMAP_NEAREST, 
+                ta.setFilters(TextureLowLevel.MINFILTER.LINEAR_MIPMAP_LINEAR, 
                               TextureLowLevel.MAGFILTER.LINEAR);
             }
             else
