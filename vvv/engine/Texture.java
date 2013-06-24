@@ -15,6 +15,11 @@ public class Texture
     private TextureLowLevel texture;
     private TexCoordData    coords;
     
+    Texture(TextureLowLevel texture, TexCoordData coords)
+    {
+        this.texture = texture;
+        this.coords = coords;
+    }
 
     TextureLowLevel getTexture()
     {

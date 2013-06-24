@@ -49,12 +49,12 @@ public class Atlas
         list = simplePacker.pack(width, height, border, in, notPlaced);
     }
 
-    public List<textureData> getList()
+    public List<TextureData> getList()
     {
         return list;
     }
 
-    static public class textureData
+    static public class TextureData
     {
         String name = new String();
         TexCoordData data = new TexCoordData();
@@ -188,11 +188,11 @@ public class Atlas
             }
         }
 
-        public void collect(List<textureData> list)
+        public void collect(List<TextureData> list)
         {
             if (image != null)
             {
-                textureData data = new textureData();
+                TextureData data = new TextureData();
                 data.name = image.getName();
                 data.img = image;
                 data.data.set(posX + border, posY + border,
@@ -214,7 +214,7 @@ public class Atlas
 
     static private class simplePacker
     {
-        static public List<textureData> pack(float width, float height, float border,
+        static public List<TextureData> pack(float width, float height, float border,
                                              List<Image> in, List<Image> notPlaced)
         {
             List<Image> sortedin = new LinkedList<>(in);
@@ -235,10 +235,10 @@ public class Atlas
             float horizontalMultiplyer = 1.0f / width;
             float verticalMultiplyer = 1.0f / height;
 
-            List<textureData> ret = new ArrayList<>();
+            List<TextureData> ret = new ArrayList<>();
 
             root.collect(ret);
-            for (textureData td : ret)
+            for (TextureData td : ret)
             {
                 TexCoordData data = td.data;
                 Vector4f v = data.get();
@@ -254,5 +254,5 @@ public class Atlas
     private float height;
     private float width;
     private float border = 0;
-    private List<textureData> list = new ArrayList<>();
+    private List<TextureData> list = new ArrayList<>();
 }

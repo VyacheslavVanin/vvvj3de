@@ -89,9 +89,9 @@ public class ImageDesktop implements Image
     }
 
     
-    static public ImageDesktop read(File file, String name) throws IOException
+    static public ImageDesktop read(String fileName, String name) throws IOException
     {
-        BufferedImage im = ImageIO.read(file);
+        BufferedImage im = ImageIO.read( new File(fileName));
         return new ImageDesktop(im,name);
     }
 }

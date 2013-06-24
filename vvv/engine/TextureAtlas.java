@@ -90,8 +90,8 @@ public class TextureAtlas extends Atlas
         float w =  getWidth(); 
         int   b =  (int)getBorder();
         
-        List<textureData> list = getList();
-        for( textureData td: list)
+        List<TextureData> list = getList();
+        for( TextureData td: list)
         {
             java.awt.Image imageToDraw = ((ImageDesktop)td.getImg()).image;
             int x = (int)(td.getData().getX()*w);
