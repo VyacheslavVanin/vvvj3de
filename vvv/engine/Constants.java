@@ -8,7 +8,7 @@ package vvv.engine;
  *
  * @author Вячеслав
  */
-public class Consatants
+public class Constants
 {
 
     public static final int MAX_TEXTURE_UNIT_NUMBER = 31;

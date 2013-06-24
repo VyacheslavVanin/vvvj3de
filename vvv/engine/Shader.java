@@ -2,7 +2,7 @@ package vvv.engine;
 
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
-import static vvv.engine.Consatants.*;
+import static vvv.engine.Constants.*;
 
 public abstract class Shader
 {

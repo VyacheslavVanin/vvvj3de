@@ -6,7 +6,7 @@ import java.nio.FloatBuffer;
 import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
-import static vvv.engine.Consatants.NUM_TEXTURE_UNITS;
+import static vvv.engine.Constants.NUM_TEXTURE_UNITS;
 import vvv.engine.TextureLowLevel.TextureNotLoadedException;
 
 public class ShaderText extends Shader

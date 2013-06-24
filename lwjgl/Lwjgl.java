@@ -22,8 +22,9 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.util.glu.GLU.*;
 import vvv.engine.*;
-import static vvv.engine.Consatants.*;
+import static vvv.engine.Constants.*;
 import vvv.engine.Geometry.VertexAttribute;
+import vvv.engine.TextureLowLevel.TextureNotLoadedException;
 
 
 /**
@@ -47,6 +48,7 @@ public class Lwjgl
     private int vao;
     private int prog;
     private int tex;
+    private TextureLowLevel tll;
     
     private static final int ATTRIB_LOCATION_POSITION = 0; 
     private static final int ATTRIB_LOCATION_TEXCOORD = 1;
@@ -76,10 +78,10 @@ public class Lwjgl
            // String fileName = "images/generated"+i+".png";
             String fileName = "images/"+i+".jpg";
             BufferedImage bi = ImageIO.read( new File(fileName) );
-            TextureAtlas.ImageData  id = 
-                                     new TextureAtlas.ImageData(bi, fileName);
+         //   TextureAtlas.ImageData  id = 
+          //                           new TextureAtlas.ImageData(bi, fileName);
             
-            atlasInputImages.add(id);
+         //   atlasInputImages.add(id);
         }
         
         ta.pack(atlasInputImages, notPlaced);
@@ -93,7 +95,7 @@ public class Lwjgl
         
         try
         {
-            vvvtest();
+           // vvvtest();
             System.out.println( "Keys:" );
             System.out.println( "down  - Shrink" );
             System.out.println( "up    - Grow" );
@@ -104,7 +106,7 @@ public class Lwjgl
             main.create();
             main.run();
         }
-        catch (LWJGLException | IOException ex)
+        catch (LWJGLException /*| IOException*/ ex)
         {
             Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -247,61 +249,20 @@ public class Lwjgl
     
     public void vvvInitTexture()
     {
-        tex = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D, tex);
-
-        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                        GL_LINEAR_MIPMAP_LINEAR );
-        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-                        GL_LINEAR_MIPMAP_LINEAR );
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        int[] pdata ;
+        tll = new TextureLowLevel();
         try
         {
-             BufferedImage im = ImageIO.read( new File("texture.png") );
-             int iheight = im.getHeight();
-             int iwidth  = im.getWidth();
-             int nn = im.getData().getNumDataElements();
-             pdata  = new int[im.getData().getHeight() * im.getData().getWidth()* nn ]; 
-             im.getData().getPixels(0, 0, iwidth, iheight, pdata);
-             
-             ByteBuffer bb = ByteBuffer.allocateDirect(  nn * iheight * iwidth);
-             for( int i=0 ; i < pdata.length / nn; ++i )
-             {
-                 int dx = i % iwidth;
-                 int dy = i / iwidth;
-                 int p = (iheight - dy-1) * iwidth + dx;
-                 if( p >= pdata.length || p < 0 )
-                 {
-                     System.out.println( "Aha!!!" );
-                 }
-                 
-                 for( int j = 0; j < nn; ++j)
-                 {
-                    bb.put(  (byte)pdata[ p*nn + j ] );
-                 }
-             }
-             bb.position(0);
-            
-           //  gluBuild2DMipmaps(GL_TEXTURE_2D, nn, iwidth, iheight, GL_RGB, GL_UNSIGNED_BYTE, bb);
-             
-             int imageFormat;
-            switch(nn)
-            {
-                case 3: imageFormat = GL_RGB;  break;
-                case 4: imageFormat = GL_RGBA; break;
-                default:
-                    return;
-            }
-             
-             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iwidth, iheight, 0, 
-		                         imageFormat, GL_UNSIGNED_BYTE, bb);
-             glGenerateMipmap(GL_TEXTURE_2D);
-             
+            BufferedImage im = ImageIO.read(new File("texture.png"));
+            Image image = new ImageDesktop(im, "texture");
+            tll.loadToHost(image, TextureLowLevel.InternalFormat.GL_RGBA);
+            tll.hostToDevice();
+            tll.setGenerateMipMap(true);
+            tll.setFilter(TextureLowLevel.MINFILTER.LINEAR_MIPMAP_LINEAR,
+                          TextureLowLevel.MAGFILTER.LINEAR);
+            tll.setWraping(TextureLowLevel.WRAP.REPEAT);
+ 
         }
-        catch (IOException ex)
+        catch (IOException | TextureNotLoadedException ex)
         {
             Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -353,11 +314,21 @@ public class Lwjgl
     public void vvvRender()
     {  
         shm.activate();
-        
-        glBindTexture(GL_TEXTURE_2D, tex);
-        int loc = glGetUniformLocation(prog, "Texture0");
-        glUniform1i( loc, 0);
+        try
+        {
+            tll.activate(0);
+            
+           // shm.setTexture(0, tll);
+           // glUniform1i( loc, 0);
+            int loc = glGetUniformLocation(prog, "Texture0");
+            glUniform1i( loc, 0);
+        }
+        catch (TextureNotLoadedException ex)
+        {
+            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
+        }
       
+        
         
         geom.activate();
         geom.draw();      
@@ -403,14 +374,6 @@ public class Lwjgl
                 {
                     render();
                 }
-                
-//                try
-//                {
-//                    Thread.sleep(100);
-//                }
-//                catch (InterruptedException ex)
-//                {
-//                }
             }
             Display.update();
             Display.sync(60);

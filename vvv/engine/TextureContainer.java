@@ -4,13 +4,10 @@
  */
 package vvv.engine;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -18,95 +15,33 @@ import javax.imageio.ImageIO;
  */
 public class TextureContainer
 {
-    public static final int MAX_TEXTURE_SIZE = 2048;
-    
-    private List<Atlas> atlases = new LinkedList<>();   
-    private HashMap<String, Image> inputSet = new HashMap<>();
-
-    public boolean addTexture(File file, String name) throws IOException
-    {
-        if( inputSet.containsKey( name ) )
-        {
-            return false;
-        }
-        
-        BufferedImage img = ImageIO.read(file);
-        if( img.getHeight() >  MAX_TEXTURE_SIZE
-            || img.getWidth() > MAX_TEXTURE_SIZE )
-        {
-            return false;
-        }
-        
-        inputSet.put( name,  new ImageFileData( img, name ) );
-        return true;
-    }
-
-    public void addTexture(String fileName, String name) throws IOException
-    {
-        addTexture(new File(fileName), name);
-    }
-
-    public void addTexture(File file) throws IOException 
-    {
-        addTexture(file, file.getName());
-    }
-
-    public void addTexture(String fileName) throws IOException 
-    {
-        addTexture(new File(fileName));
-    }
-
-    public void pack( int border )
-    {
-        List<Image> input     = new LinkedList<>( inputSet.values() );
-        List<Image> notPlaced = new LinkedList<>();
-        List<Image> tmp; 
-        
-        while( !input.isEmpty() )
-        {
-            Atlas atlas =new Atlas(MAX_TEXTURE_SIZE, MAX_TEXTURE_SIZE, border);
-            atlas.pack(input, notPlaced);
-            atlases.add(atlas);
-            tmp = input;
-            input = notPlaced;
-            notPlaced = tmp;
-            notPlaced.clear();
-        }     
-    }
-
-    public Texture getTexture(String name)
+    public Texture GetTexture(String name)
     {
         return null;
     }
     
-    
-    static private class ImageFileData implements vvv.engine.Image
-    {
-        private BufferedImage image;
-        private String        name;
-        
-        public ImageFileData( BufferedImage image, String name)
-        {
-            this.image = image;
-            this.name  = name;
-        }
-        
-        @Override
-        public float getHeight()
-        {
-            return image.getHeight();
-        }
-
-        @Override
-        public float getWidth()
-        {
-            return image.getWidth();
-        }
-
-        @Override
-        public String getName()
-        {
-            return name;
-        }     
+    public void addTexture(String fileName)
+    {   
     }
+    
+    public void addTexture(String fileName, String name )
+    {  
+    }
+    
+    public void addTexture(File file)
+    {  
+    }
+    
+    public void addTexture(File file, String name)
+    {
+    }
+    
+    public void pack() 
+    {
+    }
+    
+    private List<TextureAtlas> atlases = new ArrayList<>();
+    private HashMap<String,Texture>  map = new HashMap<>();// map for output and searching
+    private List<Image>        input = new ArrayList<>(); // list to accamulate input images before packing
+    
 }

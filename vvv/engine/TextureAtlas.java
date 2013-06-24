@@ -6,15 +6,8 @@ package vvv.engine;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import sun.security.action.GetBooleanAction;
 
 /**
  *
@@ -24,19 +17,73 @@ public class TextureAtlas extends Atlas
 {
     public TextureAtlas(float height, float width)
     {
-        super(height,width);
+        this(height,width,0); 
     }
     
     public TextureAtlas(float height, float width, float border)
     {
+        this(height,width,border,TextureLowLevel.InternalFormat.GL_RGBA); 
+    }
+    
+    public TextureAtlas( float height, float width, float border, 
+                         TextureLowLevel.InternalFormat format )
+    {
         super(height,width,border); 
+        internalFormat = format;
+        numChanels = internalFormatToNumChannels(format);
+    }
+    
+    private static int internalFormatToNumChannels(TextureLowLevel.InternalFormat format)
+    {
+        int ret;
+        switch(format)
+        {
+            case GL_DEPTH_COMPONENT:
+            case GL_RED:   
+                ret = 1;
+                break;
+            case GL_DEPTH_STENCIL:
+            case GL_RG:
+                ret = 2;
+                break;
+            case GL_RGB:
+                ret = 3;
+                break;
+            case GL_RGBA:
+                ret = 4;
+                break;
+            default:
+                ret = 4;
+                break;
+        }
+        return ret;
     }
     
     private void drawAllToImage()
     {
+        int imType;
+        switch(numChanels)
+        {
+            case 1:
+                imType = BufferedImage.TYPE_BYTE_GRAY;
+                break;
+            case 2:
+                imType = BufferedImage.TYPE_USHORT_GRAY;
+                break;
+            case 3:
+                imType = BufferedImage.TYPE_3BYTE_BGR;
+                break;
+            case 4:
+                imType = BufferedImage.TYPE_4BYTE_ABGR;
+                break;
+            default:
+                imType = BufferedImage.TYPE_4BYTE_ABGR;
+                break;
+        }
         BufferedImage  im = new BufferedImage((int)getWidth(),
                                         (int)getHeight(),
-                                        BufferedImage.TYPE_4BYTE_ABGR_PRE);
+                                        imType);
+        
         Graphics g = im.getGraphics();
         
         float h =  getHeight();
@@ -46,7 +93,7 @@ public class TextureAtlas extends Atlas
         List<textureData> list = getList();
         for( textureData td: list)
         {
-            java.awt.Image imageToDraw = ((ImageData)td.getImg()).image;
+            java.awt.Image imageToDraw = ((ImageDesktop)td.getImg()).image;
             int x = (int)(td.getData().getX()*w);
             int y = (int)(td.getData().getY()*h);
             int imageH = imageToDraw.getHeight(null);
@@ -83,11 +130,13 @@ public class TextureAtlas extends Atlas
             }
         }
         
-        ByteBuffer bb = TextureLowLevel.getByteBufferFromImage(im);
-        texture = new TextureLowLevel();
-        texture.loadToHost(bb, (int)w, (int)h, TextureLowLevel.ImageFormat.GL_RGB, 
-                                     TextureLowLevel.InternalFormat.GL_RGBA);
+        ByteBuffer bb = ImageDesktop.getByteBufferFromImage(im);
         
+        texture = new TextureLowLevel();
+        texture.loadToHost(bb, (int)w, (int)h, TextureLowLevel.numChannelsToImageFormat(numChanels), 
+                                               internalFormat);
+        texture.setFilter(minFilter,
+                          magFilter);
 //        try
 //        {
 //            ImageIO.write(im, "png", new File("out.png"));
@@ -98,37 +147,7 @@ public class TextureAtlas extends Atlas
 //        }
     }
     
-    static public class ImageData implements Image
-    {
-        private BufferedImage image;
-        private String         name;
-        
-        public ImageData( BufferedImage image, String name )
-        {
-            this.image = image;
-            this.name  =  name;
-        }
-        
-        @Override
-        public float getHeight()
-        {
-            return image.getHeight();
-        }
 
-        @Override
-        public float getWidth()
-        {
-            return image.getWidth();
-        }
-
-        @Override
-        public String getName()
-        {
-            return name;
-        }
-
-    }
-    
     @Override
     public void pack(List<Image> in, List<Image> notPlaced)
     {
@@ -136,5 +155,23 @@ public class TextureAtlas extends Atlas
         drawAllToImage();
     }
     
+    public  TextureLowLevel getTexture()
+    {
+        return texture;
+    }
+    
+    public void setFilters(TextureLowLevel.MINFILTER min, TextureLowLevel.MAGFILTER mag)
+    {
+        this.minFilter = min;
+        this.magFilter = mag;
+        texture.setFilter(minFilter,
+                          magFilter);
+    }
+    
     private TextureLowLevel texture;
+    
+    private TextureLowLevel.InternalFormat  internalFormat = TextureLowLevel.InternalFormat.GL_RGBA;
+    private TextureLowLevel.MINFILTER       minFilter = TextureLowLevel.MINFILTER.LINEAR;
+    private TextureLowLevel.MAGFILTER       magFilter = TextureLowLevel.MAGFILTER.LINEAR;
+    private int numChanels = 4;
 }

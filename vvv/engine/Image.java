@@ -4,13 +4,18 @@
  */
 package vvv.engine;
 
+import java.nio.ByteBuffer;
+
 /**
  *
  * @author Вячеслав
  */
 public interface Image 
 {
+    public ByteBuffer getByteBuffer();
+    public int    getNumChanels();
     public float  getHeight();
     public float  getWidth(); 
     public String getName();
+
 }
