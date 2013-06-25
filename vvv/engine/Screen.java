@@ -21,13 +21,13 @@ public class Screen
 
     @Override
     protected void finalize() throws Throwable
-    {
-        super.finalize();
+    { 
         if (layers != null)
         {
             layers.clear();
             layers = null;
         }
+        super.finalize();
     }
 
     public void setSize(int width, int height)
@@ -86,6 +86,7 @@ public class Screen
     {
         return layers.contains(layer);
     }
+    
     private Comparator<Layer> comparator = new Comparator<Layer>()
     {
         @Override

@@ -129,8 +129,8 @@ public class Quat
 		float tmpy = ay * tmp1;
 		float tmpz = az * tmp1;
 		
-		tmp1 = w*tmpw - x*tmpx - y*tmpy - z*tmpz;
-		tmp2 = w*tmpx + x*tmpw + y*tmpz - z*tmpy;
+		      tmp1 = w*tmpw - x*tmpx - y*tmpy - z*tmpz;
+		      tmp2 = w*tmpx + x*tmpw + y*tmpz - z*tmpy;
 		float tmp3 = w*tmpy + y*tmpw + z*tmpx - x*tmpz;
 		float tmp4 = w*tmpz + z*tmpw + x*tmpy - y*tmpx;
 		this.x = tmp2;
@@ -182,17 +182,17 @@ public class Quat
 	public static Quat newMul( final Quat q, final Quat p)
 	{
 		return new Quat( q.w*p.w - q.x*p.x - q.y*p.y - q.z*p.z, 
-						 q.w*p.x + q.x*p.w + q.y*p.z - q.z*p.y, 
-						 q.w*p.y + q.y*p.w + q.z*p.x - q.x*p.z, 
-						 q.w*p.z + q.z*p.w + q.x*p.y - q.y*p.x);
+                                 q.w*p.x + q.x*p.w + q.y*p.z - q.z*p.y, 
+                                 q.w*p.y + q.y*p.w + q.z*p.x - q.x*p.z, 
+                                 q.w*p.z + q.z*p.w + q.x*p.y - q.y*p.x);
 	}
 	
 	public static Quat newCross( final Quat q, final Quat p)
 	{
 		return new Quat( q.w*p.w - q.x*p.x - q.y*p.y - q.z*p.z, 
-						 q.w*p.x + q.x*p.w + q.y*p.z - q.z*p.y, 
-						 q.w*p.y + q.y*p.w + q.z*p.x - q.x*p.z, 
-						 q.w*p.z + q.z*p.w + q.x*p.y - q.y*p.x);
+				 q.w*p.x + q.x*p.w + q.y*p.z - q.z*p.y, 
+				 q.w*p.y + q.y*p.w + q.z*p.x - q.x*p.z, 
+				 q.w*p.z + q.z*p.w + q.x*p.y - q.y*p.x);
 	} 
 	
 	public Quat mul(float s)
