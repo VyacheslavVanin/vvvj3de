@@ -266,7 +266,7 @@ public class Lwjgl
             tcontainer.addTexture("images/"+i+".jpg");
         }
        
-        tcontainer.pack(1, TextureLowLevel.InternalFormat.GL_RGBA, true);
+        tcontainer.pack(1, TextureLowLevel.InternalFormat.GL_RGBA, false);
         
         for(int i=0; i < 10; ++i)
         {
@@ -330,7 +330,7 @@ public class Lwjgl
     public void vvvRender() throws TextureNotLoadedException
     {  
         shm.activate();       
-        shm.setTexture(0, tll);
+        shm.setTexture( 0, tll );
         
         geom.activate();
         geom.draw();      

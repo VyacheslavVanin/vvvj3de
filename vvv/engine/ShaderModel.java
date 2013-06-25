@@ -8,7 +8,6 @@ import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import static vvv.engine.Constants.NUM_TEXTURE_UNITS;
 import vvv.engine.TextureLowLevel.TextureNotLoadedException;
 
 public class ShaderModel extends Shader
@@ -18,7 +17,8 @@ public class ShaderModel extends Shader
     private int location_modelMatrix;
     private int location_modelNormalMatrix;
     private int location_viewPosition;
-    private int[] location_texture = new int[NUM_TEXTURE_UNITS];
+    private int[] location_texture = new int[Constants.NUM_TEXTURE_UNITS];
+    private int[] location_color = new int[Constants.NUM_COLOR_UNIFORMS];
     private int location_textureCoordData;
     private int location_materialDiffuseColor;
     private int location_materialDiffuseIntensity;
@@ -31,6 +31,7 @@ public class ShaderModel extends Shader
     public static final String UNIFORM_NAME_MODEL_MATRIX = "MMatrix";
     public static final String UNIFORM_NAME_NORMAL_MATRIX = "NormalMatrix";
     public static final String UNIFORM_NAME_VIEW_POSITION = "ViewPosition";
+    public static final String UNIFORM_NAME_COLOR   = "Color";
     public static final String UNIFORM_NAME_TEXTURE = "Texture";
     public static final String UNIFORM_NAME_TEXTURE_COORDINATE_DATA = "TexCoordData";
     public static final String UNIFORM_NAME_MATERIAL_DIFFUSE_COLOR = "DiffuseColor";
@@ -60,11 +61,16 @@ public class ShaderModel extends Shader
         location_viewPosition =
                 glGetUniformLocation(prog, UNIFORM_NAME_VIEW_POSITION);
 
-        for (int i = 0; i < NUM_TEXTURE_UNITS; ++i)
+        for (int i = 0; i < Constants.NUM_TEXTURE_UNITS; ++i)
         {
             location_texture[i] = glGetUniformLocation(prog, UNIFORM_NAME_TEXTURE + i);
         }
 
+        for( int i = 0; i < Constants.NUM_COLOR_UNIFORMS; ++i)
+        {
+            location_color[i] = glGetUniformLocation(prog, UNIFORM_NAME_COLOR + i);
+        }
+        
         location_textureCoordData = 
 				glGetUniformLocation( prog, UNIFORM_NAME_TEXTURE_COORDINATE_DATA);
         location_materialDiffuseColor =
@@ -87,10 +93,16 @@ public class ShaderModel extends Shader
         location_modelViewProjectionMatrix = -1;
         location_modelMatrix = -1;
         location_modelNormalMatrix = -1;
-        for (int i = 0; i < NUM_TEXTURE_UNITS; ++i)
+        for (int i = 0; i < Constants.NUM_TEXTURE_UNITS; ++i)
         {
             location_texture[i] = -1;
         }
+        
+        for( int i = 0; i < Constants.NUM_COLOR_UNIFORMS; ++i)
+        {
+            location_color[i] = -1;
+        }
+        
         location_textureCoordData = -1;
         location_materialDiffuseColor = -1;
         location_materialDiffuseIntensity = -1;
@@ -159,7 +171,16 @@ public class ShaderModel extends Shader
         Vector4f v = tex.getTexCoord().get();
         glUniform4f(location_textureCoordData, v.x, v.y, v.z, v.w);
         return true;
-
+    }
+    
+    public boolean setColor( int colorUnit, Vector4f v)
+    {
+        if( location_color[colorUnit] == -1 )
+        {
+            return false;
+        }
+        glUniform4f(location_color[colorUnit], v.x, v.y, v.z, v.w);
+        return true;
     }
 
     public boolean setMaterialDiffuseColor(Vector4f v)
