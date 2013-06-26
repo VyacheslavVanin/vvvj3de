@@ -192,7 +192,7 @@ public class Lwjgl
             Sprite     spr = new Sprite();
             sl.addObject(spr);
             spr.setTexture(texlist[i%10]);
-            spr.setScale(5, 5, 1);
+            spr.setScale(6, 6, 1);
             spr.setPosition( (r.nextInt()%DISPLAY_WIDTH/2), 
                              (r.nextInt()%DISPLAY_HEIGHT/2),
                              0);

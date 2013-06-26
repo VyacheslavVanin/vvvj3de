@@ -38,17 +38,17 @@ public class SpriteLayer extends Layer
         spriteGeometry.activate();
         shader.activate();
 
+        if (camera.isChanged())
+        {
+            float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
+        }
+        
         for (GraphicObject go : objects)
         {
             // all objects in list are instances of Sprite
             // (was checked onAddObject). So it's safe to cast.
             Sprite spr = (Sprite) go;
             shader.setTexture(0, spr.getTexture());
-
-            if (camera.isChanged())
-            {
-                float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
-            }
 
             Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
 
