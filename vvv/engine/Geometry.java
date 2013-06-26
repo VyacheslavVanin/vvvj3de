@@ -26,6 +26,8 @@ public class Geometry
     private int    vb = -1;
     private int    vao = -1;
     
+    static int     currentvao = -1;
+    
     private STATUS    status = STATUS.EMPTY;
 
     public static enum STATUS
@@ -160,7 +162,11 @@ public class Geometry
     
     public void activate()
     {
-        glBindVertexArray(vao);
+        if( currentvao != vao )
+        {
+            currentvao = vao;
+            glBindVertexArray(vao);
+        }
     }
     
     public void draw()

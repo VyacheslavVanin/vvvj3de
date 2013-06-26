@@ -45,7 +45,7 @@ public class ShaderModel extends Shader
     public ShaderModel()
     {
         fb = BufferUtils.createFloatBuffer(16);
-        fb.flip();
+        //fb.flip();
     }
 
     @Override
@@ -119,7 +119,8 @@ public class ShaderModel extends Shader
             return false;
         }
         m.store(fb);
-        glUniformMatrix4(location_modelViewProjectionMatrix, false, fb);
+        fb.position(0);
+        glUniformMatrix4(location_modelViewProjectionMatrix, true, fb);
         return true;
     }
 
@@ -130,7 +131,8 @@ public class ShaderModel extends Shader
             return false;
         }
         m.store(fb);
-        glUniformMatrix4(location_modelMatrix, false, fb);
+        fb.position(0);
+        glUniformMatrix4(location_modelMatrix, true, fb);
         return true;
     }
 
@@ -141,7 +143,8 @@ public class ShaderModel extends Shader
             return false;
         }
         m.store(fb);
-        glUniformMatrix3(location_modelNormalMatrix, false, fb);
+        fb.position(0);
+        glUniformMatrix3(location_modelNormalMatrix, true, fb);
         return true;
     }
 

@@ -1,5 +1,11 @@
 package vvv.engine;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
 import static vvv.engine.Constants.*;
@@ -169,6 +175,20 @@ public abstract class Shader
         return true;
     }
 
+    public boolean loadFromFiles(String vsh, String fsh) throws IOException
+    {
+        
+        return load(fileToString(vsh),
+                    fileToString(fsh));
+    }
+    
+    static private String fileToString(String fileName) throws IOException
+    {
+        byte[] encoded = Files.readAllBytes(Paths.get(fileName));
+        Charset encoding = StandardCharsets.UTF_8;
+        return encoding.decode(ByteBuffer.wrap(encoded)).toString();
+    }
+    
     public void activate()
     {
         glUseProgram(prog);

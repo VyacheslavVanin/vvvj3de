@@ -14,6 +14,7 @@ public abstract class Layer
         objects = new LinkedList<>();
         screen = null;
         depth = 1.0f;
+        
     }
 
     void setScreen(Screen screen)
@@ -50,9 +51,11 @@ public abstract class Layer
         return depth;
     }
 
-    abstract public void draw();
+    abstract public void draw() throws Exception;
 
     abstract public void onResize();
+    
+    abstract public void init();
 
     abstract protected boolean onAddObject(final GraphicObject obj);
 

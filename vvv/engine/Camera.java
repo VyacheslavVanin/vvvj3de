@@ -13,7 +13,6 @@ public class Camera
 
     private enum PROJECTION_TYPE
     {
-
         ORTHO,
         PERSPECTIVE
     }
@@ -40,6 +39,12 @@ public class Camera
     private Vec3 tempVec3 = new Vec3();
     private float[] tempMat4 = new float[16];
 
+    
+    public boolean isChanged()
+    {
+        return updatedView || updatedProjection;
+    }
+    
     private void updateView()
     {
         Vec3.rotate(body_direction_front, body_direction_left,
@@ -153,8 +158,8 @@ public class Camera
     {
         ortho_top = top;
         ortho_bottom = bottom;
-        ortho_left = left;
-        ortho_right = right;
+        ortho_left = -left;
+        ortho_right = -right;
         ortho_zNear = zNear;
         ortho_zFar = zFar;
         projection = PROJECTION_TYPE.ORTHO;

@@ -4,9 +4,8 @@
  */
 package vvv.engine;
 
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
-import java.nio.FloatBuffer;
-import org.lwjgl.util.vector.*;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import vvv.math.Quat;
 import vvv.math.Vec3;
 
@@ -23,7 +22,6 @@ public class Sprite extends GraphicObject
     
     private Matrix4f modelMatrix = new Matrix4f();
     
-    private Quat     helperQuat = new Quat();
     private Vector3f helpVector = new Vector3f();
     private boolean  changed = true;
     
@@ -32,13 +30,15 @@ public class Sprite extends GraphicObject
         if(changed)
         {
             float a = angle.getAngle();
-            Vec3 v  = angle.getAxis();     
+            Vec3 v  = angle.getAxis();   
+
             helpVector.set( v.x(), v.y(), v.z() );
             
             modelMatrix.setIdentity();
-            modelMatrix.scale(scale);
+            modelMatrix.translate(position); 
             modelMatrix.rotate(a, helpVector);
-            modelMatrix.translate(position);     
+            modelMatrix.scale(scale);
+
             changed = false;
         }
     }

@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Screen
 {
@@ -115,7 +117,14 @@ public class Screen
     {
         for (Layer l : layers)
         {
-            l.draw();
+            try
+            {
+                l.draw();
+            }
+            catch (Exception ex)
+            {
+                Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
