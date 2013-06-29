@@ -21,7 +21,7 @@ public class TextureLowLevel
     /**
      * TODO: сделать раздельные переменные для статуса онхост ондевайс
      */
-    public void activate(int textureUnit) throws TextureNotLoadedException
+    public boolean activate(int textureUnit) throws TextureNotLoadedException
     {
         if ((textureUnit < 0)
             || (textureUnit > MAX_TEXTURE_UNIT_NUMBER))
@@ -42,9 +42,11 @@ public class TextureLowLevel
                     activeTextures[textureUnit] = tex;
                     glActiveTexture(GL_TEXTURE0 + textureUnit);
                     glBindTexture(GL_TEXTURE_2D, tex);
+                    return true;
                 }
                 break;
         }
+        return false;
     }
 
     private boolean checkLoadToHostArgs(ByteBuffer buffer, int width, int height,

@@ -1,30 +1,18 @@
 package lwjgl;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.util.glu.GLU.*;
 import vvv.engine.*;
-import static vvv.engine.Constants.*;
-import vvv.engine.Geometry.VertexAttribute;
 import vvv.engine.TextureLowLevel.TextureNotLoadedException;
 
 
@@ -147,7 +135,7 @@ public class Lwjgl
         shm = new ShaderModel();
         try
         {
-            shm.loadFromFiles("shaders/sprite.vsh", "shaders/sprite.fsh");
+            shm.loadFromFiles("shaders/sprite.vs", "shaders/sprite.fs");
         }
         catch (IOException ex)
         {
@@ -187,15 +175,17 @@ public class Lwjgl
         
         Random r = new Random();
         
-        for(int i=0; i < 2000; ++i)
+        for(int i=0; i < 20000; ++i)
         {
             Sprite     spr = new Sprite();
-            sl.addObject(spr);
-            spr.setTexture(texlist[i%10]);
-            spr.setScale(6, 6, 1);
+            
+            spr.setTexture( texlist[i%10] );
+            spr.setScale(16, 16, 1);
             spr.setPosition( (r.nextInt()%DISPLAY_WIDTH/2), 
                              (r.nextInt()%DISPLAY_HEIGHT/2),
                              0);
+            
+            sl.addObject(spr);
             sprite1 = spr;
         }
     }
@@ -254,7 +244,7 @@ public class Lwjgl
         int squareX = Mouse.getX();
         int squareY = Mouse.getY();
         
-        sprite1.setPosition( squareX-DISPLAY_WIDTH/2, squareY-DISPLAY_HEIGHT/2, 0 );
+       // sprite1.setPosition( squareX-DISPLAY_WIDTH/2, squareY-DISPLAY_HEIGHT/2, 0 );
     }
 
     

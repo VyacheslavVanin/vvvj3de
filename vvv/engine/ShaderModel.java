@@ -169,8 +169,10 @@ public class ShaderModel extends Shader
             return false;
         }
 
-        tex.getTexture().activate(unit);
-        glUniform1i(location_texture[ unit], unit);
+        if( tex.getTexture().activate(unit) )
+        {
+            glUniform1i(location_texture[ unit], unit);
+        }
         Vector4f v = tex.getTexCoord().get();
         glUniform4f(location_textureCoordData, v.x, v.y, v.z, v.w);
         return true;
