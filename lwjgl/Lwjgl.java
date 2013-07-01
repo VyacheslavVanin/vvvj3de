@@ -180,14 +180,16 @@ public class Lwjgl
             Sprite     spr = new Sprite();
             
             spr.setTexture( texlist[i%10] );
-            spr.setScale(16, 16, 1);
-            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH/2), 
-                             (r.nextInt()%DISPLAY_HEIGHT/2),
+            spr.setScale(64, 64, 1);
+            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
+                             (r.nextInt()%DISPLAY_HEIGHT*20),
                              0);
             
             sl.addObject(spr);
             sprite1 = spr;
         }
+        sprite1.setPosition(0, 0, 0);
+        camera = sl.getCamera();
     }
      
     public void initGL()
@@ -212,12 +214,15 @@ public class Lwjgl
         {
             --squareSize;
             sprite1.move(0, -1, 0);
-            
+           // camera.move(0, -1, 0, 1);
+            camera.moveDown(1.0f);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_UP))
         {
             ++squareSize;
             sprite1.move(0, 1, 0);
+            //camera.move(0, 1, 0, 1);
+            camera.moveUp(1.0f);
         }
 
         //Square's Z
@@ -225,11 +230,13 @@ public class Lwjgl
         {
             ++squareZ;
             sprite1.move(-1, 0, 0);
+            camera.moveLeft(1.0f);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
         {
             --squareZ;
             sprite1.move( 1, 0, 0);
+            camera.moveRight(1.0f);
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
         {
@@ -237,6 +244,12 @@ public class Lwjgl
             tll = texlist[currentImage++ % 10];
             sprite1.setTexture(tll);    
         }
+        
+        if (Keyboard.isKeyDown(Keyboard.KEY_Z))
+        {
+            sprite1.rotate( 0.1f, 0.0f,0.0f,1.0f);    
+        }
+        
     }
 
     public void processMouse()
@@ -305,4 +318,5 @@ public class Lwjgl
     
     public Screen screen;
     public Sprite sprite1;
+    public Camera camera;
 }

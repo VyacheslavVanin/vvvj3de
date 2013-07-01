@@ -71,8 +71,8 @@ public class TextureContainer
             for(Atlas.TextureData td: l)
             {   
                 Vector4f v = td.getData().get();
-                v.y = 1-v.y-v.w;
-               // v.w = v.w;
+                v.y = 1-v.y-v.w; 
+
                 Texture t = new Texture( ta.getTexture(),td.getData() );
                 map.put(td.getName(), t);
             }

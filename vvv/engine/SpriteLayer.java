@@ -42,12 +42,12 @@ public class SpriteLayer extends Layer
         {
             float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
         }
-        
+                
         for (GraphicObject go : objects)
         {
             // all objects in list are instances of Sprite
             // (was checked onAddObject). So it's safe to cast.
-            Sprite spr = (Sprite) go;
+            Sprite spr = (Sprite) go;            
             shader.setTexture(0, spr.getTexture());
 
             Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
@@ -64,7 +64,7 @@ public class SpriteLayer extends Layer
         floatBuffer16.position(0);
         m.load(floatBuffer16);
         floatBuffer16.position(0);
-        m.transpose(m);
+       // m.transpose(m);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SpriteLayer extends Layer
     {
         float h = getHeight();
         float w = getWidth();
-        camera.setOrtho(h / 2, -h / 2, -w / 2, w / 2, -1, 1);
+        camera.setOrtho(h / 2, -h / 2, -w / 2, w / 2, -2, 2);
         camera.setBodyForward(new Vec3(0, 0, 1), new Vec3(0, 1, 0));
         camera.setPos(0, 0, 0);
         camera.lookAt(0, 0, 1);
