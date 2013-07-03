@@ -178,9 +178,9 @@ public class Lwjgl
         for(int i=0; i < 20000; ++i)
         {
             Sprite     spr = new Sprite();
-            
-            spr.setTexture( texlist[i%10] );
-            spr.setScale(64, 64, 1);
+            tll = texlist[i%10];
+            spr.setTexture( tll );
+            spr.setScale(tll.getWidth(), tll.getHeight(), 1);
             spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
                              (r.nextInt()%DISPLAY_HEIGHT*20),
                              0);
@@ -242,7 +242,8 @@ public class Lwjgl
         {
             --squareZ;
             tll = texlist[currentImage++ % 10];
-            sprite1.setTexture(tll);    
+            sprite1.setTexture(tll);   
+            sprite1.setScale(tll.getWidth(), tll.getHeight(), 1);
         }
         
         if (Keyboard.isKeyDown(Keyboard.KEY_Z))

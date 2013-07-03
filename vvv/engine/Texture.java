@@ -14,11 +14,15 @@ public class Texture
 {
     private TextureLowLevel texture;
     private TexCoordData    coords;
+    private int             width;
+    private int             height;
     
-    Texture(TextureLowLevel texture, TexCoordData coords)
+    Texture(TextureLowLevel texture, TexCoordData coords, int widht, int height)
     {
         this.texture = texture;
         this.coords = coords;
+        this.width = widht;
+        this.height = height;
     }
 
     TextureLowLevel getTexture()
@@ -30,4 +34,14 @@ public class Texture
     {
         return coords;
     }   
+    
+    public int getWidth() 
+    {
+        return this.width;
+    }
+    
+    public int getHeight()
+    {
+        return this.height;
+    }
 }

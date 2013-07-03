@@ -73,7 +73,9 @@ public class TextureContainer
                 Vector4f v = td.getData().get();
                 v.y = 1-v.y-v.w; 
 
-                Texture t = new Texture( ta.getTexture(),td.getData() );
+                Texture t = new Texture( ta.getTexture(), td.getData(),
+                                         (int)td.getImg().getWidth(),
+                                         (int)td.getImg().getHeight());
                 map.put(td.getName(), t);
             }
             
