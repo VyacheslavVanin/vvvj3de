@@ -2,15 +2,14 @@ package vvv.math;
 
 public class Quat
 {
-
     private float x, y, z, w;
 
     public Quat()
     {
-        x = 0;
+        x = 1;
         y = 0;
         z = 0;
-        w = 1;
+        w = 0;
     }
 
     public Quat(float w, float x, float y, float z)

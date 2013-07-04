@@ -12,6 +12,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
+import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.*;
 import vvv.engine.TextureLowLevel.TextureNotLoadedException;
 
@@ -248,7 +249,13 @@ public class Lwjgl
         
         if (Keyboard.isKeyDown(Keyboard.KEY_Z))
         {
-            sprite1.rotate( 0.1f, 0.0f,0.0f,1.0f);    
+            sprite1.rotate(  0.1f, 0.0f,0.0f,1.0f);    
+        }
+        
+        if( Keyboard.isKeyDown(Keyboard.KEY_S))
+        {
+            Matrix4f matrix4f = sprite1.getMatrix4f();
+            System.out.println(matrix4f);
         }
         
     }

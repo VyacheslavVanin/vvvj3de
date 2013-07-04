@@ -64,7 +64,12 @@ public class ImageDesktop implements Image
     {
         /**
          * Platform dependent function
-         */
+         */  
+        return getNOTinvertedY(im);
+    }
+
+    static private ByteBuffer getinvertedY(BufferedImage im)
+    {
         int[] pdata;
         int iheight = im.getHeight();
         int iwidth = im.getWidth();
@@ -87,7 +92,25 @@ public class ImageDesktop implements Image
         bb.position(0);
         return bb;
     }
+    
+    static private ByteBuffer getNOTinvertedY(BufferedImage im)
+    {
+        int[] pdata;
+        int iheight = im.getHeight();
+        int iwidth = im.getWidth();
+        int nn = getNumComponentsInImage(im);
+        pdata = new int[im.getData().getHeight() * im.getData().getWidth() * nn];
+        im.getData().getPixels(0, 0, iwidth, iheight, pdata);
 
+        ByteBuffer bb = ByteBuffer.allocateDirect(nn * iheight * iwidth);
+    
+        for(int i = 0; i < pdata.length; ++i)
+        {
+            bb.put( (byte)pdata[i] );
+        }
+        bb.position(0);
+        return bb;
+    }
     
     static public ImageDesktop read(String fileName, String name) throws IOException
     {
