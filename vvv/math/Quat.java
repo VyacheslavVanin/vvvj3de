@@ -6,9 +6,9 @@ public class Quat
 
     public Quat()
     {
-        x = 1;
+        x = 0;
         y = 0;
-        z = 0;
+        z = 1;
         w = 0;
     }
 
@@ -69,9 +69,8 @@ public class Quat
         this.z = v.z() * tmp1;
     }
 
-    ;
 	
-	public float getAngle()
+    public float getAngle()
     {
         return (float) Math.acos(this.w) * 2.0f;
     }

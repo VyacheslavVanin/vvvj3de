@@ -49,7 +49,7 @@ public class Camera
     {
         Vec3.rotate(body_direction_front, body_direction_left,
                     head_pitchAngle, head_direction_front);
-        head_upVector.cross(head_direction_front, body_direction_left);
+        head_upVector.cross( body_direction_left, head_direction_front);
 
         tempVec3.set(cam_position);
         tempVec3.add(head_direction_front);
@@ -158,8 +158,8 @@ public class Camera
     {
         ortho_top = top;
         ortho_bottom = bottom;
-        ortho_left = -left;
-        ortho_right = -right;
+        ortho_left = left;
+        ortho_right = right;
         ortho_zNear = zNear;
         ortho_zFar = zFar;
         projection = PROJECTION_TYPE.ORTHO;

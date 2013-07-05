@@ -25,6 +25,11 @@ public class Sprite extends GraphicObject
     private Vector3f helpVector = new Vector3f();
     private boolean  changed = true;
     
+    public Sprite()
+    {
+        angle.setAngleAxis(0, 0, 0, 1);
+    }
+    
     private void updateMatrix()
     {
         if(changed)

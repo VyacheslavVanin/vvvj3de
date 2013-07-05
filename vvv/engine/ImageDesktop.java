@@ -65,7 +65,7 @@ public class ImageDesktop implements Image
         /**
          * Platform dependent function
          */  
-        return getNOTinvertedY(im);
+        return getinvertedY(im);
     }
 
     static private ByteBuffer getinvertedY(BufferedImage im)

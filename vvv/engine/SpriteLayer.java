@@ -64,7 +64,7 @@ public class SpriteLayer extends Layer
         floatBuffer16.position(0);
         m.load(floatBuffer16);
         floatBuffer16.position(0);
-       // m.transpose(m);
+        //m.transpose(m);
     }
 
     @Override

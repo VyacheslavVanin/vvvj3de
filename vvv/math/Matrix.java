@@ -1,5 +1,7 @@
 package vvv.math;
 
+import org.lwjgl.util.glu.GLU;
+
 
 
 public class Matrix 
@@ -590,52 +592,59 @@ public class Matrix
 		final float eye1 = eye.y();
 		final float eye2 = eye.z();
 		
-		float dir0 = center.x() - eye0;
-		float dir1 = center.y() - eye1;		 
-		float dir2 = center.z() - eye2;
-		float len = 1.0f / FloatMath.sqrt(dir0*dir0 + dir1*dir1 + dir2*dir2);
-		dir0 *= len;
-		dir1 *= len;
-		dir2 *= len;
+               // Vec3 f = normalize(Vec3.sub(center, eye));
+		float f0 = center.x() - eye0;
+		float f1 = center.y() - eye1;		 
+		float f2 = center.z() - eye2;     
+		float len = 1.0f / FloatMath.sqrt(f0*f0 + f1*f1 + f2*f2);
+		f0 *= -len;
+		f1 *= -len;
+		f2 *= -len;
 
-		float u0 = -up.x();
-		float u1 = -up.y();
-		float u2 = -up.z();
+                // Vec3 u = normalize(up);
+		float u0 = up.x();
+		float u1 = up.y();
+		float u2 = up.z();
 		len = 1.0f / FloatMath.sqrt( u0*u0 + u1*u1 + u2*u2);
 		u0 *= len;
 		u1 *= len;
 		u2 *= len;
 
-		// cross( dir, u )
-		float s0 = dir1*u2 - dir2*u1;
-		float s1 = dir2*u0 - dir0*u2;
-		float s2 = dir0*u1 - dir1*u0;
+		// Vec3 s = normalize(cross(f, u));
+		float s0 = f1*u2 - f2*u1;
+		float s1 = f2*u0 - f0*u2;
+		float s2 = f0*u1 - f1*u0;
 		len = 1.0f / FloatMath.sqrt( s0*s0 + s1*s1 + s2*s2);
 		s0 *= len;
 		s1 *= len;
 		s2 *= len;
 		
-		// cross( s, dir)
-		u0 = s1*dir2 - s2*dir1;
-		u1 = s2*dir0 - s0*dir2;
-		u2 = s0*dir1 - s1*dir0;
+		// u = cross(s, f);
+		u0 = s1*f2 - s2*f1;
+		u1 = s2*f0 - s0*f2;
+		u2 = s0*f1 - s1*f0;
 		
 		mat[0] = s0;
+                mat[4] = s1;
+                mat[8] = s2;
+                
 		mat[1] = u0;
-		mat[2] = -dir0;
+                mat[5] = u1;
+                mat[9] = u2;
+                
+		mat[2] = -f0;
+                mat[6] = -f1;
+                mat[10]= -f2;
+                
 		mat[3] = 0.0f;
-		mat[4] = s1;
-		mat[5] = u1;
-		mat[6] = -dir1;
-		mat[7] = 0.0f;
-		mat[8] = s2;
-		mat[9] = u2;
-		mat[10]= -dir2;
+		mat[7] = 0.0f;	
 		mat[11]= 0.0f;
-		mat[12]= -(s0*eye0 + s1*eye1 + s2*eye2);
-		mat[13]= -(u0*eye0 + u1*eye1 + u2*eye2);
-		mat[14]= dir0*eye0 + dir1*eye1 + dir2*eye2;
+		
 		mat[15]= 1.0f;	
+                
+                mat[12]= -(s0*eye0 + s1*eye1 + s2*eye2);
+		mat[13]= -(u0*eye0 + u1*eye1 + u2*eye2);
+		mat[14]=  f0*eye0 + f1*eye1 + f2*eye2;
 	}
 	
 	/** @param fovy in degrees */

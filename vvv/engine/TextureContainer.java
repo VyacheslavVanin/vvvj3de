@@ -70,6 +70,10 @@ public class TextureContainer
             List<Atlas.TextureData> l = ta.getList();
             for(Atlas.TextureData td: l)
             {             
+                
+                Vector4f v = td.getData().get();
+                v.y = 1 - v.y - v.w;
+                
                 Texture t = new Texture( ta.getTexture(), td.getData(),
                                          (int)td.getImg().getWidth(),
                                          (int)td.getImg().getHeight());

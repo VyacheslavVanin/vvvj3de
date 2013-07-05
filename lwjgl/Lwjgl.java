@@ -153,13 +153,24 @@ public class Lwjgl
         {
             tcontainer.addTexture("images/"+i+".jpg");
         }
-       
+        
+        for( int i = 0; i < 3; ++i)
+        {
+            tcontainer.addTexture("images/v" + (i+1) + ".png");
+        }
+        
         tcontainer.pack(1, TextureLowLevel.InternalFormat.GL_RGBA, true);
         
+        
+        texlist = new Texture[13];
         for(int i=0; i < 10; ++i)
         {
             texlist[i] = tcontainer.GetTexture("images/"+i+".jpg");
         }
+      
+        texlist[10] = tcontainer.GetTexture("images/v1.png");
+        texlist[11] = tcontainer.GetTexture("images/v2.png");
+        texlist[12] = tcontainer.GetTexture("images/v3.png");
         tll = texlist[0];
     }
     
@@ -176,20 +187,33 @@ public class Lwjgl
         
         Random r = new Random();
         
-        for(int i=0; i < 20000; ++i)
-        {
-            Sprite     spr = new Sprite();
-            tll = texlist[i%10];
-            spr.setTexture( tll );
-            spr.setScale(tll.getWidth(), tll.getHeight(), 1);
-            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
-                             (r.nextInt()%DISPLAY_HEIGHT*20),
-                             0);
-            
-            sl.addObject(spr);
-            sprite1 = spr;
-        }
-        sprite1.setPosition(0, 0, 0);
+//        for(int i=0; i < 20000; ++i)
+//        {
+//            Sprite     spr = new Sprite();
+//            tll = texlist[i%10];
+//            spr.setTexture( tll );
+//            spr.setScale(tll.getWidth(), tll.getHeight(), 1);
+//            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
+//                             (r.nextInt()%DISPLAY_HEIGHT*20),
+//                             0);
+//            
+//            sl.addObject(spr);
+//            sprite1 = spr;
+//        }
+        sprite1 = new Sprite();
+        tll = texlist[10];
+        sprite1.setTexture( tll );
+        sprite1.setPosition( 0, 0, 0);
+        sprite1.setScale( tll.getWidth(), tll.getHeight(), 1);
+        
+        Sprite spr = new Sprite();
+        tll = texlist[11];
+        spr.setTexture( tll );
+        spr.setPosition( 32, 32, 0);
+        spr.setScale( tll.getWidth(), tll.getHeight(), 1);
+        
+        sl.addObject(spr);
+        sl.addObject(sprite1);
         camera = sl.getCamera();
     }
      
@@ -242,14 +266,14 @@ public class Lwjgl
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
         {
             --squareZ;
-            tll = texlist[currentImage++ % 10];
-            sprite1.setTexture(tll);   
-            sprite1.setScale(tll.getWidth(), tll.getHeight(), 1);
+           // tll = texlist[currentImage++ % 10];
+           // sprite1.setTexture(tll);   
+           // sprite1.setScale(tll.getWidth(), tll.getHeight(), 1);
         }
         
         if (Keyboard.isKeyDown(Keyboard.KEY_Z))
         {
-            sprite1.rotate(  0.1f, 0.0f,0.0f,1.0f);    
+            sprite1.rotate(  0.01f, 0.0f,0.0f,1.0f);    
         }
         
         if( Keyboard.isKeyDown(Keyboard.KEY_S))
@@ -262,8 +286,8 @@ public class Lwjgl
 
     public void processMouse()
     {
-        int squareX = Mouse.getX();
-        int squareY = Mouse.getY();
+        int mx = Mouse.getX();
+        int my = Mouse.getY();
         
        // sprite1.setPosition( squareX-DISPLAY_WIDTH/2, squareY-DISPLAY_HEIGHT/2, 0 );
     }
