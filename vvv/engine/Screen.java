@@ -1,8 +1,8 @@
 package vvv.engine;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ public class Screen
     {
         width = 1;
         height = 1;
-        layers = new LinkedList<>();
+        layers = new ArrayList<>();
     }
 
     @Override
@@ -115,11 +115,11 @@ public class Screen
 
     public void draw()
     {
-        for (Layer l : layers)
+        for( int i =0; i < layers.size(); ++i)
         {
             try
             {
-                l.draw();
+                layers.get(i).draw();
             }
             catch (Exception ex)
             {

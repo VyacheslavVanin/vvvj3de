@@ -26,6 +26,24 @@ public class SpriteLayer extends Layer
         init();
     }
 
+    private boolean isInView(Sprite spr)
+    {
+        float x = spr.getScale().x * 0.5f;
+        float y = spr.getScale().y * 0.5f;
+
+        
+        if( spr.getPosition().y - y > camera.getPos().y() + getHeight()*0.5f )
+            return false;
+        if( spr.getPosition().y + y < camera.getPos().y() - getHeight()*0.5f )
+            return false;
+        if( spr.getPosition().x - x > camera.getPos().x() + getWidth()*0.5f )
+            return false;
+        if( spr.getPosition().x + x < camera.getPos().x() - getWidth()*0.5f )
+            return false;
+        
+        return true;
+    }
+    
     @Override
     public void draw() throws Exception
     {
@@ -42,19 +60,27 @@ public class SpriteLayer extends Layer
         {
             float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
         }
-                
-        for (GraphicObject go : objects)
+             
+        //int drown = 0;
+        for( int i = 0; i < objects.size(); ++i)
         {
+            GraphicObject go = objects.get(i);
             // all objects in list are instances of Sprite
             // (was checked onAddObject). So it's safe to cast.
-            Sprite spr = (Sprite) go;            
-            shader.setTexture(0, spr.getTexture());
+            Sprite spr = (Sprite) go;     
+            
+            if( isInView(spr))
+            {
+                shader.setTexture(0, spr.getTexture());
 
-            Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
+                Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
 
-            shader.setMoodelViewProjectionMatrix(tmp);
-            spriteGeometry.draw();
+                shader.setMoodelViewProjectionMatrix(tmp);
+                spriteGeometry.draw();
+              //  ++drown;
+            }
         }
+       // System.out.println("drown = " + drown);
     }
 
     private void float16ToMatrix4f(float[] f, Matrix4f m)

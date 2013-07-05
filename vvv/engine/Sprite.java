@@ -22,6 +22,7 @@ public class Sprite extends GraphicObject
     
     private Matrix4f modelMatrix = new Matrix4f();
     
+    private Vec3 vAxis = new Vec3();
     private Vector3f helpVector = new Vector3f();
     private boolean  changed = true;
     
@@ -35,9 +36,9 @@ public class Sprite extends GraphicObject
         if(changed)
         {
             float a = angle.getAngle();
-            Vec3 v  = angle.getAxis();   
+            angle.getAxis(vAxis);   
 
-            helpVector.set( v.x(), v.y(), v.z() );
+            helpVector.set( vAxis.x(), vAxis.y(), vAxis.z() );
             
             modelMatrix.setIdentity();
             modelMatrix.translate(position); 

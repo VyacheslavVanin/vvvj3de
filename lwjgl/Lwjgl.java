@@ -13,6 +13,7 @@ import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import vvv.engine.*;
 import vvv.engine.TextureLowLevel.TextureNotLoadedException;
 
@@ -187,19 +188,19 @@ public class Lwjgl
         
         Random r = new Random();
         
-//        for(int i=0; i < 20000; ++i)
-//        {
-//            Sprite     spr = new Sprite();
-//            tll = texlist[i%10];
-//            spr.setTexture( tll );
-//            spr.setScale(tll.getWidth(), tll.getHeight(), 1);
-//            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
-//                             (r.nextInt()%DISPLAY_HEIGHT*20),
-//                             0);
-//            
-//            sl.addObject(spr);
-//            sprite1 = spr;
-//        }
+        for(int i=0; i < 20000; ++i)
+        {
+            Sprite     spr = new Sprite();
+            tll = texlist[i%10];
+            spr.setTexture( tll );
+            spr.setScale(tll.getWidth(), tll.getHeight(), 1);
+            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
+                             (r.nextInt()%DISPLAY_HEIGHT*20),
+                             0);
+            
+            sl.addObject(spr);
+            sprite1 = spr;
+        }
         sprite1 = new Sprite();
         tll = texlist[10];
         sprite1.setTexture( tll );
@@ -284,11 +285,28 @@ public class Lwjgl
         
     }
 
+    
+    Vector2f  tvup = new Vector2f(0, 1);
+    Vector2f  mouse = new Vector2f();
     public void processMouse()
     {
-        int mx = Mouse.getX();
-        int my = Mouse.getY();
+        mouse.x = Mouse.getX() - DISPLAY_WIDTH/2  ;
+        mouse.y = Mouse.getY() - DISPLAY_HEIGHT/2 ;
+        if( mouse.lengthSquared() > 0)
+        {
+            mouse.normalise();
+        }
+        else
+        {
+            mouse.x = 1;
+            mouse.y = 0;
+        }
         
+        float a = Vector2f.angle(tvup, mouse);
+        if( mouse.x < 0)
+            sprite1.setRotation(a, 0, 0, 1);
+        else
+            sprite1.setRotation(-a, 0, 0, 1);
        // sprite1.setPosition( squareX-DISPLAY_WIDTH/2, squareY-DISPLAY_HEIGHT/2, 0 );
     }
 
