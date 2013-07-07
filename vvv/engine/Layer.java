@@ -1,7 +1,6 @@
 package vvv.engine;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Layer
@@ -15,7 +14,6 @@ public abstract class Layer
         objects = new ArrayList<>();
         screen = null;
         depth = 1.0f;
-        
     }
 
     void setScreen(Screen screen)

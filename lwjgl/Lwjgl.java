@@ -1,6 +1,7 @@
 package lwjgl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -160,6 +161,19 @@ public class Lwjgl
             tcontainer.addTexture("images/v" + (i+1) + ".png");
         }
         
+        for( int i = 0; i < 10; ++i)
+        {
+            tcontainer.addTexture("images/rendered/idle/000" + i + ".png");
+            tcontainer.addTexture("images/rendered/rotation/000" + i + ".png");
+        }
+        
+        for( int i = 10; i < 30; ++i)
+        {
+            tcontainer.addTexture("images/rendered/idle/00" + i + ".png");
+            tcontainer.addTexture("images/rendered/rotation/00" + i + ".png");
+        }
+        
+        
         tcontainer.pack(1, TextureLowLevel.InternalFormat.GL_RGBA, true);
         
         
@@ -175,9 +189,37 @@ public class Lwjgl
         tll = texlist[0];
     }
     
+    public void vvvInitAnimation()
+    {   
+        
+        ArrayList<Texture> frames = new ArrayList<>();
+        for(int i = 0; i < 10; ++i)
+        {
+            frames.add( tcontainer.GetTexture("images/rendered/idle/000" + i + ".png"));
+        }
+        for( int i = 10; i < 30; ++i)
+        {
+            frames.add( tcontainer.GetTexture("images/rendered/idle/00" + i + ".png"));
+        } 
+        animationIdle = new SpriteAnimation(frames, 1200 );
+        
+        
+        ArrayList<Texture> framesRot = new ArrayList<>();
+        for(int i = 0; i < 10; ++i)
+        {
+            framesRot.add( tcontainer.GetTexture("images/rendered/rotation/000" + i + ".png"));
+        }
+        for( int i = 10; i < 30; ++i)
+        {
+            framesRot.add( tcontainer.GetTexture("images/rendered/rotation/00" + i + ".png"));
+        }
+        animationRotation = new SpriteAnimation(framesRot, 1200);
+    }
+    
     public void vvvInit() throws IOException
     {  
         vvvInitTexture();
+        vvvInitAnimation();
         vvvInitShader();
         
         screen = new Screen();
@@ -190,7 +232,7 @@ public class Lwjgl
         
         for(int i=0; i < 20000; ++i)
         {
-            Sprite     spr = new Sprite();
+            StaticSprite     spr = new StaticSprite();
             tll = texlist[i%10];
             spr.setTexture( tll );
             spr.setScale(tll.getWidth(), tll.getHeight(), 1);
@@ -199,15 +241,17 @@ public class Lwjgl
                              0);
             
             sl.addObject(spr);
-            sprite1 = spr;
+           // sprite1 = spr;
         }
-        sprite1 = new Sprite();
-        tll = texlist[10];
-        sprite1.setTexture( tll );
-        sprite1.setPosition( 0, 0, 0);
-        sprite1.setScale( tll.getWidth(), tll.getHeight(), 1);
+        sprite1 = new AnimatedSprite();
         
-        Sprite spr = new Sprite();
+        
+        sprite1.setPosition( 0, 0, 0);
+        sprite1.setScale( 128, 128, 1);
+        sprite1.setAnimation(animationIdle);
+        sprite1.playAnimation();
+        
+        StaticSprite spr = new StaticSprite();
         tll = texlist[11];
         spr.setTexture( tll );
         spr.setPosition( 32, 32, 0);
@@ -234,7 +278,8 @@ public class Lwjgl
 
     private int currentImage = 0;
     public void processKeyboard()
-    {
+    {   
+        boolean pressed = false;
         //Square's Size
         if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
         {
@@ -242,13 +287,17 @@ public class Lwjgl
             sprite1.move(0, -1, 0);
            // camera.move(0, -1, 0, 1);
             camera.moveDown(1.0f);
+            
+            pressed = true;
         }
+                
         if (Keyboard.isKeyDown(Keyboard.KEY_UP))
         {
             ++squareSize;
             sprite1.move(0, 1, 0);
             //camera.move(0, 1, 0, 1);
             camera.moveUp(1.0f);
+            pressed = true;
         }
 
         //Square's Z
@@ -257,12 +306,14 @@ public class Lwjgl
             ++squareZ;
             sprite1.move(-1, 0, 0);
             camera.moveLeft(1.0f);
+            pressed = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
         {
             --squareZ;
             sprite1.move( 1, 0, 0);
             camera.moveRight(1.0f);
+            pressed = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
         {
@@ -283,6 +334,14 @@ public class Lwjgl
             System.out.println(matrix4f);
         }
         
+        if( pressed == false)
+        {
+            sprite1.setAnimation(animationIdle);
+        }
+        else
+        {
+            sprite1.setAnimation(animationRotation);
+        }
     }
 
     
@@ -367,6 +426,8 @@ public class Lwjgl
     }
     
     public Screen screen;
-    public Sprite sprite1;
+    public AnimatedSprite sprite1;
     public Camera camera;
+    public SpriteAnimation animationIdle;
+    public SpriteAnimation animationRotation;
 }

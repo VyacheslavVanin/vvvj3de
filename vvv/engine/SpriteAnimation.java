@@ -17,14 +17,13 @@ public class SpriteAnimation
 {
     private List<Texture> frames;
     private long          duration;
-    private long          startTime;
     
     /**
      * @brief Constructor
      * @param list array of frames
      * @param duration  duration of animation loop 
      */
-    public void SpriteAnimation( ArrayList<Texture> list, long duration)
+    public  SpriteAnimation( ArrayList<Texture> list, long duration)
     {
         if(list == null)
         {
@@ -32,28 +31,33 @@ public class SpriteAnimation
         }
         this.frames = list;
         this.duration = duration;
-        this.startTime = 0;
     }
-    
-    /**
-     * @brief setting begin time of loop
-     * @param startTime time 
-     */
-    public void setStartTime( long startTime)
-    {
-        this.startTime = startTime;
-    }
-    
+     
     /**
      * 
+     * @param begin start time of animation
      * @param now current time in milliseconds srom epoch (System.currentTimeMillis())
-     * @return Texture corresponding to current time (now)
+     * @param speed play speed multiplier 
+     * @param looped is animation Looped
+     * @return  Texture corresponding to current time (now)
      */
-    public Texture getCurrent(long now)
+    public Texture getCurrent(long begin, long now, float speed, boolean looped)
     {    
         int numFrames = frames.size();
-        long frameDuration = duration / numFrames;
-        int CurrentIndex = (int) ((( now - startTime ) / frameDuration) % numFrames) ;
+        long frameDuration = (long)(duration/speed) / numFrames;
+        
+        int CurrentIndex = (int)( ( now - begin ) / frameDuration );
+        if( looped )
+        {
+            return frames.get(CurrentIndex % numFrames);
+        }
+        else
+        {
+            if( CurrentIndex > numFrames - 1)
+            {
+                return frames.get(numFrames - 1);
+            } 
+        }
         return frames.get(CurrentIndex);
     }
 }

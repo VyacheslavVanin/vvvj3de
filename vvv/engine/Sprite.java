@@ -13,12 +13,11 @@ import vvv.math.Vec3;
  *
  * @author QwertyVVV
  */
-public class Sprite extends GraphicObject
+public abstract class Sprite extends GraphicObject
 {
     private Vector3f position = new Vector3f(0,0,0);
     private Vector3f scale    = new Vector3f(1,1,1); 
     private Quat     angle    = new Quat();
-    private Texture  texture  = null;
     
     private Matrix4f modelMatrix = new Matrix4f();
     
@@ -111,14 +110,5 @@ public class Sprite extends GraphicObject
     public Vector3f getPosition() { return position;}
     public Vector3f getScale()    { return scale;}
     
-    
-    public void setTexture( Texture texture)
-    {
-        this.texture = texture;
-    }
-    
-    public Texture getTexture()
-    {
-        return texture;
-    }
+    abstract public Texture getTexture( long millis);
 }

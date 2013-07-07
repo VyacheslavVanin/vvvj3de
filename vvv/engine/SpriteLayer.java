@@ -60,7 +60,7 @@ public class SpriteLayer extends Layer
         {
             float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
         }
-             
+        long now = System.currentTimeMillis();     
         //int drown = 0;
         for( int i = 0; i < objects.size(); ++i)
         {
@@ -71,7 +71,7 @@ public class SpriteLayer extends Layer
             
             if( isInView(spr))
             {
-                shader.setTexture(0, spr.getTexture());
+                shader.setTexture(0, spr.getTexture(now));
 
                 Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
 
