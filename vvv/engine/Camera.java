@@ -245,6 +245,12 @@ public class Camera
         lookAt(target.x(), target.y(), target.z());
     }
 
+    public void move(float x, float y, float z)
+    {
+        cam_position.add(x, y, z);
+        updatedView = true;
+    }
+    
     public void move(float x, float y, float z, float distance)
     {
         tempVec3.set(x, y, z);

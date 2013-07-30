@@ -1,4 +1,4 @@
-package vvv.engine;
+package vvv.engine.shader;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

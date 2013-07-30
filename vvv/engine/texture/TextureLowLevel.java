@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine;
+package vvv.engine.texture;
 
 import java.nio.ByteBuffer;
 import static org.lwjgl.opengl.GL11.*;

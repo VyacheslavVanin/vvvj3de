@@ -1,5 +1,14 @@
 package lwjgl;
 
+import vvv.engine.layers.SpriteLayer;
+import vvv.engine.layers.Screen;
+import vvv.engine.shader.ShaderModel;
+import vvv.engine.texture.TextureContainer;
+import vvv.engine.texture.Texture;
+import vvv.engine.texture.TextureLowLevel;
+import vvv.engine.sprite.SpriteAnimation;
+import vvv.engine.sprite.StaticSprite;
+import vvv.engine.sprite.AnimatedSprite;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +25,8 @@ import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import vvv.engine.*;
-import vvv.engine.TextureLowLevel.TextureNotLoadedException;
+import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
+import vvv.math.FloatMath;
 
 
 /**
@@ -25,8 +35,8 @@ import vvv.engine.TextureLowLevel.TextureNotLoadedException;
  */
 public class Lwjgl
 {
-    public static final int DISPLAY_HEIGHT = 600;
-    public static final int DISPLAY_WIDTH  = 600;
+    public static final int DISPLAY_HEIGHT = 800;
+    public static final int DISPLAY_WIDTH  = 1280;
     public static final Logger LOGGER = Logger.getLogger(Lwjgl.class.getName());
     private int squareSize;
     private int squareZ;
@@ -86,11 +96,25 @@ public class Lwjgl
     public void create() throws LWJGLException
     {
         //Display
-        Display.setDisplayMode(new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT));
-        Display.setFullscreen(false);
+        DisplayMode displayMode = new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+        DisplayMode[] modes = Display.getAvailableDisplayModes();
+
+         for (int i = 0; i < modes.length; i++)
+         {
+             if (modes[i].getWidth() == DISPLAY_WIDTH
+             && modes[i].getHeight() == DISPLAY_HEIGHT
+             && modes[i].isFullscreenCapable())
+               {
+                    displayMode = modes[i];
+               }
+         }
+         
+        Display.setDisplayMode(displayMode);
+        Display.setVSyncEnabled(true);
+        //Display.setFullscreen(true);
         Display.setTitle("Hello LWJGL World!");   
         Display.create();
-
+        
         //Keyboard
         Keyboard.create();
 
@@ -277,6 +301,7 @@ public class Lwjgl
     }
 
     private int currentImage = 0;
+    private float velocity = 250;
     public void processKeyboard()
     {   
         boolean pressed = false;
@@ -318,9 +343,16 @@ public class Lwjgl
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
         {
             --squareZ;
+            sprite1.setAnimationSpeed(4);
+            velocity = 1000;
            // tll = texlist[currentImage++ % 10];
            // sprite1.setTexture(tll);   
            // sprite1.setScale(tll.getWidth(), tll.getHeight(), 1);
+        }
+        else
+        {
+            sprite1.setAnimationSpeed(1);
+            velocity = 500;
         }
         
         if (Keyboard.isKeyDown(Keyboard.KEY_Z))
@@ -334,19 +366,20 @@ public class Lwjgl
             System.out.println(matrix4f);
         }
         
-        if( pressed == false)
-        {
-            sprite1.setAnimation(animationIdle);
-        }
-        else
-        {
-            sprite1.setAnimation(animationRotation);
-        }
+//        if( pressed == false)
+//        {
+//            sprite1.setAnimation(animationIdle);
+//        }
+//        else
+//        {
+//            sprite1.setAnimation(animationRotation);
+//        }
     }
 
     
     Vector2f  tvup = new Vector2f(0, 1);
     Vector2f  mouse = new Vector2f();
+    Vector2f  direction = new Vector2f(0,1);
     public void processMouse()
     {
         mouse.x = Mouse.getX() - DISPLAY_WIDTH/2  ;
@@ -362,13 +395,46 @@ public class Lwjgl
         }
         
         float a = Vector2f.angle(tvup, mouse);
-        if( mouse.x < 0)
-            sprite1.setRotation(a, 0, 0, 1);
+        if( mouse.x > 0)
+        {
+            a *= -1;
+        }
+        sprite1.setRotation(a, 0, 0, 1);
+        direction.x = -FloatMath.sin(a);
+        direction.y = FloatMath.cos(a);
+        
+        if( Mouse.isButtonDown(0))
+        {
+            //final float velocity = 500.0f;
+            float dtf = 0;
+            long dt = 0;
+            long  t = System.currentTimeMillis();
+            if(MB0Pressed == false)
+            {                            
+            }
+            else
+            {       
+                dt =  t - timeLastPressed; 
+            }
+            dtf = dt / 1000.0f;
+            timeLastPressed = t;
+            
+            MB0Pressed = true;
+            
+            float s = dtf * velocity;
+            sprite1.move( direction.x * s, direction.y * s, 0);
+            camera.move(direction.x * s, direction.y * s, 0);
+            sprite1.setAnimation(animationRotation);
+        }
         else
-            sprite1.setRotation(-a, 0, 0, 1);
+        {
+           MB0Pressed = false;
+           sprite1.setAnimation(animationIdle); 
+        }
        // sprite1.setPosition( squareX-DISPLAY_WIDTH/2, squareY-DISPLAY_HEIGHT/2, 0 );
     }
-
+    private boolean MB0Pressed = false;
+    private long    timeLastPressed = 0;
     
     public void render() throws TextureNotLoadedException
     {
@@ -409,7 +475,7 @@ public class Lwjgl
                 LOGGER.log(Level.SEVERE,ex.toString(),ex);
             }
             Display.update();
-           // Display.sync(60);
+            Display.sync(60);
         }
     }
 

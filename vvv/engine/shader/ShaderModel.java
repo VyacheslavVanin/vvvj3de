@@ -1,6 +1,7 @@
-package vvv.engine;
+package vvv.engine.shader;
 
 //import static android.opengl.GLES20.*;
+import vvv.engine.texture.Texture;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL20.*;
@@ -8,7 +9,8 @@ import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import vvv.engine.TextureLowLevel.TextureNotLoadedException;
+import vvv.engine.Constants;
+import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
 
 public class ShaderModel extends Shader
 {

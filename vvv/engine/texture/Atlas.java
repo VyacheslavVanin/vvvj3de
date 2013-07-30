@@ -1,4 +1,4 @@
-package vvv.engine;
+package vvv.engine.texture;
 
 import java.util.*;
 import org.lwjgl.util.vector.Vector4f;

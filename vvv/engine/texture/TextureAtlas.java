@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine;
+package vvv.engine.texture;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;

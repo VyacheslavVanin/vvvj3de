@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine;
+package vvv.engine.texture;
 
 /**
  *
@@ -25,12 +25,12 @@ public class Texture
         this.height = height;
     }
 
-    TextureLowLevel getTexture()
+    public TextureLowLevel getTexture()
     {
         return texture;
     }
     
-    TexCoordData getTexCoord()
+    public TexCoordData getTexCoord()
     {
         return coords;
     }   

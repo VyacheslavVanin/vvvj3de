@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine;
+package vvv.engine.layers;
 
+import vvv.engine.shader.ShaderModel;
+import vvv.engine.sprite.Sprite;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.List;
@@ -11,6 +13,9 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import org.lwjgl.util.vector.Matrix4f;
+import vvv.engine.Camera;
+import vvv.engine.Constants;
+import vvv.engine.Geometry;
 import vvv.math.Vec3;
 
 /**
@@ -31,7 +36,6 @@ public class SpriteLayer extends Layer
         float x = spr.getScale().x * 0.5f;
         float y = spr.getScale().y * 0.5f;
 
-        
         if( spr.getPosition().y - y > camera.getPos().y() + getHeight()*0.5f )
             return false;
         if( spr.getPosition().y + y < camera.getPos().y() - getHeight()*0.5f )
@@ -61,7 +65,7 @@ public class SpriteLayer extends Layer
             float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
         }
         long now = System.currentTimeMillis();     
-        //int drown = 0;
+
         for( int i = 0; i < objects.size(); ++i)
         {
             GraphicObject go = objects.get(i);
@@ -70,17 +74,13 @@ public class SpriteLayer extends Layer
             Sprite spr = (Sprite) go;     
             
             if( isInView(spr))
-            {
-                shader.setTexture(0, spr.getTexture(now));
-
+            { 
+                shader.setTexture(0, spr.getTexture(now) );
                 Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
-
                 shader.setMoodelViewProjectionMatrix(tmp);
                 spriteGeometry.draw();
-              //  ++drown;
             }
         }
-       // System.out.println("drown = " + drown);
     }
 
     private void float16ToMatrix4f(float[] f, Matrix4f m)

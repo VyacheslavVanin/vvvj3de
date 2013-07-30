@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine;
+package vvv.engine.sprite;
 
 import java.util.ArrayList;
 import java.util.List;
+import vvv.engine.texture.Texture;
 
 /**
  *
