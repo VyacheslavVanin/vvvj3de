@@ -4,6 +4,7 @@
  */
 package vvv.engine.sprite;
 
+import vvv.engine.Globals;
 import vvv.engine.texture.Texture;
 
 /**
@@ -62,8 +63,9 @@ public class AnimatedSprite extends Sprite
     }
     
     @Override
-    public Texture getTexture(long millis)
+    public Texture getTexture()
     {
+        
         if( animation == null )
         {
             throw new NullPointerException("Animation is not set");
@@ -71,12 +73,13 @@ public class AnimatedSprite extends Sprite
         
         if( state == ANIMATION_STATE.PLAY )
         {
+            long millis = Globals.Time.get();
             return  animation.getCurrent(animationStartTime, millis, 
                                          animationSpeed, looped);
         }
         else
         {
-            return animation.getCurrent(animationStartTime, animationPauseTime, 
+            return animation.getCurrent( animationStartTime, animationPauseTime, 
                                          animationSpeed, looped);
         }
     }

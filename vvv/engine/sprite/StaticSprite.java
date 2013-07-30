@@ -20,7 +20,7 @@ public class StaticSprite extends Sprite
     }
     
     @Override
-    public Texture getTexture(long millis)
+    public Texture getTexture()
     {
         return texture;
     }

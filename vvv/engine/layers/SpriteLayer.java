@@ -16,6 +16,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
 import vvv.engine.Constants;
 import vvv.engine.Geometry;
+import vvv.engine.Globals;
 import vvv.math.Vec3;
 
 /**
@@ -64,8 +65,9 @@ public class SpriteLayer extends Layer
         {
             float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
         }
-        long now = System.currentTimeMillis();     
-
+        //long now = System.currentTimeMillis();     
+        Globals.Time.update();
+        
         for( int i = 0; i < objects.size(); ++i)
         {
             GraphicObject go = objects.get(i);
@@ -75,7 +77,7 @@ public class SpriteLayer extends Layer
             
             if( isInView(spr))
             { 
-                shader.setTexture(0, spr.getTexture(now) );
+                shader.setTexture(0, spr.getTexture() );
                 Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
                 shader.setMoodelViewProjectionMatrix(tmp);
                 spriteGeometry.draw();

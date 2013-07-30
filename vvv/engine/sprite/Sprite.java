@@ -112,5 +112,5 @@ public abstract class Sprite extends GraphicObject
     public Vector3f getPosition() { return position;}
     public Vector3f getScale()    { return scale;}
     
-    abstract public Texture getTexture( long millis);
+    abstract public Texture getTexture();
 }
