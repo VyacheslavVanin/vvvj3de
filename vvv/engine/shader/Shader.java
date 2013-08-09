@@ -8,7 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.*;
-import static vvv.engine.Constants.*;
+import vvv.engine.Geometry.VertexAttribs;
+import vvv.engine.Geometry.VertexAttribs.VERTEX_ATTRIBUTE;
 
 public abstract class Shader
 {
@@ -16,10 +17,10 @@ public abstract class Shader
     private int vsh;
     private int fsh;
     public static final String ATTRIBUTE_VERTEX_POSITION_NAME = "vPosition";
-    public static final String ATTRIBUTE_VERTEX_NORMAL_NAME = "vNormal";
+    public static final String ATTRIBUTE_VERTEX_NORMAL_NAME   = "vNormal";
     public static final String ATTRIBUTE_VERTEX_TEXCOORD_NAME = "vTexCoord";
     public static final String ATTRIBUTE_VERTEX_BINORMAL_NAME = "vBinormal";
-    public static final String ATTRIBUTE_VERTEX_TANGENT_NAME = "vTangent";
+    public static final String ATTRIBUTE_VERTEX_TANGENT_NAME  = "vTangent";
 
     private boolean shaderStatus(int shader, int param)
     {
@@ -69,12 +70,22 @@ public abstract class Shader
     }
 
     private void attributesBindings(int prog)
-    {
-        glBindAttribLocation(prog, ATTRIBUTE_VERTEX_POSITION, ATTRIBUTE_VERTEX_POSITION_NAME);
-        glBindAttribLocation(prog, ATTRIBUTE_VERTEX_NORMAL, ATTRIBUTE_VERTEX_NORMAL_NAME);
-        glBindAttribLocation(prog, ATTRIBUTE_VERTEX_TEXCOORD, ATTRIBUTE_VERTEX_TEXCOORD_NAME);
-        glBindAttribLocation(prog, ATTRIBUTE_VERTEX_BINORMAL, ATTRIBUTE_VERTEX_BINORMAL_NAME);
-        glBindAttribLocation(prog, ATTRIBUTE_VERTEX_TANGENT, ATTRIBUTE_VERTEX_TANGENT_NAME);
+    { 
+        glBindAttribLocation(prog, 
+                             VertexAttribs.vertexAttributeToInt(VERTEX_ATTRIBUTE.POSITION),
+                             ATTRIBUTE_VERTEX_POSITION_NAME);
+        glBindAttribLocation(prog, 
+                             VertexAttribs.vertexAttributeToInt(VERTEX_ATTRIBUTE.NORMAL), 
+                             ATTRIBUTE_VERTEX_NORMAL_NAME);
+        glBindAttribLocation(prog,  
+                             VertexAttribs.vertexAttributeToInt(VERTEX_ATTRIBUTE.TEXCOORD), 
+                             ATTRIBUTE_VERTEX_TEXCOORD_NAME);
+        glBindAttribLocation(prog,   
+                             VertexAttribs.vertexAttributeToInt(VERTEX_ATTRIBUTE.BINORMAL), 
+                             ATTRIBUTE_VERTEX_BINORMAL_NAME);
+        glBindAttribLocation(prog,   
+                             VertexAttribs.vertexAttributeToInt(VERTEX_ATTRIBUTE.TANGENT), 
+                             ATTRIBUTE_VERTEX_TANGENT_NAME);
     }
 
     abstract public void updateLocations();

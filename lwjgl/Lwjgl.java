@@ -110,7 +110,7 @@ public class Lwjgl
          }
          
         Display.setDisplayMode(displayMode);
-        Display.setVSyncEnabled(true);
+        //Display.setVSyncEnabled(true);
         //Display.setFullscreen(true);
         Display.setTitle("Hello LWJGL World!");   
         Display.create();
@@ -431,10 +431,32 @@ public class Lwjgl
            MB0Pressed = false;
            sprite1.setAnimation(animationIdle); 
         }
+        
+        int dw = Mouse.getDWheel();
+        if( dw != 0 )
+        {
+            if( dw > 0 )
+            {
+               zoom *= 1.1;
+            }
+            else
+            {
+                zoom /= 1.1;
+            } 
+            float top = DISPLAY_HEIGHT / 2 *zoom;
+            float botom = -top;
+            float left = -DISPLAY_WIDTH/2 *zoom;
+            float right = -left;
+            
+            camera.setOrtho( top, botom, left, right, -1, 1);
+        }
        // sprite1.setPosition( squareX-DISPLAY_WIDTH/2, squareY-DISPLAY_HEIGHT/2, 0 );
     }
+    private float zoom = 1.0f;
+    
     private boolean MB0Pressed = false;
     private long    timeLastPressed = 0;
+    
     
     public void render() throws TextureNotLoadedException
     {
@@ -475,7 +497,7 @@ public class Lwjgl
                 LOGGER.log(Level.SEVERE,ex.toString(),ex);
             }
             Display.update();
-            Display.sync(60);
+           // Display.sync(60);
         }
     }
 

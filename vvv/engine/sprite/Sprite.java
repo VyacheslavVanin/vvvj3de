@@ -7,9 +7,8 @@ package vvv.engine.sprite;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import vvv.engine.layers.GraphicObject;
+import vvv.engine.layers.PositionProperties;
 import vvv.engine.texture.Texture;
-import vvv.math.Quat;
-import vvv.math.Vec3;
 
 /**
  *
@@ -17,100 +16,60 @@ import vvv.math.Vec3;
  */
 public abstract class Sprite extends GraphicObject
 {
-    private Vector3f position = new Vector3f(0,0,0);
-    private Vector3f scale    = new Vector3f(1,1,1); 
-    private Quat     angle    = new Quat();
-    
-    private Matrix4f modelMatrix = new Matrix4f();
-    
-    private Vec3 vAxis = new Vec3();
-    private Vector3f helpVector = new Vector3f();
-    private boolean  changed = true;
+    private PositionProperties position = new PositionProperties();
     
     public Sprite()
     {
-        angle.setAngleAxis(0, 0, 0, 1);
-    }
-    
-    private void updateMatrix()
-    {
-        if(changed)
-        {
-            float a = angle.getAngle();
-            angle.getAxis(vAxis);   
-
-            helpVector.set( vAxis.x(), vAxis.y(), vAxis.z() );
-            
-            modelMatrix.setIdentity();
-            modelMatrix.translate(position); 
-            modelMatrix.rotate(a, helpVector);
-            modelMatrix.scale(scale);
-
-            changed = false;
-        }
+        position.setRotation(0, 0, 0, 1);
     }
     
     public Matrix4f getMatrix4f()
     {
-        updateMatrix();
-        return modelMatrix;
+        return position.getMatrix4f();
     }
     
     public void rotate(float angle, float x, float y, float z)
     {
-        this.angle.rotate(angle, x, y, z);
-        changed = true;
+        position.rotate(angle, x, y, z);
     }
     
     public void setRotation(float angle, float x, float y, float z)
     {
-        this.angle.setAngleAxis(angle, x, y, z);
-        changed = true;
+        position.setRotation(angle, x, y, z);
     }
     
     public void setEuler(float pitch, float yaw, float roll)
     {
-        this.angle.setEuler(pitch, yaw, roll);
-        changed = true;
+        position.setEuler(pitch, yaw, roll);
     }
     
     public void setPosition(float x, float y, float z)
     {
-        this.position.set(x, y, z);
-        changed = true;
+        position.setPosition(x, y, z);
     }
     
     public void move(float x, float y, float z)
     {
-        this.setPosition( this.position.x + x, 
-                          this.position.y + y, 
-                          this.position.z + z );
+        position.move(x, y, z);
     }
     
     public void setScale(float x, float y, float z)
     {
-        this.scale.set(x, y, z);
-        changed = true;
+        position.setScale(x, y, z);
     }
     
     public void scaleMul( float x, float y, float z)
     {
-        this.scale.x *= x;
-        this.scale.y *= y;
-        this.scale.z *= z;
-        changed = true;
+        position.scaleMul(x, y, z);
     }
     
     public void scaleAdd( float x, float y, float z)
     {
-        this.scale.x += x;
-        this.scale.y += y;
-        this.scale.z += z;
-        changed = true;
+        position.scaleAdd(x, y, z);
     }
     
-    public Vector3f getPosition() { return position;}
-    public Vector3f getScale()    { return scale;}
+    public Vector3f getPosition() { return position.getPosition();}
+    public Vector3f getScale()    { return position.getScale();}
     
     abstract public Texture getTexture();
 }

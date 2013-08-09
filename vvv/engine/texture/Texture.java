@@ -24,7 +24,7 @@ public class Texture
         this.width = widht;
         this.height = height;
     }
-
+  
     public TextureLowLevel getTexture()
     {
         return texture;

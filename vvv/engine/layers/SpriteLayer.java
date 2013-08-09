@@ -14,8 +14,9 @@ import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
-import vvv.engine.Constants;
 import vvv.engine.Geometry;
+import vvv.engine.Geometry.VertexAttribs;
+import vvv.engine.Geometry.VertexAttribs.VERTEX_ATTRIBUTE;
 import vvv.engine.Globals;
 import vvv.math.Vec3;
 
@@ -32,6 +33,8 @@ public class SpriteLayer extends Layer
         init();
     }
 
+    // it is work but incorrect 
+    // (it have to check only camera data to determinate, not getHeight, Width)
     private boolean isInView(Sprite spr)
     {
         float x = spr.getScale().x * 0.5f;
@@ -143,10 +146,10 @@ public class SpriteLayer extends Layer
         spriteGeometry = new Geometry();
         float[] vertices =
         {
-            -0.5f, -0.5f, 1, 0, 0,
-            -0.5f, 0.5f, 1, 0, 1,
-            0.5f, 0.5f, 1, 1, 1,
-            0.5f, -0.5f, 1, 1, 0
+            -0.5f, -0.5f, 0, 0, 0,
+            -0.5f, 0.5f, 0, 0, 1,
+            0.5f, 0.5f, 0, 1, 1,
+            0.5f, -0.5f, 0, 1, 0
         };
         int[] indices =
         {
@@ -169,13 +172,11 @@ public class SpriteLayer extends Layer
         }
         ibb.flip();
 
-        Geometry.VertexAttribute[] attribs =
-        {
-            new Geometry.VertexAttribute(Constants.ATTRIBUTE_VERTEX_POSITION,
-                                         3, GL_FLOAT),
-            new Geometry.VertexAttribute(Constants.ATTRIBUTE_VERTEX_TEXCOORD,
-                                         2, GL_FLOAT)
-        };
+        
+        VertexAttribs attribs = new Geometry.VertexAttribs();
+        attribs.add( VERTEX_ATTRIBUTE.POSITION, 3, GL_FLOAT );
+        attribs.add( VERTEX_ATTRIBUTE.TEXCOORD, 2, GL_FLOAT );
+        
         spriteGeometry.loadToHost(vbb, attribs, ibb, indices.length, GL_UNSIGNED_INT);
     }
 
