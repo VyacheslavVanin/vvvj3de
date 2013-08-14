@@ -25,6 +25,8 @@ public class TextureLoader
     {
         Image im = ImageDesktop.read(filename, filename);
         TextureLowLevel tll = new TextureLowLevel();
+        tll.setFilter(TextureLowLevel.MINFILTER.LINEAR, 
+                      TextureLowLevel.MAGFILTER.LINEAR);
         tll.loadToHost(im, format);
         TexCoordData tcd = new TexCoordData();
         tcd.set(0, 0, 1, 1);

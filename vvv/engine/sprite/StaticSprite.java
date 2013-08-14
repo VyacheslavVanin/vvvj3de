@@ -24,5 +24,5 @@ public class StaticSprite extends Sprite
     {
         return texture;
     }
-    
+ 
 }

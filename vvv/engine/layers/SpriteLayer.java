@@ -4,20 +4,29 @@
  */
 package vvv.engine.layers;
 
-import vvv.engine.shader.ShaderModel;
+import java.io.IOException;
+import vvv.engine.shader.ModelShader;
 import vvv.engine.sprite.Sprite;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Camera;
 import vvv.engine.Geometry;
 import vvv.engine.Geometry.VertexAttribs;
 import vvv.engine.Geometry.VertexAttribs.VERTEX_ATTRIBUTE;
 import vvv.engine.Globals;
+import vvv.engine.text.Font;
+import vvv.engine.text.TextLine;
 import vvv.math.Vec3;
 
 /**
@@ -31,6 +40,30 @@ public class SpriteLayer extends Layer
     {
         super();
         init();
+        try
+        {
+            f = Font.loadFromFiles("fonts/arial20.png");
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(SpriteLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        textShader = new ModelShader();
+        try
+        {
+            textShader.loadFromFiles("shaders/text.vs", "shaders/text.fs");
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(SpriteLayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        text = new TextLine();
+        text.setFont(f);
+        text.setText("Text text 1");
+        text.setPosition(0, 0, 0.5f);
+        
     }
 
     // it is work but incorrect 
@@ -60,15 +93,18 @@ public class SpriteLayer extends Layer
             throw new Exception("no assigned Shader to layer");
         }
         List<GraphicObject> objects = getObjects();
-
-        spriteGeometry.activate();
-        shader.activate();
-
+        
         if (camera.isChanged())
         {
             float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
         }
-        //long now = System.currentTimeMillis();     
+
+       
+        
+        
+        spriteGeometry.activate();
+        shader.activate();
+     
         Globals.Time.update();
         
         for( int i = 0; i < objects.size(); ++i)
@@ -85,9 +121,23 @@ public class SpriteLayer extends Layer
                 shader.setMoodelViewProjectionMatrix(tmp);
                 spriteGeometry.draw();
             }
-        }
+        } 
+        
+        text.setText( "" + Calendar.getInstance().toString() );
+        
+        textShader.activate();
+        text.activateGeometry();
+        textShader.setColor(0, new Vector4f(1, 1, 1, 1));
+        Matrix4f.mul(vpmatrix, text.getMatrix4f(), tmp);
+        textShader.setMoodelViewProjectionMatrix(tmp);
+        textShader.setTexture( 0, text.getTexture());
+        text.draw();
+        
     }
 
+    private Random r = new Random(System.currentTimeMillis());
+    
+    
     private void float16ToMatrix4f(float[] f, Matrix4f m)
     {
         floatBuffer16.position(0);
@@ -95,7 +145,6 @@ public class SpriteLayer extends Layer
         floatBuffer16.position(0);
         m.load(floatBuffer16);
         floatBuffer16.position(0);
-        //m.transpose(m);
     }
 
     @Override
@@ -185,13 +234,18 @@ public class SpriteLayer extends Layer
         return camera;
     }
 
-    public void setShader(ShaderModel shader)
+    public void setShader(ModelShader shader)
     {
         this.shader = shader;
     }
+    
+    private Font f;
+    private TextLine text;
+    private ModelShader textShader;
+    
     private Geometry spriteGeometry;
     private Camera camera;
-    private ShaderModel shader = null;
+    private ModelShader shader = null;
     private FloatBuffer floatBuffer16;
     private Matrix4f tmp = new Matrix4f();
     private Matrix4f vpmatrix = new Matrix4f();

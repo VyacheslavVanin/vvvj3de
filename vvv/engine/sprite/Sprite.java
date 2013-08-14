@@ -20,7 +20,6 @@ public abstract class Sprite extends GraphicObject
     
     public Sprite()
     {
-        position.setRotation(0, 0, 0, 1);
     }
     
     public Matrix4f getMatrix4f()
@@ -67,9 +66,9 @@ public abstract class Sprite extends GraphicObject
     {
         position.scaleAdd(x, y, z);
     }
-    
+      
     public Vector3f getPosition() { return position.getPosition();}
     public Vector3f getScale()    { return position.getScale();}
-    
+     
     abstract public Texture getTexture();
 }

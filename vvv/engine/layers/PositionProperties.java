@@ -13,7 +13,7 @@ import vvv.math.Vec3;
  *
  * @author Вячеслав
  */
-public class PositionProperties
+public final class PositionProperties
 {
     private Vector3f position = new Vector3f(0,0,0);
     private Vector3f scale    = new Vector3f(1,1,1); 
@@ -27,7 +27,7 @@ public class PositionProperties
     
     public PositionProperties()
     {
-        
+        setRotation(0, 0, 0, 1);
     }
     
      private void updateMatrix()

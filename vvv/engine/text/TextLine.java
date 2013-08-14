@@ -9,11 +9,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import vvv.engine.Geometry;
 import vvv.engine.Geometry.VertexAttribs;
 import vvv.engine.Geometry.VertexAttribs.VERTEX_ATTRIBUTE;
 import vvv.engine.layers.PositionProperties;
+import vvv.engine.texture.Texture;
 
 /**
  *
@@ -44,6 +47,9 @@ public class TextLine
     private static final int VERTICES_PER_SYMBOL = 4;
     private static final int INDICES_PER_SYMBOL = 6;
     
+    
+   
+    
     public void setText( String text) 
     {
         this.text = text;
@@ -71,6 +77,45 @@ public class TextLine
         return text;
     }
     
+    private Font.GlyphInfo getGlyphInfo( char symbol)
+    {
+        Font.GlyphInfo gi ;
+        try
+        {
+            gi = font.getGlyphInfo(symbol);
+        }
+        catch(Exception e1)
+        {
+            try                
+            {
+                gi = font.getGlyphInfo('?');
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    gi = font.getGlyphInfo(' ');
+                }
+                catch (Exception ex1)
+                {
+                    throw new IllegalArgumentException("symbol not found");
+                }      
+            }  
+            Logger.getLogger(TextLine.class.getName()).log(Level.SEVERE, null, e1);
+        }
+        return gi;
+    }
+    
+    private void putVertex( ByteBuffer b, float x, float y, float z, 
+                                          float tx, float ty)
+    {
+        b.putFloat( x );
+        b.putFloat( y);
+        b.putFloat( z);
+        b.putFloat( tx );
+        b.putFloat( ty );
+    }
+    
     private void genMesh()
     {
         int len = text.length();
@@ -89,35 +134,44 @@ public class TextLine
         {
             ibb = BufferUtils.createByteBuffer(numIndicesBytes);
         }
+        //vbb.position(0);
+       // ibb.position(0);
+        ibb.clear();
+        vbb.clear();
         
+        int x = 0;
+        int y = 0;
+        int index = 0;
         for( int i=0; i < len; ++i )
         {
             char symbol = text.charAt(i);
-            Font.GlyphInfo gi ;
-            try
-            {
-                gi = font.getGlyphInfo(symbol);
-            }
-            catch(Exception e1)
-            {
-                try                
-                {
-                    gi = font.getGlyphInfo('?');
-                }
-                catch (Exception ex)
-                {
-                    try
-                    {
-                        gi = font.getGlyphInfo(' ');
-                    }
-                    catch (Exception ex1)
-                    {
-                    }      
-                }  
-                Logger.getLogger(TextLine.class.getName()).log(Level.SEVERE, null, e1);
-            }
+            Font.GlyphInfo gi = getGlyphInfo(symbol);
+            float left      = x + gi.offsetX;
+            float right     = left + gi.glyphWidth;
+            float top       = y + gi.offsetY;
+            float bottom    = top - gi.glyphHeight;
+            float texLeft   = gi.tx;
+            float texRight  = texLeft + gi.twidth;
+            float texTop    = gi.ty;
+            float texBottom = texTop - gi.theight;
+            putVertex( vbb, left, bottom, 0, texLeft, texBottom);
+            putVertex( vbb, left, top,    0, texLeft, texTop   );
+            putVertex( vbb, right, top,   0, texRight, texTop  );
+            putVertex( vbb, right, bottom,0, texRight, texBottom);
+            x += gi.width;
+            
+            ibb.putInt(index + 0);
+            ibb.putInt(index + 1);
+            ibb.putInt(index + 3);
+            ibb.putInt(index + 1);
+            ibb.putInt(index + 2);
+            ibb.putInt(index + 3);
+            index += 4;
         }
+        vbb.flip();
+        ibb.flip();
         
+        geometry.loadToHost(vbb, attribs, ibb, numIndices, GL_UNSIGNED_INT);    
     }
     
     private void updateGeometry()
@@ -128,8 +182,25 @@ public class TextLine
         }
     }
     
+    public void activateGeometry()
+    {
+        updateGeometry();
+        geometry.activate();
+    }
+    
+    public Texture getTexture()
+    {
+        return font.getTexture();
+    }
+    
+    public Matrix4f getMatrix4f()
+    {
+        return position.getMatrix4f();
+    }
+      
     public void draw()
     {
-        
-    } 
+        geometry.draw();
+    }  
+    
 }

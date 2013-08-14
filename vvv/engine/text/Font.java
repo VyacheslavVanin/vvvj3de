@@ -36,7 +36,8 @@ public class Font
     {
         Texture texture = TextureLoader.loadFromFile( 
                                         name, 
-                                        TextureLowLevel.InternalFormat.GL_RED);
+                                        TextureLowLevel.InternalFormat.GL_RGBA);
+        
         Map<Character, GlyphInfo> map = getGlyphMapFromFile(name+".dsc");
         return  new Font(texture, map);
     }
@@ -58,10 +59,10 @@ public class Font
         }
     }
     
-    static private GlyphInfo createWhiteSpaceGlyphInfo(List<String> l)
+    static private GlyphInfo createWhiteSpaceGlyphInfo( String str)
     {
         GlyphInfo ret = new GlyphInfo();
-        ret.width = Integer.parseInt( l.get(0) );
+        ret.width = Integer.parseInt( str );
         ret.symbol      = ' ';
         ret.offsetX     = 0;
         ret.offsetY     = 0;
@@ -77,7 +78,7 @@ public class Font
     static private GlyphInfo createGlyphInfo( List<String> l, int index)
     {
         int base = 1 + index*10;
-        if( base > l.size() )
+        if( base > l.size()-1 )
         {
             return null;
         }
@@ -100,9 +101,9 @@ public class Font
         List<String> l = new ArrayList<>();
         Map<Character, GlyphInfo> map = new HashMap<>();
         
-        readStringsFromFile(name, l);
+        readStringsFromFile( name, l);
         
-        GlyphInfo space = createWhiteSpaceGlyphInfo(l);
+        GlyphInfo space = createWhiteSpaceGlyphInfo(l.get(0));
         map.put( ' ', space);
         
         int i = 0;

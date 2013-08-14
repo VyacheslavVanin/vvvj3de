@@ -2,7 +2,7 @@ package lwjgl;
 
 import vvv.engine.layers.SpriteLayer;
 import vvv.engine.layers.Screen;
-import vvv.engine.shader.ShaderModel;
+import vvv.engine.shader.ModelShader;
 import vvv.engine.texture.TextureContainer;
 import vvv.engine.texture.Texture;
 import vvv.engine.texture.TextureLowLevel;
@@ -41,7 +41,7 @@ public class Lwjgl
     private int squareSize;
     private int squareZ;
 
-    private ShaderModel shm;
+    private ModelShader shm;
     private Texture tll;
     private Texture[] texlist = new Texture[10];
     private TextureContainer tcontainer;
@@ -159,7 +159,7 @@ public class Lwjgl
     
     public void vvvInitShader()
     {
-        shm = new ShaderModel();
+        shm = new ModelShader();
         try
         {
             shm.loadFromFiles("shaders/sprite.vs", "shaders/sprite.fs");

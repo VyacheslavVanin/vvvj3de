@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Constants;
 import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
 
-public class ShaderModel extends Shader
+public class ModelShader extends Shader
 {
 
     private int location_modelViewProjectionMatrix;
@@ -44,7 +44,7 @@ public class ShaderModel extends Shader
     public static final String UNIFORM_NAME_MATERIAL_EMIT = "Emit";
    
 
-    public ShaderModel()
+    public ModelShader()
     {
         fb = BufferUtils.createFloatBuffer(16);
         //fb.flip();

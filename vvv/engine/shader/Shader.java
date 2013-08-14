@@ -13,6 +13,7 @@ import vvv.engine.Geometry.VertexAttribs.VERTEX_ATTRIBUTE;
 
 public abstract class Shader
 {
+    static private int currentShader = -1; 
     private int prog;
     private int vsh;
     private int fsh;
@@ -202,7 +203,11 @@ public abstract class Shader
     
     public void activate()
     {
-        glUseProgram(prog);
+        if( currentShader != prog )
+        {
+            currentShader = prog;
+            glUseProgram(prog);
+        }
     }
 
     Shader()
