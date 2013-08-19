@@ -10,7 +10,6 @@ import vvv.engine.sprite.Sprite;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -62,7 +61,7 @@ public class SpriteLayer extends Layer
         text = new TextLine();
         text.setFont(f);
         text.setText("Text text 1");
-        text.setPosition(0, 0, 0.5f);
+       // text.setPosition(0, 0, 0.5f);
         
     }
 
@@ -94,14 +93,9 @@ public class SpriteLayer extends Layer
         }
         List<GraphicObject> objects = getObjects();
         
-        if (camera.isChanged())
-        {
-            float16ToMatrix4f(camera.getViewProjection(), vpmatrix);
-        }
-
+        vpmatrix = camera.getViewProjectionMatrix4f();
        
-        
-        
+
         spriteGeometry.activate();
         shader.activate();
      
@@ -118,19 +112,20 @@ public class SpriteLayer extends Layer
             { 
                 shader.setTexture(0, spr.getTexture() );
                 Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
-                shader.setMoodelViewProjectionMatrix(tmp);
+                shader.setModelViewProjectionMatrix(tmp);
                 spriteGeometry.draw();
             }
         } 
         
-        text.setText( "" + Calendar.getInstance().toString() );
+        text.setText( "0123456789" );
         
         textShader.activate();
-        text.activateGeometry();
+        
         textShader.setColor(0, new Vector4f(1, 1, 1, 1));
-        Matrix4f.mul(vpmatrix, text.getMatrix4f(), tmp);
-        textShader.setMoodelViewProjectionMatrix(tmp);
+        //Matrix4f.mul(vpmatrix, text.getMatrix4f(), tmp);
+        textShader.setModelViewProjectionMatrix(vpmatrix);
         textShader.setTexture( 0, text.getTexture());
+        //text.activateGeometry();
         text.draw();
         
     }
@@ -174,8 +169,7 @@ public class SpriteLayer extends Layer
         return true;
     }
 
-    @Override
-    public void init()
+    public final void init()
     {
         initGeometry();
         initCamera();

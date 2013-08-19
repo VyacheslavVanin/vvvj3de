@@ -243,12 +243,22 @@ public class Geometry
     
     public void activate()
     {
+        if( vao == -1 )
+        {
+            hostToDevice();
+        }
         if( currentvao != vao )
         {
             currentvao = vao;
             glBindVertexArray(vao);
         }
     }
+    
+    public void deactivate()
+    {    
+        glBindVertexArray( 0 );
+    }
+          
     
     public void draw()
     {

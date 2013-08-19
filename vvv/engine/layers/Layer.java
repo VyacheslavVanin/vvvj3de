@@ -54,7 +54,7 @@ public abstract class Layer
 
     abstract public void onResize();
     
-    abstract public void init();
+   // abstract public void init();
 
     abstract protected boolean onAddObject(final GraphicObject obj);
 

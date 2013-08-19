@@ -16,6 +16,8 @@ import java.util.Map;
 import vvv.engine.texture.Texture;
 import vvv.engine.texture.TextureLoader;
 import vvv.engine.texture.TextureLowLevel;
+import vvv.engine.widgets.HorizontalAlign;
+import vvv.engine.widgets.VerticalAlign;
 
 /**
  *
@@ -26,6 +28,8 @@ public class Font
     private Texture texture;
 
     private Map<Character, GlyphInfo> map;
+    private float ascenderHight;
+    private float descenderHight; 
     
     /**
      * Load font information from "name" and "name.dsc"
@@ -120,7 +124,34 @@ public class Font
     {    
         this.map = map;
         this.texture = texture;
+        this.ascenderHight = Float.MIN_VALUE;
+        this.descenderHight = Float.MAX_VALUE;
+        
+        for( GlyphInfo gi: map.values() )
+        {
+            if( gi.offsetY > this.ascenderHight )
+            {
+                this.ascenderHight = gi.offsetY;
+            }
+            float bottom = gi.offsetY - gi.glyphHeight;
+            if( bottom < this.descenderHight )
+            {
+                this.descenderHight = bottom;
+            }
+        }       
     }
+    
+    public float getAscenderHight()
+    {
+        return ascenderHight;
+    }
+    
+    public float getDescenderHight()
+    {
+        return descenderHight;
+    }
+ 
+    
     
     Texture getTexture() 
     {

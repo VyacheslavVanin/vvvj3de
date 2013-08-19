@@ -114,7 +114,7 @@ public class ModelShader extends Shader
         location_materialEmit = -1;
     }
 
-    public boolean setMoodelViewProjectionMatrix(Matrix4f m)
+    public boolean setModelViewProjectionMatrix(Matrix4f m)
     {
         if (location_modelViewProjectionMatrix == -1)
         {

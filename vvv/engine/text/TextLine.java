@@ -10,12 +10,10 @@ import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import vvv.engine.Geometry;
 import vvv.engine.Geometry.VertexAttribs;
 import vvv.engine.Geometry.VertexAttribs.VERTEX_ATTRIBUTE;
-import vvv.engine.layers.PositionProperties;
 import vvv.engine.texture.Texture;
 
 /**
@@ -29,15 +27,14 @@ public class TextLine
     private String   text = "";
     private float    width = 0;
     private Vector3f color = new Vector3f(1,1,1);
-    private PositionProperties position = new PositionProperties();
+
     private boolean  changed = true;
     
     static private final VertexAttribs attribs = new Geometry.VertexAttribs();
-    {
+    static {
         attribs.add( VERTEX_ATTRIBUTE.POSITION, 3, GL_FLOAT );
         attribs.add( VERTEX_ATTRIBUTE.TEXCOORD, 2, GL_FLOAT );
     }
-    
     
     private ByteBuffer vbb = null;
     private ByteBuffer ibb = null;
@@ -47,8 +44,8 @@ public class TextLine
     private static final int VERTICES_PER_SYMBOL = 4;
     private static final int INDICES_PER_SYMBOL = 6;
     
+      
     
-   
     
     public void setText( String text) 
     {
@@ -61,17 +58,7 @@ public class TextLine
         this.font = font;
         changed = true;
     }
-    
-    public void setPosition( float x, float y)
-    {
-        position.setPosition(x, y, 0);
-    }
-    
-    public void setPosition( float x, float y, float z)
-    {
-        position.setPosition(x, y, z);
-    }
-    
+      
     public String getText()
     {
         return text;
@@ -134,8 +121,7 @@ public class TextLine
         {
             ibb = BufferUtils.createByteBuffer(numIndicesBytes);
         }
-        //vbb.position(0);
-       // ibb.position(0);
+        
         ibb.clear();
         vbb.clear();
         
@@ -172,6 +158,24 @@ public class TextLine
         ibb.flip();
         
         geometry.loadToHost(vbb, attribs, ibb, numIndices, GL_UNSIGNED_INT);    
+    
+        this.width = x;
+    }
+    
+    public final float getLineWidth()
+    {
+        updateGeometry();
+        return this.width;
+    }
+    
+    public final float getAscenderHight()
+    {
+        return font.getAscenderHight();
+    }
+    
+    public final float getDescenderHight()
+    {
+        return font.getDescenderHight();
     }
     
     private void updateGeometry()
@@ -182,25 +186,18 @@ public class TextLine
         }
     }
     
-    public void activateGeometry()
-    {
-        updateGeometry();
-        geometry.activate();
-    }
-    
+  
     public Texture getTexture()
     {
         return font.getTexture();
     }
     
-    public Matrix4f getMatrix4f()
-    {
-        return position.getMatrix4f();
-    }
-      
+ 
     public void draw()
     {
+        updateGeometry();
+        geometry.activate();
         geometry.draw();
-    }  
-    
+        //geometry.deactivate();
+    }     
 }

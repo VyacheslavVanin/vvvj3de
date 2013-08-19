@@ -1,5 +1,8 @@
 package vvv.engine;
 
+import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.util.vector.Matrix4f;
 import vvv.math.Matrix;
 import vvv.math.Vec3;
 import vvv.math.help;
@@ -11,6 +14,10 @@ public class Camera
     private float[] matrix_projection = new float[16];
     private float[] matrix_viewProjection = new float[16];
 
+    private Matrix4f matrix4f_viewProjection = new Matrix4f();
+    private Matrix4f matrix4f_view = new Matrix4f();
+    private Matrix4f matrix4f_projection = new Matrix4f();
+    
     private enum PROJECTION_TYPE
     {
         ORTHO,
@@ -139,7 +146,45 @@ public class Camera
         }
         return matrix_viewProjection;
     }
-
+  
+    
+    public Matrix4f getViewMatrix4f()
+    {
+        if( updatedView )
+        {
+            float16ToMatrix4f(getView(), matrix4f_view);
+        }
+        return matrix4f_view;
+    }
+    
+    public Matrix4f getProjectionMatrix4f()
+    {
+        if( updatedProjection )
+        {
+            float16ToMatrix4f(getProjection(), matrix4f_projection);
+        }
+        return matrix4f_projection;
+    }
+    
+    public Matrix4f getViewProjectionMatrix4f()
+    { 
+        if( updatedView || updatedProjection )
+        {
+            float16ToMatrix4f(getViewProjection(), matrix4f_viewProjection);
+        }
+        return matrix4f_viewProjection;
+    }
+    
+    private FloatBuffer floatBuffer16 = BufferUtils.createFloatBuffer(16);
+    private void float16ToMatrix4f(float[] f, Matrix4f m)
+    {
+        floatBuffer16.position(0);
+        floatBuffer16.put(f);
+        floatBuffer16.position(0);
+        m.load(floatBuffer16);
+        floatBuffer16.position(0);
+    }
+    
     public Vec3 getPos()
     {
         return cam_position;

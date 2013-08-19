@@ -15,5 +15,5 @@ public abstract class GraphicObject
 		this.layer = layer;
 	}
 	
-	Layer getLayer() { return this.layer; }		
+	public Layer getLayer() { return this.layer; }		
 }

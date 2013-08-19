@@ -24,8 +24,16 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.*;
+import vvv.engine.layers.PositionProperties;
+import vvv.engine.layers.WidgetLayer;
+import vvv.engine.text.Font;
+import vvv.engine.text.TextLine;
 import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
+import vvv.engine.widgets.HorizontalAlign;
+import vvv.engine.widgets.TextLabel;
+import vvv.engine.widgets.VerticalAlign;
 import vvv.math.FloatMath;
 
 
@@ -35,8 +43,8 @@ import vvv.math.FloatMath;
  */
 public class Lwjgl
 {
-    public static final int DISPLAY_HEIGHT = 800;
-    public static final int DISPLAY_WIDTH  = 1280;
+    public static final int DISPLAY_HEIGHT = 700;
+    public static final int DISPLAY_WIDTH  = 1000;
     public static final Logger LOGGER = Logger.getLogger(Lwjgl.class.getName());
     private int squareSize;
     private int squareZ;
@@ -240,6 +248,45 @@ public class Lwjgl
         animationRotation = new SpriteAnimation(framesRot, 1200);
     }
     
+    public void vvvInitGui(Screen screen)
+    {
+        ModelShader textShader = new ModelShader();
+        try {
+            textShader.loadFromFiles("shaders/text.vs", "shaders/text.fs");
+        } catch (IOException ex) {
+            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        Font f = null;
+        try {
+            f = Font.loadFromFiles("fonts/arial20.png");
+        } catch (IOException ex) {
+            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        WidgetLayer wl = new WidgetLayer();
+         
+         
+        TextLabel   label1 = new TextLabel("Test1");
+        label1.setColor(1, 0, 0, 1);
+        label1.setFont(f);
+        
+        label1.setWidth(100);
+        label1.setHeight(100);
+        label1.setHorizontalAlign(HorizontalAlign.RIGHT);
+        label1.setVerticalAlign(VerticalAlign.TOP);
+        label1.setPosition(0, 0 );
+        
+        wl.setDepth(0.1f);
+        wl.addObject(label1);
+        wl.setActiveShader(textShader);
+        
+        screen.addLayer(wl);
+        
+        
+    }
+    
     public void vvvInit() throws IOException
     {  
         vvvInitTexture();
@@ -259,13 +306,11 @@ public class Lwjgl
             StaticSprite     spr = new StaticSprite();
             tll = texlist[i%10];
             spr.setTexture( tll );
-            spr.setScale(tll.getWidth(), tll.getHeight(), 1);
+            spr.setScale( tll.getWidth(), tll.getHeight(), 1 );
             spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
                              (r.nextInt()%DISPLAY_HEIGHT*20),
                              0);
-            
             sl.addObject(spr);
-           // sprite1 = spr;
         }
         sprite1 = new AnimatedSprite();
         
@@ -284,6 +329,8 @@ public class Lwjgl
         sl.addObject(spr);
         sl.addObject(sprite1);
         camera = sl.getCamera();
+ 
+        vvvInitGui(screen);
     }
      
     public void initGL()
