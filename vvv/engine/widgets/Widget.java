@@ -27,13 +27,13 @@ public abstract class Widget extends GraphicObject
     
     public final float getWidth()  { return this.width; }
     public final float getHeight() { return this.height;}
-    public final float getPosX()   { return this.xpos;  }
-    public final float getPosY()   { return this.ypos;  }
+    protected final float getPosX()   { return this.xpos;  }
+    protected final float getPosY()   { return this.ypos;  }
     
     public final void  setWidth( float width)    { this.width = width; }
     public final void  setHeight( float height ) { this.height = height; }
-    public final void  setPosX( float x)         { this.xpos = x; }
-    public final void  setPosY( float y)         { this.ypos = y; }
+    protected final void  setPosX( float x)         { this.xpos = x; }
+    protected final void  setPosY( float y)         { this.ypos = y; }
     
     protected final float getGlobalPosX()
     {
@@ -60,7 +60,7 @@ public abstract class Widget extends GraphicObject
         {
             parentPosY = parent.getGlobalPosY();
         }
-        return this.xpos + parentPosY;
+        return this.ypos + parentPosY;
     }
     
     public final void draw() throws Exception
@@ -88,9 +88,14 @@ public abstract class Widget extends GraphicObject
         }
     }
     
-    protected final ModelShader getActiveShader()
+    protected final ModelShader getTextShader()
     {
-        return getLayer().getActiveShader();
+        return getLayer().getTextShader();
+    }
+    
+    protected final ModelShader getImageShader()
+    {
+        return getLayer().getImageShader();
     }
     
     protected final Camera getCamera()
@@ -108,12 +113,33 @@ public abstract class Widget extends GraphicObject
         return this.visible;
     }
     
+    public boolean isContainPoint( float x, float y)
+    {
+        float px = getGlobalPosX();
+        float py = getGlobalPosY();
+        float w  = getWidth();
+        float h  = getHeight();
+        
+        if( x > px + w || x < px )
+        {
+            return false;
+        }
+        
+        if( y > py + h || y < py )
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    
     public abstract void onDraw() throws Exception;
     
-    public void onMouseMove( float x, float y) {}
+    public boolean onMouseMove( float x, float y) { return false;}
     
-    public void onMouseButtonDown( float x, float y) {}
+    public boolean onLeftMouseButtonDown( float x, float y) { return false;}
     
-    public void onMouseButtonUp( float x, float y) {}
+    public boolean onLeftMouseButtonUp( float x, float y) { return false;}
  
 }

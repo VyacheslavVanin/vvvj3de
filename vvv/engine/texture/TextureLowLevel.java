@@ -11,6 +11,7 @@ import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL14.*;
 import static org.lwjgl.opengl.GL30.*;
 import static vvv.engine.Constants.*;
+import static org.lwjgl.opengl.NVTextureCompressionVTC.*;
 
 /**
  *
@@ -210,7 +211,7 @@ public class TextureLowLevel
         glTexImage2D(GL_TEXTURE_2D, 0, this.textureFormat,
                      this.width, this.height, 0,
                      this.imageFormat, GL_UNSIGNED_BYTE, this.buffer);
-
+    
         if (generateMipMap)
         {
             glGenerateMipmap(GL_TEXTURE_2D);

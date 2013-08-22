@@ -4,28 +4,17 @@
  */
 package vvv.engine.layers;
 
-import java.io.IOException;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.sprite.Sprite;
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Camera;
 import vvv.engine.Geometry;
-import vvv.engine.Geometry.VertexAttribs;
-import vvv.engine.Geometry.VertexAttribs.VERTEX_ATTRIBUTE;
 import vvv.engine.Globals;
-import vvv.engine.text.Font;
-import vvv.engine.text.TextLine;
+import vvv.engine.sprite.SpriteGeometry;
 import vvv.math.Vec3;
 
 /**
@@ -38,31 +27,7 @@ public class SpriteLayer extends Layer
     public SpriteLayer()
     {
         super();
-        init();
-        try
-        {
-            f = Font.loadFromFiles("fonts/arial20.png");
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(SpriteLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        textShader = new ModelShader();
-        try
-        {
-            textShader.loadFromFiles("shaders/text.vs", "shaders/text.fs");
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(SpriteLayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        text = new TextLine();
-        text.setFont(f);
-        text.setText("Text text 1");
-       // text.setPosition(0, 0, 0.5f);
-        
+        init();      
     }
 
     // it is work but incorrect 
@@ -95,8 +60,8 @@ public class SpriteLayer extends Layer
         
         vpmatrix = camera.getViewProjectionMatrix4f();
        
-
-        spriteGeometry.activate();
+        Geometry sg = SpriteGeometry.getGeometry();
+        sg.activate();
         shader.activate();
      
         Globals.Time.update();
@@ -113,21 +78,9 @@ public class SpriteLayer extends Layer
                 shader.setTexture(0, spr.getTexture() );
                 Matrix4f.mul(vpmatrix, spr.getMatrix4f(), tmp);
                 shader.setModelViewProjectionMatrix(tmp);
-                spriteGeometry.draw();
+                sg.draw();
             }
-        } 
-        
-        text.setText( "0123456789" );
-        
-        textShader.activate();
-        
-        textShader.setColor(0, new Vector4f(1, 1, 1, 1));
-        //Matrix4f.mul(vpmatrix, text.getMatrix4f(), tmp);
-        textShader.setModelViewProjectionMatrix(vpmatrix);
-        textShader.setTexture( 0, text.getTexture());
-        //text.activateGeometry();
-        text.draw();
-        
+        }      
     }
 
     private Random r = new Random(System.currentTimeMillis());
@@ -171,7 +124,6 @@ public class SpriteLayer extends Layer
 
     public final void init()
     {
-        initGeometry();
         initCamera();
         floatBuffer16 = BufferUtils.createFloatBuffer(16);
     }
@@ -184,45 +136,6 @@ public class SpriteLayer extends Layer
         camera.lookAt(0, 0, 1);
     }
 
-    private void initGeometry()
-    {
-        spriteGeometry = new Geometry();
-        float[] vertices =
-        {
-            -0.5f, -0.5f, 0, 0, 0,
-            -0.5f, 0.5f, 0, 0, 1,
-            0.5f, 0.5f, 0, 1, 1,
-            0.5f, -0.5f, 0, 1, 0
-        };
-        int[] indices =
-        {
-            0, 1, 3,
-            1, 2, 3
-        };
-
-
-        ByteBuffer vbb = BufferUtils.createByteBuffer(vertices.length * 4);
-        for (int i = 0; i < vertices.length; ++i)
-        {
-            vbb.putFloat(vertices[i]);
-        }
-        vbb.flip();
-
-        ByteBuffer ibb = BufferUtils.createByteBuffer(indices.length * 4);
-        for (int i = 0; i < indices.length; ++i)
-        {
-            ibb.putInt(indices[i]);
-        }
-        ibb.flip();
-
-        
-        VertexAttribs attribs = new Geometry.VertexAttribs();
-        attribs.add( VERTEX_ATTRIBUTE.POSITION, 3, GL_FLOAT );
-        attribs.add( VERTEX_ATTRIBUTE.TEXCOORD, 2, GL_FLOAT );
-        
-        spriteGeometry.loadToHost(vbb, attribs, ibb, indices.length, GL_UNSIGNED_INT);
-    }
-
     public Camera getCamera()
     {
         return camera;
@@ -232,12 +145,7 @@ public class SpriteLayer extends Layer
     {
         this.shader = shader;
     }
-    
-    private Font f;
-    private TextLine text;
-    private ModelShader textShader;
-    
-    private Geometry spriteGeometry;
+      
     private Camera camera;
     private ModelShader shader = null;
     private FloatBuffer floatBuffer16;

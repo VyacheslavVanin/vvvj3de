@@ -13,6 +13,7 @@ public class Screen
     private int width;
     private int height;
     private List< Layer> layers;
+    private WidgetLayer guiLayer = null;
 
     public Screen()
     {
@@ -23,7 +24,7 @@ public class Screen
 
     @Override
     protected void finalize() throws Throwable
-    { 
+    {
         if (layers != null)
         {
             layers.clear();
@@ -37,6 +38,10 @@ public class Screen
         this.width = width;
         this.height = height;
 
+        if (guiLayer != null)
+        {
+            guiLayer.onResize();
+        }
         for (Layer l : layers)
         {
             l.onResize();
@@ -84,11 +89,25 @@ public class Screen
         return ret;
     }
 
+    public boolean setGuiLayer(WidgetLayer layer)
+    {
+        if( layer != null )
+        {
+            Screen oldScreen = layer.getScreen();
+            if( oldScreen != null )
+            {
+                oldScreen.setGuiLayer(null);
+            }
+            layer.setScreen(this);
+        }
+        this.guiLayer = layer;
+        return true;
+    }
+    
     public boolean contains(Layer layer)
     {
         return layers.contains(layer);
     }
-    
     private Comparator<Layer> comparator = new Comparator<Layer>()
     {
         @Override
@@ -115,16 +134,30 @@ public class Screen
 
     public void draw()
     {
-        for( int i =0; i < layers.size(); ++i)
+        try
         {
-            try
+            // draw regular layers
+            for (int i = 0; i < layers.size(); ++i)
             {
                 layers.get(i).draw();
             }
-            catch (Exception ex)
+
+            // draw guiLayer
+            if (guiLayer != null)
             {
-                Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+                guiLayer.draw();
             }
         }
+        catch (Exception ex)
+        {
+            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
+    public WidgetLayer getGuiLayer()
+    {
+        return guiLayer;
+    }
+    
+    
 }

@@ -198,6 +198,5 @@ public class TextLine
         updateGeometry();
         geometry.activate();
         geometry.draw();
-        //geometry.deactivate();
     }     
 }

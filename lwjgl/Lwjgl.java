@@ -24,14 +24,12 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.*;
-import vvv.engine.layers.PositionProperties;
 import vvv.engine.layers.WidgetLayer;
 import vvv.engine.text.Font;
-import vvv.engine.text.TextLine;
 import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
 import vvv.engine.widgets.HorizontalAlign;
+import vvv.engine.widgets.ImageWidget;
 import vvv.engine.widgets.TextLabel;
 import vvv.engine.widgets.VerticalAlign;
 import vvv.math.FloatMath;
@@ -52,7 +50,7 @@ public class Lwjgl
     private ModelShader shm;
     private Texture tll;
     private Texture[] texlist = new Texture[10];
-    private TextureContainer tcontainer;
+    private TextureContainer tcontainer = null;
    
     static
     {
@@ -205,6 +203,8 @@ public class Lwjgl
             tcontainer.addTexture("images/rendered/rotation/00" + i + ".png");
         }
         
+        tcontainer.addTexture("images/gui/test.png");
+        tcontainer.addTexture("images/gui/test2.png");
         
         tcontainer.pack(1, TextureLowLevel.InternalFormat.GL_RGBA, true);
         
@@ -251,40 +251,47 @@ public class Lwjgl
     public void vvvInitGui(Screen screen)
     {
         ModelShader textShader = new ModelShader();
+        ModelShader imageShader = new ModelShader();
+        
         try {
             textShader.loadFromFiles("shaders/text.vs", "shaders/text.fs");
+            imageShader.loadFromFiles("shaders/sprite.vs", "shaders/sprite.fs");
         } catch (IOException ex) {
             Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        
+            
         Font f = null;
         try {
             f = Font.loadFromFiles("fonts/arial20.png");
         } catch (IOException ex) {
             Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         WidgetLayer wl = new WidgetLayer();
-         
-         
-        TextLabel   label1 = new TextLabel("Test1");
-        label1.setColor(1, 0, 0, 1);
-        label1.setFont(f);
-        
-        label1.setWidth(100);
-        label1.setHeight(100);
-        label1.setHorizontalAlign(HorizontalAlign.RIGHT);
-        label1.setVerticalAlign(VerticalAlign.TOP);
-        label1.setPosition(0, 0 );
-        
         wl.setDepth(0.1f);
-        wl.addObject(label1);
-        wl.setActiveShader(textShader);
+        wl.setTextShader(textShader);
+        wl.setImageShader(imageShader);
         
-        screen.addLayer(wl);
+        for(int i =1; i < 11; ++i)
+        {
+            TextLabel   label1 = new TextLabel("Test " + i);
+            label1.setColor(1, 0, 0, 1);
+            label1.setFont(f);
+
+            label1.setSizeByContents();
+            label1.setHorizontalAlign(HorizontalAlign.CENTER);
+            label1.setVerticalAlign(VerticalAlign.CENTER);
+            label1.setPosition( 0, 30*(i-1) );
+            wl.addObject(label1);
+        }
         
+        ImageWidget iw = new ImageWidget();
+        iw.setTexture( tcontainer.GetTexture("images/gui/test.png"));
+        iw.setPosition( 0, 0 );
+        wl.addObject(iw);
         
+        screen.setGuiLayer(wl); 
     }
     
     public void vvvInit() throws IOException
@@ -427,10 +434,44 @@ public class Lwjgl
     Vector2f  tvup = new Vector2f(0, 1);
     Vector2f  mouse = new Vector2f();
     Vector2f  direction = new Vector2f(0,1);
+    
+    boolean   lmbDown = false;
+    Vector2f  guiMouse = new Vector2f();
+    Vector2f  lastMouse = new Vector2f();
+    
     public void processMouse()
     {
+        guiMouse.set(Mouse.getX(), Mouse.getY()); ;
         mouse.x = Mouse.getX() - DISPLAY_WIDTH/2  ;
         mouse.y = Mouse.getY() - DISPLAY_HEIGHT/2 ;
+        
+        WidgetLayer wl = screen.getGuiLayer();
+        
+        if( Mouse.isButtonDown(0) )
+        {
+            if( lmbDown == false )
+            {
+                wl.onLeftMouseButtonDown(guiMouse.x, guiMouse.y);
+                lmbDown = true;
+            }
+        }
+        else
+        {
+            if( lmbDown == true)
+            {
+                wl.onLeftMouseButtonUp(guiMouse.x, guiMouse.y);
+                lmbDown = false;
+            }
+        }
+        
+        if( !lastMouse.equals( guiMouse ) )
+        {
+            lastMouse.set(guiMouse);
+            wl.onMouseMove( guiMouse.x, guiMouse.y );
+        }
+        
+        
+        
         if( mouse.lengthSquared() > 0)
         {
             mouse.normalise();

@@ -18,7 +18,8 @@ import vvv.math.Vec3;
 public class WidgetLayer extends Layer
 {
     private Camera camera = null;
-    private ModelShader activeShader = null;
+    private ModelShader textShader = null;
+    private ModelShader imageShader  = null;
     
     private Matrix4f tmp = new Matrix4f();
     private Matrix4f vpmatrix = new Matrix4f();
@@ -75,9 +76,14 @@ public class WidgetLayer extends Layer
         return camera;
     }
     
-    public ModelShader getActiveShader()
+    public ModelShader getTextShader()
     {
-        return activeShader;
+        return textShader;
+    }
+    
+    public ModelShader getImageShader()
+    {
+        return imageShader;
     }
     
     public final void init()
@@ -93,9 +99,53 @@ public class WidgetLayer extends Layer
         camera.lookAt(0, 0, 1);
     }
 
-    public void setActiveShader( ModelShader shader)
+    public void setTextShader( ModelShader shader)
     {
-        this.activeShader = shader;
+        this.textShader = shader;
+    }
+    
+    public void setImageShader( ModelShader shader)
+    {
+        this.imageShader = shader;
+    }
+    
+    public void onMouseMove( float x, float y )
+    {
+        List<GraphicObject> objects = getObjects();
+        for(int i=0; i < objects.size(); ++i )
+        {
+            Widget wgt = (Widget)objects.get(i);
+            if( wgt.onMouseMove(x, y) )
+            {
+                break;
+            }
+        }
+    }
+    
+    public void onLeftMouseButtonDown( float x, float y) 
+    {
+        List<GraphicObject> objects = getObjects();
+        for(int i=0; i < objects.size(); ++i )
+        {
+            Widget wgt = (Widget)objects.get(i);
+            if( wgt.onLeftMouseButtonDown(x, y) )
+            {
+                break;
+            }
+        }
+    }
+    
+    public void onLeftMouseButtonUp( float x, float y) 
+    {
+        List<GraphicObject> objects = getObjects();
+        for(int i=0; i < objects.size(); ++i )
+        {
+            Widget wgt = (Widget)objects.get(i);
+            if( wgt.onLeftMouseButtonUp(x, y) )
+            {
+                break;
+            }
+        }
     }
     
 }
