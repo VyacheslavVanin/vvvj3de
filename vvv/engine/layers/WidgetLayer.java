@@ -29,7 +29,7 @@ public class WidgetLayer extends Layer
         super();
         init();
     }
-    
+        
     @Override
     public void draw() throws Exception 
     {
@@ -115,9 +115,12 @@ public class WidgetLayer extends Layer
         for(int i=0; i < objects.size(); ++i )
         {
             Widget wgt = (Widget)objects.get(i);
-            if( wgt.onMouseMove(x, y) )
+            if( wgt.isVisible() )
             {
-                break;
+                if( wgt.onMouseMove(x, y) )
+                {
+                    break;
+                }
             }
         }
     }
@@ -128,9 +131,12 @@ public class WidgetLayer extends Layer
         for(int i=0; i < objects.size(); ++i )
         {
             Widget wgt = (Widget)objects.get(i);
-            if( wgt.onLeftMouseButtonDown(x, y) )
+            if( wgt.isVisible() )
             {
-                break;
+                if( wgt.onLeftMouseButtonDown(x, y) )
+                {
+                    break;
+                }
             }
         }
     }
@@ -141,9 +147,12 @@ public class WidgetLayer extends Layer
         for(int i=0; i < objects.size(); ++i )
         {
             Widget wgt = (Widget)objects.get(i);
-            if( wgt.onLeftMouseButtonUp(x, y) )
+            if( wgt.isVisible() )
             {
-                break;
+                if( wgt.onLeftMouseButtonUp(x, y) )
+                {
+                    break;
+                }
             }
         }
     }

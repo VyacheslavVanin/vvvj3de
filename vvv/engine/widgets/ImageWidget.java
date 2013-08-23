@@ -34,6 +34,8 @@ public class ImageWidget extends Widget
         sprite.setTexture( tex );
         imageHeight = tex.getHeight();
         imageWidth  = tex.getWidth();
+        setHeight(imageHeight);
+        setWidth(imageWidth);
         position.setScale(imageWidth, imageHeight, 1);
     }
     
@@ -62,6 +64,5 @@ public class ImageWidget extends Widget
         gm.activate();
         gm.draw();    
     }
-    private static Matrix4f tmp = new Matrix4f();
-
+    private static Matrix4f tmp = new Matrix4f();   
 }

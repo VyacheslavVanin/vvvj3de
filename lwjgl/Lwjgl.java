@@ -288,7 +288,7 @@ public class Lwjgl
         
         ImageWidget iw = new ImageWidget();
         iw.setTexture( tcontainer.GetTexture("images/gui/test.png"));
-        iw.setPosition( 0, 0 );
+        iw.setPosition( 100, 100 );
         wl.addObject(iw);
         
         screen.setGuiLayer(wl); 
