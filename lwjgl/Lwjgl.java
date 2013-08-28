@@ -1,5 +1,11 @@
 package lwjgl;
 
+import java.awt.Label;
+import vvv.engine.layers.ImageWidget;
+import vvv.engine.layers.VerticalAlign;
+import vvv.engine.layers.HorizontalAlign;
+import vvv.engine.layers.TextButton;
+import vvv.engine.layers.TextLabel;
 import vvv.engine.layers.SpriteLayer;
 import vvv.engine.layers.Screen;
 import vvv.engine.shader.ModelShader;
@@ -25,13 +31,9 @@ import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import vvv.engine.*;
-import vvv.engine.layers.WidgetLayer;
+import vvv.engine.layers.*;
 import vvv.engine.text.Font;
 import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
-import vvv.engine.widgets.HorizontalAlign;
-import vvv.engine.widgets.ImageWidget;
-import vvv.engine.widgets.TextLabel;
-import vvv.engine.widgets.VerticalAlign;
 import vvv.math.FloatMath;
 
 
@@ -248,10 +250,13 @@ public class Lwjgl
         animationRotation = new SpriteAnimation(framesRot, 1200);
     }
     
-    public void vvvInitGui(Screen screen)
+    public void vvvInitGui(Screen screen) throws IOException
     {
         ModelShader textShader = new ModelShader();
         ModelShader imageShader = new ModelShader();
+        
+        //Texture defaultTexture = Defaults.getTexture();
+        //Font    defaultFont    = Defaults.getFont();
         
         try {
             textShader.loadFromFiles("shaders/text.vs", "shaders/text.fs");
@@ -273,15 +278,14 @@ public class Lwjgl
         wl.setTextShader(textShader);
         wl.setImageShader(imageShader);
         
+        
         for(int i =1; i < 11; ++i)
         {
             TextLabel   label1 = new TextLabel("Test " + i);
+            activeLabel = label1;
             label1.setColor(1, 0, 0, 1);
-            label1.setFont(f);
-
-            label1.setSizeByContents();
-            label1.setHorizontalAlign(HorizontalAlign.CENTER);
-            label1.setVerticalAlign(VerticalAlign.CENTER);
+            //label1.setHorizontalAlign(HorizontalAlign.CENTER);
+           // label1.setVerticalAlign(VerticalAlign.CENTER);
             label1.setPosition( 0, 30*(i-1) );
             wl.addObject(label1);
         }
@@ -291,8 +295,25 @@ public class Lwjgl
         iw.setPosition( 100, 100 );
         wl.addObject(iw);
         
+        
+        TextButton tb = new TextButton();
+        tb.setPosition(300, 300);
+        
+        tb.addOnClickListener( new ActionListener() 
+        {
+            @Override
+            public void action()
+            {
+                activeLabel.setText("clicked "+ ++clickcounter+" times.");
+            }
+        });
+        
+        wl.addObject(tb);
+        
         screen.setGuiLayer(wl); 
     }
+    TextLabel activeLabel = null;
+    int       clickcounter = 0;
     
     public void vvvInit() throws IOException
     {  
@@ -308,14 +329,14 @@ public class Lwjgl
         
         Random r = new Random();
         
-        for(int i=0; i < 20000; ++i)
+        for(int i=0; i < 2000; ++i)
         {
             StaticSprite     spr = new StaticSprite();
             tll = texlist[i%10];
             spr.setTexture( tll );
             spr.setScale( tll.getWidth(), tll.getHeight(), 1 );
-            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
-                             (r.nextInt()%DISPLAY_HEIGHT*20),
+            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*10), 
+                             (r.nextInt()%DISPLAY_HEIGHT*10),
                              0);
             sl.addObject(spr);
         }
@@ -585,7 +606,7 @@ public class Lwjgl
                 LOGGER.log(Level.SEVERE,ex.toString(),ex);
             }
             Display.update();
-           // Display.sync(60);
+            Display.sync(60);
         }
     }
 

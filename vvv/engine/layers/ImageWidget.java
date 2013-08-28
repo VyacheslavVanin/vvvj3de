@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine.widgets;
+package vvv.engine.layers;
 
 import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
@@ -39,17 +39,9 @@ public class ImageWidget extends Widget
         position.setScale(imageWidth, imageHeight, 1);
     }
     
-    public void setPosition( float x, float y)
-    {
-        this.setPosX(x);
-        this.setPosY(y);
-        position.setPosition( getGlobalPosX() + imageWidth/2, 
-                              getGlobalPosY() + imageHeight/2,
-                              0);
-    }
     
     @Override
-    public void onDraw() throws Exception
+    protected void onDraw() throws Exception
     {
         ModelShader sh = getImageShader();
         Camera camera  = getCamera();
@@ -64,5 +56,13 @@ public class ImageWidget extends Widget
         gm.activate();
         gm.draw();    
     }
-    private static Matrix4f tmp = new Matrix4f();   
+    private static Matrix4f tmp = new Matrix4f();
+
+    @Override
+    protected void onSetPosition(float x, float y)
+    {
+        position.setPosition( getGlobalPosX() + imageWidth/2, 
+                              getGlobalPosY() + imageHeight/2,
+                              0);
+    }
 }

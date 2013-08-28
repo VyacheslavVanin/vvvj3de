@@ -8,7 +8,6 @@ import java.util.List;
 import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
 import vvv.engine.shader.ModelShader;
-import vvv.engine.widgets.Widget;
 import vvv.math.Vec3;
 
 /**

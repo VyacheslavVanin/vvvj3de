@@ -2,12 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine.widgets;
+package vvv.engine.layers;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Camera;
-import vvv.engine.layers.PositionProperties;
+import vvv.engine.Defaults;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.text.Font;
 import vvv.engine.text.TextLine;
@@ -23,18 +26,27 @@ public class TextLabel extends Widget
     private Vector4f textColor = new Vector4f();
     private VerticalAlign   vAlign;
     private HorizontalAlign hAlign;
-
+    private boolean         autosize = true;
+    
     public TextLabel()
     {
         this("");    
     }
     
     public TextLabel( String text)
-    {   
+    {     
         textLine = new TextLine();
+        try
+        {
+            textLine.setFont(Defaults.getFont());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(TextLabel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.vAlign = VerticalAlign.CENTER;
         this.hAlign = HorizontalAlign.CENTER;
-        this.setText(text); 
+        this.setText(text);
     }
     
     public final void setVerticalAlign( VerticalAlign va )
@@ -58,11 +70,19 @@ public class TextLabel extends Widget
     public final void setText( String text )
     {
         textLine.setText(text);
+        if( autosize )
+        {
+            setSizeByContents();
+        }
     }
     
     public final void setFont( Font font )
     {
         textLine.setFont(font);
+        if( autosize )
+        {
+            setSizeByContents();
+        }
     }
     
     
@@ -83,17 +103,15 @@ public class TextLabel extends Widget
         setHeightByContents();
         setWidthByContext();
     }
-    
-    
-    public final void setPosition( float x, float y)
+       
+    public final void setAutoSize( boolean b )
     {
-        this.setPosition(x, y, 0);
+        this.autosize = b;
     }
     
-    public final void setPosition( float x, float y, float z)
+    @Override
+    public final void onSetPosition( float x, float y)
     {
-        this.setPosX(x);
-        this.setPosY(y);
         float alignOffsetX = 0;
         float alignOffsetY = 0;
         switch( vAlign )
@@ -133,12 +151,12 @@ public class TextLabel extends Widget
         
         position.setPosition( getGlobalPosX() + alignOffsetX,
                               getGlobalPosY() + alignOffsetY,
-                              z );
+                              0 );
     }
-     
-    
+ 
+       
     @Override
-    public void onDraw() throws Exception
+    protected void onDraw() throws Exception
     {
         ModelShader shader  = getTextShader();
         Camera      cam     = getCamera();   
@@ -153,6 +171,4 @@ public class TextLabel extends Widget
         textLine.draw();
     }   
     private static  Matrix4f tmp = new Matrix4f();
-  
-    
 }

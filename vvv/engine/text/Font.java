@@ -16,8 +16,8 @@ import java.util.Map;
 import vvv.engine.texture.Texture;
 import vvv.engine.texture.TextureLoader;
 import vvv.engine.texture.TextureLowLevel;
-import vvv.engine.widgets.HorizontalAlign;
-import vvv.engine.widgets.VerticalAlign;
+import vvv.engine.layers.HorizontalAlign;
+import vvv.engine.layers.VerticalAlign;
 
 /**
  *

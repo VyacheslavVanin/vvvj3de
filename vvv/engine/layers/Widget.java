@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine.widgets;
+package vvv.engine.layers;
 
 import java.util.LinkedList;
 import java.util.List;
 import vvv.engine.Camera;
+import vvv.engine.ConstColor;
 import vvv.engine.layers.GraphicObject;
 import vvv.engine.layers.WidgetLayer;
 import vvv.engine.shader.ModelShader;
@@ -22,8 +23,8 @@ public abstract class Widget extends GraphicObject
     private float xpos;
     private float ypos;
     private boolean visible = true;
-    private Widget parent = null;
-    private List<Widget> children = new LinkedList<>();
+    protected Widget parent = null;
+    protected List<Widget> children = new LinkedList<>();
     
     public final float getWidth()  { return this.width; }
     public final float getHeight() { return this.height;}
@@ -62,6 +63,17 @@ public abstract class Widget extends GraphicObject
         }
         return this.ypos + parentPosY;
     }
+    
+    
+    
+    
+    public final void setPosition( float x, float y)
+    {
+        this.setPosX(x);
+        this.setPosY(y);
+        onSetPosition( x, y);
+    }
+    
     
     public final void draw() throws Exception
     {
@@ -133,13 +145,47 @@ public abstract class Widget extends GraphicObject
         return true;
     }
     
+    protected boolean deleteChild( Widget child )
+    {
+        if( children.remove(child) )
+        {
+            child.parent = null;
+        }
+        else
+        {
+            return false;
+        }
+        return true;
+    }
     
-    public abstract void onDraw() throws Exception;
-    
-    public boolean onMouseMove( float x, float y) { return false;}
-    
-    public boolean onLeftMouseButtonDown( float x, float y) { return false;}
-    
-    public boolean onLeftMouseButtonUp( float x, float y) { return false;}
+    protected boolean addChild( Widget child)
+    {
+        if( children.contains(child) )
+        {
+            return false;
+        }
+        
+        if( child.parent != null)
+        {
+            child.parent.deleteChild(child);
+        }
  
+        children.add(child);
+        child.parent = this;
+        
+        return true;
+    }
+    
+    
+    protected abstract void onDraw() throws Exception;
+    
+    protected abstract void onSetPosition(float x, float y);
+    
+    
+     boolean onMouseMove( float x, float y) { return false;}
+    
+     boolean onLeftMouseButtonDown( float x, float y) { return false;}
+    
+     boolean onLeftMouseButtonUp( float x, float y) { return false;}
+
 }
