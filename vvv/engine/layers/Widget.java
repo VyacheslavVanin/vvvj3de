@@ -75,7 +75,7 @@ public abstract class Widget extends GraphicObject
     }
     
     
-    public final void draw() throws Exception
+    final void draw() throws Exception
     {
         if( visible )
         {

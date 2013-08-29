@@ -8,7 +8,7 @@ package vvv.engine.layers;
  *
  * @author vvv
  */
-public abstract class BaseButton extends Widget
+public abstract class AbstractButton extends Widget
 {
     private ActionListener onClickListener      = null;
     private ActionListener onEnterListener      = null;

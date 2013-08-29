@@ -255,24 +255,13 @@ public class Lwjgl
         ModelShader textShader = new ModelShader();
         ModelShader imageShader = new ModelShader();
         
-        //Texture defaultTexture = Defaults.getTexture();
-        //Font    defaultFont    = Defaults.getFont();
-        
         try {
             textShader.loadFromFiles("shaders/text.vs", "shaders/text.fs");
             imageShader.loadFromFiles("shaders/sprite.vs", "shaders/sprite.fs");
         } catch (IOException ex) {
             Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-            
-        Font f = null;
-        try {
-            f = Font.loadFromFiles("fonts/arial20.png");
-        } catch (IOException ex) {
-            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+  
         WidgetLayer wl = new WidgetLayer();
         wl.setDepth(0.1f);
         wl.setTextShader(textShader);
@@ -284,8 +273,7 @@ public class Lwjgl
             TextLabel   label1 = new TextLabel("Test " + i);
             activeLabel = label1;
             label1.setColor(1, 0, 0, 1);
-            //label1.setHorizontalAlign(HorizontalAlign.CENTER);
-           // label1.setVerticalAlign(VerticalAlign.CENTER);
+
             label1.setPosition( 0, 30*(i-1) );
             wl.addObject(label1);
         }
@@ -307,8 +295,30 @@ public class Lwjgl
                 activeLabel.setText("clicked "+ ++clickcounter+" times.");
             }
         });
-        
         wl.addObject(tb);
+        
+        AbstractCheckBox cb = new TestCheckBox();
+        cb.setPosition(200, 200);
+        cb.addOnCheckListener( new ActionListener() {
+
+            @Override
+            public void action()
+            {
+                activeLabel.setText("check box is been set");
+            }
+        });
+        
+        cb.addOnUncheckListener( new ActionListener() {
+
+            @Override
+            public void action()
+            {
+                activeLabel.setText("check box clear");
+            }
+        });
+        
+        wl.addObject(cb);
+        
         
         screen.setGuiLayer(wl); 
     }

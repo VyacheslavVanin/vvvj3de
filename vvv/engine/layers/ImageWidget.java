@@ -7,7 +7,6 @@ package vvv.engine.layers;
 import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
 import vvv.engine.Geometry;
-import vvv.engine.layers.PositionProperties;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.sprite.SpriteGeometry;
 import vvv.engine.sprite.StaticSprite;

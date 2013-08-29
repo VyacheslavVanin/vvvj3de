@@ -10,18 +10,18 @@ import vvv.engine.text.Font;
  *
  * @author Вячеслав
  */
-public class TextButton extends BaseButton
+public class TextButton extends AbstractButton
 {
     private TextLabel text = new TextLabel("Button");
  
     public TextButton()
     {
         addChild(text);
-        
         text.setColor(0.5f, 0.5f, 0.5f, 1);
         setHeight( text.getHeight() );
         setWidth( text.getWidth());
     }
+    
     
     
     public void setTextColor(float r, float g, float b, float a)
@@ -38,6 +38,8 @@ public class TextButton extends BaseButton
     {
         this.text.setFont(font);
     }
+    
+    
     
     @Override
     protected void onDraw() throws Exception
