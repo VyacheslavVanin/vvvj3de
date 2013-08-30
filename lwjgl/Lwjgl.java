@@ -1,20 +1,5 @@
 package lwjgl;
 
-import java.awt.Label;
-import vvv.engine.layers.ImageWidget;
-import vvv.engine.layers.VerticalAlign;
-import vvv.engine.layers.HorizontalAlign;
-import vvv.engine.layers.TextButton;
-import vvv.engine.layers.TextLabel;
-import vvv.engine.layers.SpriteLayer;
-import vvv.engine.layers.Screen;
-import vvv.engine.shader.ModelShader;
-import vvv.engine.texture.TextureContainer;
-import vvv.engine.texture.Texture;
-import vvv.engine.texture.TextureLowLevel;
-import vvv.engine.sprite.SpriteAnimation;
-import vvv.engine.sprite.StaticSprite;
-import vvv.engine.sprite.AnimatedSprite;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,9 +15,15 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
-import vvv.engine.*;
+import vvv.engine.Camera;
 import vvv.engine.layers.*;
-import vvv.engine.text.Font;
+import vvv.engine.shader.ModelShader;
+import vvv.engine.sprite.AnimatedSprite;
+import vvv.engine.sprite.SpriteAnimation;
+import vvv.engine.sprite.StaticSprite;
+import vvv.engine.texture.Texture;
+import vvv.engine.texture.TextureContainer;
+import vvv.engine.texture.TextureLowLevel;
 import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
 import vvv.math.FloatMath;
 

@@ -8,10 +8,9 @@ import java.nio.ByteBuffer;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL14.*;
+import static org.lwjgl.opengl.GL14.GL_MIRRORED_REPEAT;
 import static org.lwjgl.opengl.GL30.*;
 import static vvv.engine.Constants.*;
-import static org.lwjgl.opengl.NVTextureCompressionVTC.*;
 
 /**
  *
@@ -19,9 +18,6 @@ import static org.lwjgl.opengl.NVTextureCompressionVTC.*;
  */
 public class TextureLowLevel
 {
-    /**
-     * TODO: сделать раздельные переменные для статуса онхост ондевайс
-     */
     public boolean activate(int textureUnit) throws TextureNotLoadedException
     {
         if ((textureUnit < 0)
