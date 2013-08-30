@@ -37,7 +37,7 @@ public class TestCheckBox extends AbstractCheckBox
 
         image.setTexture( textureUnchecked );
         
-        text.setColor(1, 1, 1, 1);
+        text.setColor(0.5f, 0.5f, 0.5f, 1);
         
         setWidth( image.getWidth() + 3 + text.getWidth());
         setHeight( image.getHeight());
@@ -59,13 +59,13 @@ public class TestCheckBox extends AbstractCheckBox
     @Override
     protected void onMouseEnter()
     {
-       
+       text.setColor(1, 1, 1, 1);
     }
 
     @Override
     protected void onMouseLeave()
     {
-       
+       text.setColor(0.5f, 0.5f, 0.5f, 1);
     }
 
     @Override
@@ -87,7 +87,10 @@ public class TestCheckBox extends AbstractCheckBox
     @Override
     protected void onSetPosition(float x, float y)
     {
-        image.setPosition(0, 0);
+        float tH = text.getHeight();
+        float iH = image.getHeight();
+        float dy = (tH - iH ) /2;
+        image.setPosition(0, dy);
         text.setPosition( image.getPosX() + image.getWidth() + 3,
                           0);
     }

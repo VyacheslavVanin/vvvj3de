@@ -10,37 +10,65 @@ package vvv.engine.layers;
  */
 public abstract class AbstractButton extends Widget
 {
-    private ActionListener onClickListener      = null;
-    private ActionListener onEnterListener      = null;
-    private ActionListener onLeaveListener      = null;
-    private ActionListener onPressListener      = null;
-    private ActionListener onReleaseListener    = null;
+    private ListenerContainer onClickListener      = new ListenerContainer();
+    private ListenerContainer onEnterListener      = new ListenerContainer();
+    private ListenerContainer onLeaveListener      = new ListenerContainer();
+    private ListenerContainer onPressListener      = new ListenerContainer();
+    private ListenerContainer onReleaseListener    = new ListenerContainer();
     
     public void addOnClickListener( ActionListener listener )
     {
-        this.onClickListener = listener;
+        this.onClickListener.addListener(listener);
     }
+    
+    public void removeOnClickListener( ActionListener listener )
+    {
+        this.onClickListener.removeListener(listener);
+    }
+    
     
     public void addOnEnterListener( ActionListener listener)
     {
-        this.onEnterListener = listener;
+        this.onEnterListener.addListener(listener);
     }
+        
+    public void removeOnEnterListener( ActionListener listener)
+    {
+        this.onEnterListener.removeListener(listener);
+    }
+    
     
     public void addOnLeaveListener( ActionListener listener )
     {
-        this.onLeaveListener = listener;
+        this.onLeaveListener.addListener(listener);
     }
+    
+    public void removeOnLeaveListener( ActionListener listener)
+    {
+        this.onLeaveListener.removeListener(listener);
+    }
+    
     
     public void addOnPressListener( ActionListener listener )
     {
-        this.onPressListener = listener;
+        this.onPressListener.addListener(listener);
     }
+    
+    public void removeOnPressListener( ActionListener listener)
+    {
+        this.onPressListener.removeListener(listener);
+    }
+    
     
     public void addOnReleaseListener( ActionListener listener)
     {
-        this.onReleaseListener = listener;
+        this.onReleaseListener.addListener(listener);
     }
     
+    public void removeOnReleaseListener( ActionListener listener)
+    {
+        this.onReleaseListener.removeListener(listener);
+    }
     
     protected abstract void onClick();
     protected abstract void onMouseEnter();
@@ -51,47 +79,32 @@ public abstract class AbstractButton extends Widget
     private void onClickBase()
     {
         onClick();
-        if( onClickListener != null )
-        {
-            onClickListener.action();
-        }
+        onClickListener.action();
     }
     
     private void onMouseEnterBase()
     {  
         onMouseEnter();
-        if( onEnterListener != null )
-        {
-            onEnterListener.action();
-        }
+        onEnterListener.action();
     }
     
     private void onMouseLeaveBase()
     {  
         onMouseLeave();
-        if( onLeaveListener != null )
-        {
-            onLeaveListener.action();
-        }
+        onLeaveListener.action();
     }
     
  
     private void onPressBase()
     {
         onPress();
-        if( onPressListener != null )
-        {
-            onPressListener.action();
-        }
+        onPressListener.action();
     }
     
     private void onReleaseBase()
     {
         onRelease();
-        if( onReleaseListener != null )
-        {
-            onReleaseListener.action();
-        }
+        onReleaseListener.action(); 
     }
     
     protected boolean isMouseInArea()    { return inArea;         }

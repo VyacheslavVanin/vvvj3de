@@ -10,19 +10,19 @@ package vvv.engine.layers;
  */
 public abstract class AbstractCheckBox extends AbstractButton
 {
-    private ActionListener onCheckListener = null;
-    private ActionListener onUncheckListener = null;
+    private ListenerContainer onCheckListener = new ListenerContainer();
+    private ListenerContainer onUncheckListener = new ListenerContainer();
     
     private boolean   checked = false;
 
     public void addOnCheckListener( ActionListener listener )
     {
-        this.onCheckListener = listener;
+        this.onCheckListener.addListener(listener);
     }
     
     public void addOnUncheckListener( ActionListener listener )
     {
-        this.onUncheckListener = listener;
+        this.onUncheckListener.addListener(listener);
     }
     
     public boolean isChecked()
@@ -33,19 +33,13 @@ public abstract class AbstractCheckBox extends AbstractButton
     private void onCheckBase()
     {
         onCheck();
-        if(  onCheckListener != null)
-        {
-            onCheckListener.action();
-        }
+        onCheckListener.action();
     }
     
     private void onUncheckBase()
     {
         onUncheck();
-        if( onUncheckListener != null )
-        {
-            onUncheckListener.action();
-        }
+        onUncheckListener.action();
     }
     
     protected abstract void onCheck();
