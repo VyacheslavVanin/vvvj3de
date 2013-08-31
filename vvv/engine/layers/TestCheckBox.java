@@ -90,5 +90,11 @@ public class TestCheckBox extends AbstractCheckBox
         text.setPosition( image.getPosX() + image.getWidth() + 3,
                           0);
     }
+
+    @Override
+    protected void onSetSize(float w, float h)
+    {
+        
+    }
     
 }

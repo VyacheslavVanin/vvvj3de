@@ -330,14 +330,14 @@ public class Lwjgl
         
         Random r = new Random();
         
-        for(int i=0; i < 2000; ++i)
+        for(int i=0; i < 20000; ++i)
         {
             StaticSprite     spr = new StaticSprite();
             tll = texlist[i%10];
             spr.setTexture( tll );
             spr.setScale( tll.getWidth(), tll.getHeight(), 1 );
-            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*10), 
-                             (r.nextInt()%DISPLAY_HEIGHT*10),
+            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
+                             (r.nextInt()%DISPLAY_HEIGHT*20),
                              0);
             sl.addObject(spr);
         }
@@ -571,6 +571,10 @@ public class Lwjgl
     public void render() throws TextureNotLoadedException
     {
         glClear(GL_COLOR_BUFFER_BIT);
+        
+        //glEnable( GL_BLEND );
+        //glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
         screen.draw();
     }
 

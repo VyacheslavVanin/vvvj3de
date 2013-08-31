@@ -29,9 +29,7 @@ public class ImageWidget extends Widget
         sprite.setTexture( tex );
         imageHeight = tex.getHeight();
         imageWidth  = tex.getWidth();
-        setHeight(imageHeight);
-        setWidth(imageWidth);
-        position.setScale(imageWidth, imageHeight, 1);
+        setSize(imageWidth, imageHeight);    
     }
     
     
@@ -59,5 +57,11 @@ public class ImageWidget extends Widget
         position.setPosition( getGlobalPosX() + imageWidth/2, 
                               getGlobalPosY() + imageHeight/2,
                               0);
+    }
+
+    @Override
+    protected void onSetSize(float w, float h)
+    {
+        position.setScale(w, h, 1);
     }
 }

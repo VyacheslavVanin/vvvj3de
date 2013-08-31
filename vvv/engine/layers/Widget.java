@@ -7,9 +7,6 @@ package vvv.engine.layers;
 import java.util.LinkedList;
 import java.util.List;
 import vvv.engine.Camera;
-import vvv.engine.ConstColor;
-import vvv.engine.layers.GraphicObject;
-import vvv.engine.layers.WidgetLayer;
 import vvv.engine.shader.ModelShader;
 
 /**
@@ -65,13 +62,19 @@ public abstract class Widget extends GraphicObject
     }
     
     
-    
-    
+   
     public final void setPosition( float x, float y)
     {
         this.setPosX(x);
         this.setPosY(y);
         onSetPosition( x, y);
+    }
+    
+    public final void setSize( float width, float height)
+    {
+        setWidth(width);
+        setHeight(height);
+        onSetSize(width, height);
     }
     
     
@@ -178,10 +181,10 @@ public abstract class Widget extends GraphicObject
     
     
     protected abstract void onDraw() throws Exception;
-    
     protected abstract void onSetPosition(float x, float y);
+    protected abstract void onSetSize( float w, float h);
     
-    
+            
      boolean onMouseMove( float x, float y) { return false;}
     
      boolean onLeftMouseButtonDown( float x, float y) { return false;}
