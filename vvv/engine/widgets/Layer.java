@@ -1,4 +1,4 @@
-package vvv.engine.layers;
+package vvv.engine.widgets;
 
 import java.util.ArrayList;
 import java.util.List;

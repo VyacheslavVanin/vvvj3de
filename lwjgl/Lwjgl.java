@@ -1,5 +1,16 @@
 package lwjgl;
 
+import defaults.DefaultPanel;
+import vvv.engine.widgets.ImageWidget;
+import vvv.engine.widgets.WidgetLayer;
+import vvv.engine.widgets.TestCheckBox;
+import vvv.engine.widgets.ActionListener;
+import vvv.engine.widgets.AbstractCheckBox;
+import vvv.engine.widgets.TestPanel;
+import vvv.engine.widgets.TextLabel;
+import vvv.engine.widgets.Screen;
+import vvv.engine.widgets.TextButton;
+import vvv.engine.widgets.SpriteLayer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +27,6 @@ import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import vvv.engine.Camera;
-import vvv.engine.layers.*;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.sprite.AnimatedSprite;
 import vvv.engine.sprite.SpriteAnimation;
@@ -25,6 +35,7 @@ import vvv.engine.texture.Texture;
 import vvv.engine.texture.TextureContainer;
 import vvv.engine.texture.TextureLowLevel;
 import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
+import vvv.engine.widgets.Panel;
 import vvv.math.FloatMath;
 
 
@@ -307,10 +318,32 @@ public class Lwjgl
                 activeLabel.setText("check box clear");
             }
         });
-        
         wl.addObject(cb);
         
         
+        final Panel tp = new DefaultPanel();
+       
+            TextButton tb1 = new TextButton();
+                tb1.setText("Button1");
+                tb1.addOnClickListener(new ActionListener() 
+                {
+                    float g = 0;
+                    @Override
+                    public void action()
+                    {
+                        
+                         tp.setPosition( g++, 400);
+                    }
+                });
+            tp.addWidget(tb1);
+            
+            TextButton tb2 = new TextButton();
+                tb2.setText("Button2");
+            tp.addWidget(tb2);
+
+            tp.setPosition(10, 400);
+            tp.setSize(100, 100);
+        wl.addObject(tp);
         screen.setGuiLayer(wl); 
     }
     TextLabel activeLabel = null;

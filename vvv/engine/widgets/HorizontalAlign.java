@@ -2,15 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine.layers;
+package vvv.engine.widgets;
 
 /**
  *
  * @author vvv
  */
-public enum VerticalAlign
+public enum HorizontalAlign 
 {
-    TOP, 
-    CENTER, 
-    BOTTOM
+    LEFT, CENTER, RIGHT
 }
+

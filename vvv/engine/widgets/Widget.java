@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine.layers;
+package vvv.engine.widgets;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +21,7 @@ public abstract class Widget extends GraphicObject
     private float ypos;
     private boolean visible = true;
     protected Widget parent = null;
-    protected List<Widget> children = new LinkedList<>();
+    private List<Widget> children = new LinkedList<>();
     
     public final float getWidth()  { return this.width; }
     public final float getHeight() { return this.height;}
@@ -179,6 +179,10 @@ public abstract class Widget extends GraphicObject
         return true;
     }
     
+    protected List<Widget> getChildren()
+    {
+        return children;
+    }
     
     protected abstract void onDraw() throws Exception;
     protected abstract void onSetPosition(float x, float y);

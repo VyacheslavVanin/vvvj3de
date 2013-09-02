@@ -1,4 +1,4 @@
-package vvv.engine.layers;
+package vvv.engine.widgets;
 
 import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;

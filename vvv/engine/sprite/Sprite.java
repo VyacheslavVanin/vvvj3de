@@ -6,8 +6,8 @@ package vvv.engine.sprite;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import vvv.engine.layers.GraphicObject;
-import vvv.engine.layers.PositionProperties;
+import vvv.engine.widgets.GraphicObject;
+import vvv.engine.widgets.PositionProperties;
 import vvv.engine.texture.Texture;
 
 /**

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine.layers;
+package vvv.engine.widgets;
 
 import vvv.engine.shader.ModelShader;
 import vvv.engine.sprite.Sprite;

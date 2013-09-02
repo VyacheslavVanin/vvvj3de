@@ -1,4 +1,4 @@
-package vvv.engine.layers;
+package vvv.engine.widgets;
 
 public abstract class GraphicObject
 {

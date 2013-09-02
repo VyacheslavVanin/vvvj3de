@@ -2,14 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package vvv.engine.layers;
+package vvv.engine.widgets;
 
 /**
  *
- * @author vvv
+ * @author Вячеслав
  */
-public enum HorizontalAlign 
+public interface ActionListener
 {
-    LEFT, CENTER, RIGHT
+    public void action();
 }
-
