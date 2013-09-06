@@ -15,6 +15,7 @@ public class TextButton extends AbstractButton
         addChild(text);
         text.setColor(0.5f, 0.5f, 0.5f, 1);
         setSize(text.getWidth(), text.getHeight());
+        setPosition(0, 0);
     }
     
     

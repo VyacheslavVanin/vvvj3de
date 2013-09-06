@@ -5,6 +5,7 @@
 package defaults;
 
 import java.io.IOException;
+import static org.lwjgl.opengl.GL11.*;
 import vvv.engine.Singletone;
 import vvv.engine.text.Font;
 import vvv.engine.texture.Texture;
@@ -17,7 +18,7 @@ import vvv.engine.texture.TextureLowLevel;
  */
 public class Defaults
 {
-    public static final String DEFAULTS_DIRECTORY = "defaults/";
+    public static final  String DEFAULTS_DIRECTORY   = "defaults/";
     private static final String DEFAULT_TEXTURE_NAME = "defaultTexture.png";
     private static final String DEFAULT_FONT_NAME    = "defaultFont.png";
     
@@ -35,7 +36,7 @@ public class Defaults
         }
     });
     
-    static private Singletone<Font> defaultFont = 
+    static private Singletone<Font>    defaultFont = 
             new Singletone<>( 
                               new Singletone.SingletoneCreator<Font>() 
     {
@@ -69,4 +70,15 @@ public class Defaults
         return defaultFont.get();
     }
  
+    
+    static public void enableTransparency()
+    {
+        glEnable( GL_BLEND );
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+    
+    static public void disableTransparency()
+    {
+        glDisable(GL_BLEND);
+    }
 }

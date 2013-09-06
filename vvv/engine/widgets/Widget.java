@@ -25,8 +25,8 @@ public abstract class Widget extends GraphicObject
     
     public final float getWidth()  { return this.width; }
     public final float getHeight() { return this.height;}
-    protected final float getPosX()   { return this.xpos;  }
-    protected final float getPosY()   { return this.ypos;  }
+    public final float getPosX()   { return this.xpos;  }
+    public final float getPosY()   { return this.ypos;  }
     
     public final void  setWidth( float width)    { this.width = width; }
     public final void  setHeight( float height ) { this.height = height; }

@@ -11,9 +11,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
+import vvv.engine.Camera;
 import vvv.engine.Geometry;
+import vvv.engine.shader.ModelShader;
 import vvv.engine.texture.Texture;
+import vvv.engine.widgets.Layout;
 import vvv.engine.widgets.Panel;
+import vvv.engine.widgets.PositionProperties;
+import vvv.engine.widgets.VerticalLayout;
 import vvv.engine.widgets.Widget;
 
 /**
@@ -24,6 +32,12 @@ public class DefaultPanel extends Panel
 {
     private Geometry geometry = null;
     private Texture  texture  = null;
+    private static final float DEFAULT_SIZE = 100.0f;
+    private static final float DEFAULT_BORDER = 4.0f;
+    private Vector4f color = new Vector4f(1,1,1,1);
+    private PositionProperties position = new PositionProperties();
+    
+    private Layout  layout = null;
     
     public DefaultPanel()
     {
@@ -35,41 +49,99 @@ public class DefaultPanel extends Panel
         {
             Logger.getLogger(DefaultPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        layout   = new VerticalLayout();
+        
+        addChild(layout);
         geometry = new Geometry();
+        GridMeshCreator3x3.fillIndexBuffer(ibb);
+        setSize(DEFAULT_SIZE, DEFAULT_SIZE);
     }
  
     
     @Override
     protected void onAddWidget(Widget wgt)
     {
-        
+        rearrange();
     }
 
     @Override
     protected void onRemoveWidget(Widget wgt)
     {
-        
+        rearrange();
     }
 
     @Override
-    protected void onDraw() throws Exception
+    public boolean addWidget(Widget wgt)
     {
+        return layout.addWidget(wgt); 
+    }
+
+    @Override
+    public boolean removeWidget(Widget wgt)
+    {
+        return layout.removeWidget(wgt); 
+    }
+
+    
+    
+    
+    public void setColor(float r, float g, float b, float a)
+    {
+        color.set(r, g, b, a);
+    }
+    
+    static private Matrix4f tmp = new Matrix4f();
+    private void drawPanel() throws Exception
+    {
+        ModelShader sh = gui.getPanelShader();
+        Camera cam     = getCamera();
         
-        
-        float h = 0;
+        Defaults.enableTransparency();
+            sh.activate();
+            sh.setColor(0, color);
+                Matrix4f.mul( cam.getViewProjectionMatrix4f(), 
+                              position.getMatrix4f(), 
+                              tmp);
+            sh.setModelViewProjectionMatrix(tmp);
+            sh.setTexture(0, texture);
+            geometry.activate();
+            geometry.draw();
+        Defaults.disableTransparency();
+    }
+    
+    @Override
+    protected void onDraw() throws Exception
+    {     
+        drawPanel();   
+    }
+
+    @Override
+    protected void onSetPosition(float x, float y)
+    {
+        super.onSetPosition( x, y );
+        position.setPosition( getGlobalPosX(),
+                              getGlobalPosY(), 
+                              0);
+        rearrange();
+    }
+
+    private void rearrange()
+    {
         List<Widget> list = getChildren();
         for (Widget wgt : list)
         {
-            h += wgt.getHeight() + 2;
-            wgt.setPosition(0, h);
-        }
+            wgt.setPosition( wgt.getPosX(), wgt.getPosY());
+        }   
     }
-
+    
     @Override
     protected void onSetSize(float w, float h)
     {
-        super.onSetSize(w, h); 
+        super.onSetSize( w, h); 
         updateGeometry(  w, h);
+        layout.setSize(w, h);
+        rearrange();
     }
 
     static private final Geometry.VertexAttribs attribs = new Geometry.VertexAttribs();
@@ -80,78 +152,18 @@ public class DefaultPanel extends Panel
     
     private ByteBuffer vbb = 
             BufferUtils.createByteBuffer( 16 * attribs.getStride() );
+    static private final int INDEX_BUFFER_SIZE = 9*2*3*4;
     private ByteBuffer ibb = 
-            BufferUtils.createByteBuffer( 9*2*3*4); 
+            BufferUtils.createByteBuffer( INDEX_BUFFER_SIZE); 
             /* 9 squares, 2 triangles per square,
              * 3 indeces per triangle, 4 bytes per index */
     
-    private void fillIndexBuffer()
-    {
-        ibb.clear();
-        for( int j = 0; j < 3; ++j)
-        {
-            for( int i = 0; i < 3; ++i)
-            {
-                int j4 = j*4;
-                ibb.putInt(i + j4 + 0);
-                ibb.putInt(i + j4 + 1);
-                ibb.putInt(i + j4 + 5);
-                ibb.putInt(i + j4 + 0);
-                ibb.putInt(i + j4 + 5);
-                ibb.putInt(i + j4 + 4);
-            }
-        }
-    }
-    
-    private void putVertex(  float x, float y, float z, 
-                             float u, float v )
-    {
-        vbb.putFloat(x);
-        vbb.putFloat(y);
-        vbb.putFloat(z);
-        vbb.putFloat(u);
-        vbb.putFloat(v);
-    }
-    
-    private void fillVertexBuffer( float width, float height,
-                                   float topBorder, float bottomBorder,
-                                   float leftBorder, float rightBorder)
-    {
-        vbb.clear();
-        float high = height;
-        float low = 0;
-        float highMidle = high - topBorder;
-        float lowMidle  = low + bottomBorder;
-        
-        float left = 0; 
-        float right = width;
-        float leftMidle = left + leftBorder;
-        float rightMidle  = right - rightBorder;
-        
-        putVertex( left,      high,    0,    0f, 1f);
-        putVertex( leftMidle, high,    0, 0.25f, 1f);
-        putVertex( rightMidle,high,    0, 0.75f, 1f);
-        putVertex( right    , high,    0,    1f, 1f);
-        
-        putVertex( left,      highMidle,    0,    0f, 0.75f);
-        putVertex( leftMidle, highMidle,    0, 0.25f, 0.75f);
-        putVertex( rightMidle,highMidle,    0, 0.75f, 0.75f);
-        putVertex( right    , highMidle,    0,    1f, 0.75f);
-        
-        putVertex( left,      lowMidle,    0,    0f, 0.25f);
-        putVertex( leftMidle, lowMidle,    0, 0.25f, 0.25f);
-        putVertex( rightMidle,lowMidle,    0, 0.75f, 0.25f);
-        putVertex( right    , lowMidle,    0,    1f, 0.25f);
-        
-        putVertex( left,      low,    0,    0f, 0f );
-        putVertex( leftMidle, low,    0, 0.25f, 0f );
-        putVertex( rightMidle,low,    0, 0.75f, 0f );
-        putVertex( right    , low,    0,    1f, 0f );
-    }
-    
+   
     private void updateGeometry(float w, float h)
     {
-        fillVertexBuffer( h, h, 4, 4, 4, 4 );
+        GridMeshCreator3x3.fillVertexBuffer( vbb, w, h, 4, 4, 4, 4 );
+        geometry.loadToHost(vbb, attribs, ibb, 
+                            INDEX_BUFFER_SIZE, GL_UNSIGNED_INT);
     }
     
 }

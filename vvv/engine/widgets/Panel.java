@@ -14,7 +14,7 @@ public abstract class Panel extends Widget
 {
     public boolean addWidget( Widget wgt )
     {
-        if( !addChild(wgt) )
+        if( addChild(wgt) )
         {
             onAddWidget(wgt);
             return true;
@@ -32,8 +32,7 @@ public abstract class Panel extends Widget
         return b;
     }
 
-  
- 
+
 
     @Override
     boolean onLeftMouseButtonDown(float x, float y)
@@ -75,10 +74,7 @@ public abstract class Panel extends Widget
         return false;
     }
 
-    
-   
-    
-    
+  
     @Override
     protected void onSetPosition(float x, float y)
     {

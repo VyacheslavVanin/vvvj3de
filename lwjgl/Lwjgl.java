@@ -1,16 +1,7 @@
 package lwjgl;
 
+import defaults.DefaultButton;
 import defaults.DefaultPanel;
-import vvv.engine.widgets.ImageWidget;
-import vvv.engine.widgets.WidgetLayer;
-import vvv.engine.widgets.TestCheckBox;
-import vvv.engine.widgets.ActionListener;
-import vvv.engine.widgets.AbstractCheckBox;
-import vvv.engine.widgets.TestPanel;
-import vvv.engine.widgets.TextLabel;
-import vvv.engine.widgets.Screen;
-import vvv.engine.widgets.TextButton;
-import vvv.engine.widgets.SpriteLayer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -35,7 +26,7 @@ import vvv.engine.texture.Texture;
 import vvv.engine.texture.TextureContainer;
 import vvv.engine.texture.TextureLowLevel;
 import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
-import vvv.engine.widgets.Panel;
+import vvv.engine.widgets.*;
 import vvv.math.FloatMath;
 
 
@@ -270,80 +261,25 @@ public class Lwjgl
         wl.setImageShader(imageShader);
         
         
-        for(int i =1; i < 11; ++i)
-        {
-            TextLabel   label1 = new TextLabel("Test " + i);
-            activeLabel = label1;
-            label1.setColor(1, 0, 0, 1);
+        Panel vlayout = new VerticalLayout();
+            vlayout.setSize( 300, 300);
 
-            label1.setPosition( 0, 30*(i-1) );
-            wl.addObject(label1);
-        }
-        
-        ImageWidget iw = new ImageWidget();
-        iw.setTexture( tcontainer.GetTexture("images/gui/test.png"));
-        iw.setPosition( 100, 100 );
-        wl.addObject(iw);
-        
-        
-        TextButton tb = new TextButton();
-        tb.setPosition(300, 300);
-        
-        tb.addOnClickListener( new ActionListener() 
-        {
-            @Override
-            public void action()
-            {
-                activeLabel.setText("clicked "+ ++clickcounter+" times.");
-            }
-        });
-        wl.addObject(tb);
-        
-        AbstractCheckBox cb = new TestCheckBox();
-        cb.setPosition(200, 200);
-        cb.addOnCheckListener( new ActionListener() {
-
-            @Override
-            public void action()
-            {
-                activeLabel.setText("check box is been set");
-            }
-        });
-        
-        cb.addOnUncheckListener( new ActionListener() {
-
-            @Override
-            public void action()
-            {
-                activeLabel.setText("check box clear");
-            }
-        });
-        wl.addObject(cb);
-        
-        
-        final Panel tp = new DefaultPanel();
-       
-            TextButton tb1 = new TextButton();
-                tb1.setText("Button1");
-                tb1.addOnClickListener(new ActionListener() 
+                for( int i = 0; i < 5; ++i)
                 {
-                    float g = 0;
-                    @Override
-                    public void action()
-                    {
-                        
-                         tp.setPosition( g++, 400);
-                    }
-                });
-            tp.addWidget(tb1);
-            
-            TextButton tb2 = new TextButton();
-                tb2.setText("Button2");
-            tp.addWidget(tb2);
-
-            tp.setPosition(10, 400);
-            tp.setSize(100, 100);
-        wl.addObject(tp);
+                    DefaultButton bb = new DefaultButton();
+                    bb.setText( "Button " + i);
+                    bb.setSize( 100, 25 );
+                //    bb.setColor( 0.7f, 0.7f, 1.3f, 1f);
+                    vlayout.addWidget( bb );
+                }
+            DefaultPanel panel3 = new DefaultPanel();
+                panel3.setPosition(50, 300);
+                panel3.setSize( 300, 300);
+               // panel3.setColor( 0.2f, 0.3f, 0.9f,  1);
+                
+            panel3.addWidget(vlayout);
+                   
+        wl.addObject(panel3);
         screen.setGuiLayer(wl); 
     }
     TextLabel activeLabel = null;
@@ -398,7 +334,8 @@ public class Lwjgl
     public void initGL()
     {
         //2D Initialization
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+       // glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClearColor(0.0f, 0.1f, 0.2f, 1.0f);
         try
         {
             vvvInit();
@@ -496,7 +433,7 @@ public class Lwjgl
     
     public void processMouse()
     {
-        guiMouse.set(Mouse.getX(), Mouse.getY()); ;
+        guiMouse.set(Mouse.getX(), Mouse.getY()); 
         mouse.x = Mouse.getX() - DISPLAY_WIDTH/2  ;
         mouse.y = Mouse.getY() - DISPLAY_HEIGHT/2 ;
         
@@ -549,7 +486,7 @@ public class Lwjgl
         if( Mouse.isButtonDown(0))
         {
             //final float velocity = 500.0f;
-            float dtf = 0;
+            float dtf;
             long dt = 0;
             long  t = System.currentTimeMillis();
             if(MB0Pressed == false)
