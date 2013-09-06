@@ -71,6 +71,7 @@ public class DefaultButton extends AbstractButton
         text.setColor(0, 0, 0, 1);
         setSize( text.getWidth(), text.getHeight() );
         setPosition(0, 0);
+        updateTextPosition();
     }
     
     private void updateGeometry( float w, float h)
@@ -80,7 +81,18 @@ public class DefaultButton extends AbstractButton
                             BORDER_WIDTH, BORDER_WIDTH);
         geometry.loadToHost(vbb, attribs, ibb, 
                             INDEX_BUFFER_SIZE, GL_UNSIGNED_INT);
+        
+        
     }
+    
+    private void updateTextPosition()
+    {
+        float textX = (int)(getWidth() - text.getWidth())/2;
+        float textY = (int)(getHeight()- text.getHeight())/2;
+        
+        text.setPosition(textX, textY);
+    }
+    
     
     public void setColor( float r, float g, float b, float a )
     {
@@ -95,11 +107,13 @@ public class DefaultButton extends AbstractButton
     public void setText( String text)
     {
         this.text.setText(text);
+        updateTextPosition();
     }
     
     public void setFont( Font font )
     {
         this.text.setFont(font);
+        updateTextPosition();
     }
     
     
@@ -107,7 +121,6 @@ public class DefaultButton extends AbstractButton
     @Override
     protected void onClick()
     {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -116,8 +129,6 @@ public class DefaultButton extends AbstractButton
         color.x *= 1.5f;
         color.y *= 1.5f;
         color.z *= 1.5f;
-        //color. *= 1.25f;
-       // throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -126,23 +137,18 @@ public class DefaultButton extends AbstractButton
         color.x /= 1.5f;
         color.y /= 1.5f;
         color.z /= 1.5f;
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected void onPress()
     {
         texture = checked;
-        text.setPosition(0, -1);
-       // throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     protected void onRelease()
     {
         texture = unchecked;
-        text.setPosition(0, 0);
-       // throw new UnsupportedOperationException("Not supported yet.");
     }
     
     static private  Matrix4f tmp = new Matrix4f();
@@ -176,15 +182,14 @@ public class DefaultButton extends AbstractButton
         position.setPosition( getGlobalPosX(),
                               getGlobalPosY(), 
                               0);
-        text.setPosition(0, 0);
+        updateTextPosition();
     }
 
     @Override
     protected void onSetSize(float w, float h)
     {
         updateGeometry(  w, h);
-       // position.setScale(w, h, 1);
-        text.setSize(w, h);
+        updateTextPosition();
     }
     
 }

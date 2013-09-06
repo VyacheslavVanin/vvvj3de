@@ -262,24 +262,48 @@ public class Lwjgl
         
         
         Panel vlayout = new VerticalLayout();
-            vlayout.setSize( 300, 300);
-
+            vlayout.setSize( 300, 350);
                 for( int i = 0; i < 5; ++i)
                 {
                     DefaultButton bb = new DefaultButton();
                     bb.setText( "Button " + i);
-                    bb.setSize( 100, 25 );
-                //    bb.setColor( 0.7f, 0.7f, 1.3f, 1f);
+                    bb.setTextColor( 1, 0, 1, 1);
+                    bb.setSize( 100, 30 );
                     vlayout.addWidget( bb );
                 }
             DefaultPanel panel3 = new DefaultPanel();
                 panel3.setPosition(50, 300);
-                panel3.setSize( 300, 300);
-               // panel3.setColor( 0.2f, 0.3f, 0.9f,  1);
-                
+                panel3.setSize( 500, 350);    
             panel3.addWidget(vlayout);
-                   
-        wl.addObject(panel3);
+        
+        
+        Panel hlayout = new HorizontalLayout();
+            hlayout.setSize( 500, 20);
+                for( int i = 0; i < 4; ++i)
+                {
+                    DefaultButton bb = new DefaultButton();
+                    bb.setText( "Button " + i);
+                    bb.setTextColor( 1, 0, 0, 1);
+                    bb.setSize( 100, 30 );
+                    hlayout.addWidget( bb );
+                }
+            DefaultPanel panel4 = new DefaultPanel();
+                panel4.setPosition(50, 240);
+                panel4.setSize( 500, 50);    
+            panel4.addWidget(hlayout);
+            
+        wl.addObject(panel4);
+        panel4.addWidget(hlayout);
+                
+//        for( int i = 0; i < 5; ++i)
+//                {
+//                    DefaultButton bb = new DefaultButton();
+//                    bb.setText( "Button " + i);
+//                    bb.setSize( 100, 25 );
+//                    vlayout.addWidget( bb );
+//                }
+        
+        wl.addObject(panel3);        
         screen.setGuiLayer(wl); 
     }
     TextLabel activeLabel = null;
