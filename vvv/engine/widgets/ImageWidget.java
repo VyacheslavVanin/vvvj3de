@@ -54,8 +54,8 @@ public class ImageWidget extends Widget
     @Override
     protected void onSetPosition(float x, float y)
     {
-        position.setPosition( getGlobalPosX() + imageWidth/2, 
-                              getGlobalPosY() + imageHeight/2,
+        position.setPosition( (float)Math.floor(getGlobalPosX() + imageWidth/2), 
+                              (float)Math.floor(getGlobalPosY() + imageHeight/2),
                               0);
     }
 

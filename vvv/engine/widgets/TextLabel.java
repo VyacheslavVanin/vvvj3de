@@ -140,8 +140,7 @@ public class TextLabel extends Widget
                 break;
             case CENTER:
                 {
-                    alignOffsetX = getWidth() / 2 -
-                                   textLine.getLineWidth() / 2;
+                    alignOffsetX = (getWidth() - textLine.getLineWidth()) / 2;
                 }
                 break;
             case RIGHT:
@@ -149,8 +148,8 @@ public class TextLabel extends Widget
                 break;
         }
         
-        position.setPosition( getGlobalPosX() + alignOffsetX,
-                              getGlobalPosY() + alignOffsetY,
+        position.setPosition( (float) Math.floor( getGlobalPosX() + alignOffsetX ),
+                              (float) Math.floor( getGlobalPosY() + alignOffsetY ),
                               0 );
     }
  

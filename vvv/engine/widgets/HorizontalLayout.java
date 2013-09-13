@@ -33,7 +33,7 @@ public class HorizontalLayout extends Layout
             float offsetY = (( getHeight() - wgt.getHeight()) / 2);
             float offsetX = (( partWidth - wgt.getWidth() ) / 2);
             
-            wgt.setPosition( (int)(h + offsetX), (int)offsetY);
+            wgt.setPosition( (h + offsetX), offsetY);
             h += partWidth;
         }
     }  

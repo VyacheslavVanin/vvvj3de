@@ -4,16 +4,18 @@
  */
 package vvv.engine.widgets;
 
-import vvv.engine.shader.ModelShader;
-import vvv.engine.sprite.Sprite;
 import java.nio.FloatBuffer;
 import java.util.List;
 import java.util.Random;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Camera;
 import vvv.engine.Geometry;
 import vvv.engine.Globals;
+import vvv.engine.shader.ModelShader;
+import vvv.engine.sprite.Sprite;
 import vvv.engine.sprite.SpriteGeometry;
 import vvv.math.Vec3;
 
@@ -30,6 +32,8 @@ public class SpriteLayer extends Layer
         init();      
     }
 
+    private Vector4f res = new Vector4f();
+    private Vector4f src = new Vector4f();
     // it is work but incorrect 
     // (it have to check only camera data to determinate, not getHeight, Width)
     private boolean isInView(Sprite spr)
@@ -37,14 +41,24 @@ public class SpriteLayer extends Layer
         float x = spr.getScale().x * 0.5f;
         float y = spr.getScale().y * 0.5f;
 
-        if( spr.getPosition().y - y > camera.getPos().y() + getHeight()*0.5f )
+        Vector3f v3 = spr.getPosition();
+        src.set(v3.x+x, v3.y+y, v3.z, 1);
+        Matrix4f.transform(camera.getViewProjectionMatrix4f(), src, res);
+
+        final float c = 1.0f;
+        if( res.x < -c )
             return false;
-        if( spr.getPosition().y + y < camera.getPos().y() - getHeight()*0.5f )
+        if( res.y < -c )
             return false;
-        if( spr.getPosition().x - x > camera.getPos().x() + getWidth()*0.5f )
+        
+        src.set(v3.x-x, v3.y-y, v3.z, 1);
+        Matrix4f.transform(camera.getViewProjectionMatrix4f(), src, res);
+
+        if( res.x > c  )
             return false;
-        if( spr.getPosition().x + x < camera.getPos().x() - getWidth()*0.5f )
+        if( res.y > c  )
             return false;
+
         
         return true;
     }

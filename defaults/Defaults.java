@@ -7,6 +7,7 @@ package defaults;
 import java.io.IOException;
 import static org.lwjgl.opengl.GL11.*;
 import vvv.engine.Singletone;
+import vvv.engine.shader.ModelShader;
 import vvv.engine.text.Font;
 import vvv.engine.texture.Texture;
 import vvv.engine.texture.TextureLoader;
@@ -21,6 +22,8 @@ public class Defaults
     public static final  String DEFAULTS_DIRECTORY   = "defaults/";
     private static final String DEFAULT_TEXTURE_NAME = "defaultTexture.png";
     private static final String DEFAULT_FONT_NAME    = "defaultFont.png";
+    private static final String DEFAULT_SPRITE_VERTEX_SHADER_NAME = "defaults/shaders/sprite.vs";
+    private static final String DEFAULT_SPRITE_FRAGMENT_SHADER_NAME = "defaults/shaders/sprite.fs";
     
 
     static private Singletone<Texture> defaultTexture = 
@@ -48,6 +51,18 @@ public class Defaults
         }
     });
     
+    static private Singletone<ModelShader> spriteShader =
+            new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() 
+    {
+        @Override
+        public ModelShader create() throws IOException
+        {
+            ModelShader ret = new ModelShader();
+            ret.loadFromFiles(DEFAULT_SPRITE_VERTEX_SHADER_NAME, 
+                              DEFAULT_SPRITE_FRAGMENT_SHADER_NAME);
+            return ret;
+        }
+    });
     
     static public void setDefaultFont( Font font)
     {
@@ -80,5 +95,10 @@ public class Defaults
     static public void disableTransparency()
     {
         glDisable(GL_BLEND);
+    }
+    
+    static public ModelShader getSpriteShader() throws IOException
+    {
+        return spriteShader.get();
     }
 }

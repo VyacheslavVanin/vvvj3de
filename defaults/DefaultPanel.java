@@ -43,7 +43,7 @@ public class DefaultPanel extends Panel
     {
         try
         {
-            texture  = gui.getPanelTexture();
+            texture  = Gui.getPanelTexture();
         }
         catch (IOException ex)
         {
@@ -94,7 +94,7 @@ public class DefaultPanel extends Panel
     static private Matrix4f tmp = new Matrix4f();
     private void drawPanel() throws Exception
     {
-        ModelShader sh = gui.getPanelShader();
+        ModelShader sh = Gui.getPanelShader();
         Camera cam     = getCamera();
         
         Defaults.enableTransparency();

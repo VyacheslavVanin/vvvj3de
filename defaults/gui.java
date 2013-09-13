@@ -14,7 +14,7 @@ import vvv.engine.texture.TextureContainer;
  *
  * @author Вячеслав
  */
-public class gui
+public class Gui
 {  
     private static final String DEFAULT_GUI_DIRECTORY =  "gui/";
     private static final String DEFAULT_GUI_SHADER_DIRECTORY = DEFAULT_GUI_DIRECTORY + "shaders/";
@@ -112,5 +112,10 @@ public class gui
     static public ModelShader getColorMapShader() throws IOException
     {
         return colorMapShader.get();
+    }
+    
+    static public ModelShader getSpriteShader() throws IOException
+    {
+        return Defaults.getSpriteShader();
     }
 }

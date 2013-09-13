@@ -1,6 +1,7 @@
 package lwjgl;
 
 import defaults.DefaultButton;
+import defaults.DefaultCheckbox;
 import defaults.DefaultPanel;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -160,12 +161,11 @@ public class Lwjgl
     
     public void vvvInitShader()
     {
-        shm = new ModelShader();
         try
         {
-            shm.loadFromFiles("shaders/sprite.vs", "shaders/sprite.fs");
+            shm = defaults.Defaults.getSpriteShader();
         }
-        catch (IOException ex)
+        catch(IOException ex)
         {
             Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -261,47 +261,41 @@ public class Lwjgl
         wl.setImageShader(imageShader);
         
         
-        Panel vlayout = new VerticalLayout();
-            vlayout.setSize( 300, 350);
-                for( int i = 0; i < 5; ++i)
-                {
-                    DefaultButton bb = new DefaultButton();
-                    bb.setText( "Button " + i);
-                    bb.setTextColor( 1, 0, 1, 1);
-                    bb.setSize( 100, 30 );
-                    vlayout.addWidget( bb );
-                }
-            DefaultPanel panel3 = new DefaultPanel();
-                panel3.setPosition(50, 300);
-                panel3.setSize( 500, 350);    
-            panel3.addWidget(vlayout);
+        DefaultPanel panel3 = new DefaultPanel();
+            for( int i = 0; i < 5; ++i)
+            {
+                DefaultButton bb = new DefaultButton();
+                bb.setText( "Button " + i);
+                bb.setSize( 100, 30 );
+                panel3.addWidget(bb);
+            }
+            DefaultCheckbox check = new DefaultCheckbox();
+            panel3.addWidget(check);
+                   
+            panel3.setPosition(50, 300);
+            panel3.setSize( 500, 350);    
+ 
         
-        
-        Panel hlayout = new HorizontalLayout();
-            hlayout.setSize( 500, 20);
+            
+            
+            
+        DefaultPanel panel4 = new DefaultPanel();
+            panel4.setPosition(50, 240);
+            panel4.setSize( 500, 50); 
+            Panel hlayout = new HorizontalLayout();
+                hlayout.setSize( 500, 20);
                 for( int i = 0; i < 4; ++i)
                 {
                     DefaultButton bb = new DefaultButton();
                     bb.setText( "Button " + i);
-                    bb.setTextColor( 1, 0, 0, 1);
                     bb.setSize( 100, 30 );
                     hlayout.addWidget( bb );
                 }
-            DefaultPanel panel4 = new DefaultPanel();
-                panel4.setPosition(50, 240);
-                panel4.setSize( 500, 50);    
+               
             panel4.addWidget(hlayout);
-            
+        panel4.addWidget(hlayout);    
         wl.addObject(panel4);
-        panel4.addWidget(hlayout);
-                
-//        for( int i = 0; i < 5; ++i)
-//                {
-//                    DefaultButton bb = new DefaultButton();
-//                    bb.setText( "Button " + i);
-//                    bb.setSize( 100, 25 );
-//                    vlayout.addWidget( bb );
-//                }
+        
         
         wl.addObject(panel3);        
         screen.setGuiLayer(wl); 

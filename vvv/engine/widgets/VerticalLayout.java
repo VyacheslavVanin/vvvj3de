@@ -32,7 +32,7 @@ public class VerticalLayout extends Layout
             float offsetY = ( partHeight - wgt.getHeight()) / 2;
             float offsetX = ( getWidth() - wgt.getWidth() ) / 2;
             
-            wgt.setPosition( (int)offsetX, (int)(h + offsetY));
+            wgt.setPosition( offsetX, (h + offsetY));
         }
    
     }   

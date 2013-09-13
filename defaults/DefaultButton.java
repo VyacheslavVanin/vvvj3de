@@ -9,18 +9,18 @@ import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
+import vvv.engine.Camera;
 import vvv.engine.Geometry;
+import vvv.engine.shader.ModelShader;
 import vvv.engine.text.Font;
 import vvv.engine.texture.Texture;
 import vvv.engine.widgets.AbstractButton;
 import vvv.engine.widgets.PositionProperties;
 import vvv.engine.widgets.TextLabel;
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import org.lwjgl.util.vector.Matrix4f;
-import vvv.engine.Camera;
-import vvv.engine.shader.ModelShader;
 /**
  *
  * @author QwertyVVV
@@ -54,8 +54,8 @@ public class DefaultButton extends AbstractButton
     {
         try
         {
-            checked = gui.getButtonCheckedTexture();
-            unchecked = gui.getButtonUncheckedTexture();
+            checked = Gui.getButtonCheckedTexture();
+            unchecked = Gui.getButtonUncheckedTexture();
         }
         catch( IOException ex)
         {
@@ -154,7 +154,7 @@ public class DefaultButton extends AbstractButton
     static private  Matrix4f tmp = new Matrix4f();
     private void drawButton() throws Exception
     {
-        ModelShader sh = gui.getColorMapShader();
+        ModelShader sh = Gui.getColorMapShader();
         Camera cam     = getCamera();
         
         Defaults.enableTransparency();

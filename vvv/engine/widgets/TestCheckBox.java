@@ -3,7 +3,7 @@ package vvv.engine.widgets;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import defaults.gui;
+import defaults.Gui;
 import vvv.engine.texture.Texture;
 
 /**
@@ -23,8 +23,8 @@ public class TestCheckBox extends AbstractCheckBox
         addChild(image);
         try
         {
-            textureChecked   = gui.getCheckBoxCheckedTexture();
-            textureUnchecked = gui.getCheckBoxUncheckedTexture();
+            textureChecked   = Gui.getCheckBoxCheckedTexture();
+            textureUnchecked = Gui.getCheckBoxUncheckedTexture();
         }
         catch(IOException ex)
         {
