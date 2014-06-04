@@ -88,7 +88,7 @@ public class TextLine
                     throw new IllegalArgumentException("symbol not found");
                 }      
             }  
-            Logger.getLogger(TextLine.class.getName()).log(Level.SEVERE, null, e1);
+           // Logger.getLogger(TextLine.class.getName()).log(Level.SEVERE, null, e1);
         }
         return gi;
     }

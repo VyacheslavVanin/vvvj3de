@@ -7,7 +7,7 @@ public abstract class Layer
 {
     private Screen screen;
     private float depth;
-    private List<GraphicObject> objects;
+    private final List<GraphicObject> objects;
 
     public Layer()
     {
@@ -54,7 +54,6 @@ public abstract class Layer
 
     abstract public void onResize();
     
-   // abstract public void init();
 
     abstract protected boolean onAddObject(final GraphicObject obj);
 

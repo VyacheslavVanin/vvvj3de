@@ -108,13 +108,13 @@ public class Screen
     {
         return layers.contains(layer);
     }
-    private Comparator<Layer> comparator = new Comparator<Layer>()
+    private final Comparator<Layer> comparator = new Comparator<Layer>()
     {
         @Override
         public int compare(Layer l1, Layer l2)
         {
-            float d1 = l1.getDepth();
-            float d2 = l2.getDepth();
+            final float d1 = l1.getDepth();
+            final float d2 = l2.getDepth();
             if (d1 < d2)
             {
                 return 1;

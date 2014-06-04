@@ -20,8 +20,12 @@ public abstract class Widget extends GraphicObject
     private float xpos;
     private float ypos;
     private boolean visible = true;
+    private boolean enabled = true;
+    
     protected Widget parent = null;
-    private List<Widget> children = new LinkedList<>();
+    private final List<Widget> children = new LinkedList<>();
+    protected PositionProperties position = new PositionProperties();
+    
     
     public final float getWidth()  { return this.width; }
     public final float getHeight() { return this.height;}
@@ -30,8 +34,8 @@ public abstract class Widget extends GraphicObject
     
     public final void  setWidth( float width)    { this.width = width; }
     public final void  setHeight( float height ) { this.height = height; }
-    protected final void  setPosX( float x)         { this.xpos = x; }
-    protected final void  setPosY( float y)         { this.ypos = y; }
+    protected final void  setPosX( float x)      { this.xpos = x; }
+    protected final void  setPosY( float y)      { this.ypos = y; }
     
     protected final float getGlobalPosX()
     {
@@ -128,12 +132,38 @@ public abstract class Widget extends GraphicObject
         return this.visible;
     }
     
+    public final void setEnabled(boolean b)
+    {
+        if( this.enabled != b )
+        {
+            if( b )
+            {
+                onEnable();
+            }
+            else
+            {
+                onDisable();
+            }
+            this.enabled = b;
+            for(Widget w : children)
+            {
+                w.setEnabled(b);
+            }
+        }
+
+    }
+    
+    public final boolean isEnabled()
+    {
+        return this.enabled;
+    }
+    
     public boolean isContainPoint( float x, float y)
     {
-        float px = getGlobalPosX();
-        float py = getGlobalPosY();
-        float w  = getWidth();
-        float h  = getHeight();
+        final float px = getGlobalPosX();
+        final float py = getGlobalPosY();
+        final float w  = getWidth();
+        final float h  = getHeight();
         
         if( x > px + w || x < px )
         {
@@ -185,14 +215,49 @@ public abstract class Widget extends GraphicObject
     }
     
     protected abstract void onDraw() throws Exception;
-    protected abstract void onSetPosition(float x, float y);
+    protected void onSetPosition(float x, float y)
+    {
+        position.setPosition( (float)Math.floor(getGlobalPosX() ), 
+                              (float)Math.floor(getGlobalPosY() ),
+                              0);
+    }
+    
     protected abstract void onSetSize( float w, float h);
+    protected void onAttach() {};
     
-            
-     boolean onMouseMove( float x, float y) { return false;}
-    
-     boolean onLeftMouseButtonDown( float x, float y) { return false;}
-    
-     boolean onLeftMouseButtonUp( float x, float y) { return false;}
 
+    protected void onMouseMove(float x,float y) {}
+    protected void onLeftMouseButtonDown( float x, float y) { }
+    protected void onLeftMouseButtonUp(float x, float y) {}
+    
+    final boolean mouseMove( float x, float y) 
+    {
+        if(enabled && visible)
+        {
+            onMouseMove(x, y);
+        }
+        return false;
+    }
+
+    final boolean leftMouseButtonDown( float x, float y) 
+    { 
+        if( enabled && visible)
+        {
+            onLeftMouseButtonDown(x, y);
+        }
+        return false;
+    }
+
+    final boolean leftMouseButtonUp( float x, float y) 
+    { 
+        if( enabled && visible)
+        {
+            onLeftMouseButtonUp(x, y);
+        }
+        return false;
+    }
+
+    protected void    onEnable()  {}
+    protected void    onDisable() {}
+    
 }

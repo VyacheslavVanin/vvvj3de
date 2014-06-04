@@ -78,34 +78,38 @@ public class GridMeshCreator3x3
                                    float leftBorder, float rightBorder)
     {
         vbb.clear();
-        float high = height;
-        float low = 0;
-        float highMidle = high - topBorder;
-        float lowMidle  = low + bottomBorder;
+        final float high = height;
+        final float low = 0;
+        final float highMidle = high - topBorder;
+        final float lowMidle  = low + bottomBorder;
         
-        float left = 0; 
-        float right = width;
-        float leftMidle = left + leftBorder;
-        float rightMidle  = right - rightBorder;
+        final float left = 0; 
+        final float right = width;
+        final float leftMidle = left + leftBorder;
+        final float rightMidle  = right - rightBorder;
+        
+        final float baseTexOffset = 1.0f/16;
+        final float lowTexMargin = 5 * baseTexOffset;
+        final float highTexMargin = 1 - lowTexMargin;
         
         putVertex( vbb, left,      high,    0,    0f, 1f);
-        putVertex( vbb, leftMidle, high,    0, 0.25f, 1f);
-        putVertex( vbb, rightMidle,high,    0, 0.75f, 1f);
+        putVertex( vbb, leftMidle, high,    0, lowTexMargin, 1f);
+        putVertex( vbb, rightMidle,high,    0, highTexMargin, 1f);
         putVertex( vbb, right    , high,    0,    1f, 1f);
         
-        putVertex( vbb, left,      highMidle,    0,    0f, 0.75f);
-        putVertex( vbb, leftMidle, highMidle,    0, 0.25f, 0.75f);
-        putVertex( vbb, rightMidle,highMidle,    0, 0.75f, 0.75f);
-        putVertex( vbb, right    , highMidle,    0,    1f, 0.75f);
+        putVertex( vbb, left,      highMidle,    0,    0f, highTexMargin);
+        putVertex( vbb, leftMidle, highMidle,    0, lowTexMargin, highTexMargin);
+        putVertex( vbb, rightMidle,highMidle,    0, highTexMargin, highTexMargin);
+        putVertex( vbb, right    , highMidle,    0,    1f, highTexMargin);
         
-        putVertex( vbb, left,      lowMidle,    0,    0f, 0.25f);
-        putVertex( vbb, leftMidle, lowMidle,    0, 0.25f, 0.25f);
-        putVertex( vbb, rightMidle,lowMidle,    0, 0.75f, 0.25f);
-        putVertex( vbb, right    , lowMidle,    0,    1f, 0.25f);
+        putVertex( vbb, left,      lowMidle,    0,    0f, lowTexMargin);
+        putVertex( vbb, leftMidle, lowMidle,    0, lowTexMargin, lowTexMargin);
+        putVertex( vbb, rightMidle,lowMidle,    0, highTexMargin, lowTexMargin);
+        putVertex( vbb, right    , lowMidle,    0,    1f, lowTexMargin);
         
         putVertex( vbb, left,      low,    0,    0f, 0f );
-        putVertex( vbb, leftMidle, low,    0, 0.25f, 0f );
-        putVertex( vbb, rightMidle,low,    0, 0.75f, 0f );
+        putVertex( vbb, leftMidle, low,    0, lowTexMargin, 0f );
+        putVertex( vbb, rightMidle,low,    0, highTexMargin, 0f );
         putVertex( vbb, right    , low,    0,    1f, 0f );
         vbb.flip();
     }

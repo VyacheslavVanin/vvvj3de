@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class ListenerContainer
 {
-    private List<ActionListener> list = new LinkedList<>();
+    private final List<ActionListener> list = new LinkedList<>();
     
     public synchronized void addListener( ActionListener listener )
     {

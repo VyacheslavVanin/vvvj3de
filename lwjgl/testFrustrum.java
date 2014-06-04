@@ -5,9 +5,9 @@
 package lwjgl;
 
 import java.io.IOException;
-import vvv.engine.Camera;
-import vvv.engine.text.Font;
-import vvv.math.Vec3;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.lwjgl.LWJGLException;
 
 /**
  *
@@ -17,11 +17,20 @@ public class testFrustrum
 {
     static public void main(String[] args) throws IOException
     {
-     //   System.out.println( Integer.parseInt( "6" )  );
-      //  System.out.println("111111\n22222");
-       // String property = System.getProperty("line.separator");
-        
-        //Font f = Font.loadFromFiles( "fonts/arial20.png" );
-       // System.out.println("");
+        VVVEngine l = new VVVEngine();
+        try
+        {
+            l.setDisplayMode(1920, 1080, true);
+            l.create();
+            l.run();         
+        }
+        catch(LWJGLException ex)
+        {
+            Logger.getLogger(testFrustrum.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            l.destroy();
+        }
     }
 }

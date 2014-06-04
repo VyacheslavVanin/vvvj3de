@@ -19,8 +19,8 @@ import vvv.engine.widgets.TextLabel;
  */
 public class DefaultCheckbox extends AbstractCheckBox
 {
-    private TextLabel text = new TextLabel();
-    private ImageWidget box = new ImageWidget();
+    private final TextLabel text = new TextLabel();
+    private final ImageWidget box = new ImageWidget();
     private Texture   checked = null;
     private Texture   unchecked = null;
     private boolean   autosize = true;
@@ -35,8 +35,8 @@ public class DefaultCheckbox extends AbstractCheckBox
         addChild(box);
         try
         {
-            checked   = Gui.getCheckBoxCheckedTexture();
-            unchecked = Gui.getCheckBoxUncheckedTexture();
+            checked   = DefaultGui.getCheckBoxCheckedTexture();
+            unchecked = DefaultGui.getCheckBoxUncheckedTexture();
         }
         catch(IOException ex)
         {
@@ -47,6 +47,14 @@ public class DefaultCheckbox extends AbstractCheckBox
         text.setText("Checkbox");
         setOptimalSize();
     }
+    
+    public DefaultCheckbox(String str)
+    {
+        this();
+        text.setText( str );
+        setOptimalSize();
+    }
+    
     
     private float calcWidth()
     {
@@ -132,7 +140,7 @@ public class DefaultCheckbox extends AbstractCheckBox
     private void placeWidets()
     {
         float boxOffsetY = (getHeight() - box.getHeight())*0.5f;
-        box.setPosition(0, boxOffsetY);
+        box.setPosition( 0, boxOffsetY);
         
         float textOffsetX = box.getWidth() + SPACE_BETWEN_BOX_AND_TEXT;
         float textOffsetY = (getHeight() - text.getHeight())*0.5f;

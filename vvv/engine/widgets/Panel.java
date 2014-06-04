@@ -16,6 +16,7 @@ public abstract class Panel extends Widget
     {
         if( addChild(wgt) )
         {
+            wgt.onAttach();
             onAddWidget(wgt);
             return true;
         }
@@ -35,57 +36,45 @@ public abstract class Panel extends Widget
 
 
     @Override
-    boolean onLeftMouseButtonDown(float x, float y)
+    protected void onLeftMouseButtonDown(float x, float y)
     {
         if( isContainPoint(x, y) )
         {
             List<Widget> list = getChildren();
             for( Widget wgt : list )
             {
-                wgt.onLeftMouseButtonDown(x, y); 
+                wgt.leftMouseButtonDown(x, y); 
             }   
         }
-        return false;
     }
 
     @Override
-    boolean onMouseMove(float x, float y)
+    protected void onMouseMove(float x, float y)
     {
         List<Widget> list = getChildren();
         for( Widget wgt : list )
         {
-             wgt.onMouseMove(x, y);      
+             wgt.mouseMove(x, y);      
         }   
-    
-        return false;
     }
 
     @Override
-    boolean onLeftMouseButtonUp(float x, float y)
+    protected void onLeftMouseButtonUp(float x, float y)
     {
-         if( isContainPoint(x, y) )
+        if( isContainPoint(x, y) )
         {
             List<Widget> list = getChildren();
             for( Widget wgt : list )
             {
-                 wgt.onLeftMouseButtonUp(x, y);
+                 wgt.leftMouseButtonUp(x, y);
             }   
         }
-        return false;
     }
 
   
     @Override
-    protected void onSetPosition(float x, float y)
-    {
-
-    }
-
-    @Override
     protected void onSetSize(float w, float h)
-    {
-        
-    }   
+    { }   
     
     abstract protected void onAddWidget( Widget wgt );
     abstract protected void onRemoveWidget( Widget wgt );

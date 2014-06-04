@@ -8,7 +8,7 @@ import vvv.engine.text.Font;
  */
 public class TextButton extends AbstractButton
 {
-    private TextLabel text = new TextLabel("Button");
+    private final TextLabel text = new TextLabel("Button");
  
     public TextButton()
     {
@@ -46,12 +46,6 @@ public class TextButton extends AbstractButton
     protected void onSetPosition(float x, float y)
     {
         text.setPosition(0, 0);
-    }
-
-    @Override
-    protected void onClick()
-    {
-        
     }
 
     @Override

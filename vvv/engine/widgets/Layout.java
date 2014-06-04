@@ -55,4 +55,13 @@ public abstract class Layout extends Panel
         super.onSetPosition(x, y); //To change body of generated methods, choose Tools | Templates.
         rearrange();
     }  
+    
+    @Override
+    protected void onAttach()
+    {
+        final float h =  parent.getHeight();
+        final float w = parent.getWidth();
+        setSize(w, h);
+    }
+    
 }

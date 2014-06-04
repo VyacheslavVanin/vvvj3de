@@ -1,9 +1,9 @@
 package vvv.engine.widgets;
 
+import defaults.DefaultGui;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import defaults.Gui;
 import vvv.engine.texture.Texture;
 
 /**
@@ -12,8 +12,8 @@ import vvv.engine.texture.Texture;
  */
 public class TestCheckBox extends AbstractCheckBox
 {
-    private TextLabel   text    = new TextLabel("CheckBox");
-    private ImageWidget image = new ImageWidget();
+    private final TextLabel   text    = new TextLabel("CheckBox");
+    private final ImageWidget image = new ImageWidget();
     private Texture     textureChecked = null; 
     private Texture     textureUnchecked = null;
     
@@ -23,8 +23,8 @@ public class TestCheckBox extends AbstractCheckBox
         addChild(image);
         try
         {
-            textureChecked   = Gui.getCheckBoxCheckedTexture();
-            textureUnchecked = Gui.getCheckBoxUncheckedTexture();
+            textureChecked   = DefaultGui.getCheckBoxCheckedTexture();
+            textureUnchecked = DefaultGui.getCheckBoxUncheckedTexture();
         }
         catch(IOException ex)
         {
@@ -64,16 +64,6 @@ public class TestCheckBox extends AbstractCheckBox
        text.setColor(0.5f, 0.5f, 0.5f, 1);
     }
 
-    @Override
-    protected void onPress()
-    {
-       
-    }
-
-    @Override
-    protected void onRelease()
-    {
-    }
 
     @Override
     protected void onDraw() throws Exception

@@ -16,7 +16,7 @@ import vvv.engine.texture.Texture;
  */
 public abstract class Sprite extends GraphicObject
 {
-    private PositionProperties position = new PositionProperties();
+    private final PositionProperties position = new PositionProperties();
     
     public Sprite()
     {

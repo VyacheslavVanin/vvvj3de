@@ -4,10 +4,7 @@
  */
 package vvv.engine.widgets;
 
-import java.nio.FloatBuffer;
 import java.util.List;
-import java.util.Random;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -34,8 +31,8 @@ public class SpriteLayer extends Layer
 
     private Vector4f res = new Vector4f();
     private Vector4f src = new Vector4f();
-    // it is work but incorrect 
-    // (it have to check only camera data to determinate, not getHeight, Width)
+    
+    
     private boolean isInView(Sprite spr)
     {
         float x = spr.getScale().x * 0.5f;
@@ -97,18 +94,7 @@ public class SpriteLayer extends Layer
         }      
     }
 
-    private Random r = new Random(System.currentTimeMillis());
-    
-    
-    private void float16ToMatrix4f(float[] f, Matrix4f m)
-    {
-        floatBuffer16.position(0);
-        floatBuffer16.put(f);
-        floatBuffer16.position(0);
-        m.load(floatBuffer16);
-        floatBuffer16.position(0);
-    }
-
+     
     @Override
     public void onResize()
     {
@@ -139,7 +125,6 @@ public class SpriteLayer extends Layer
     public final void init()
     {
         initCamera();
-        floatBuffer16 = BufferUtils.createFloatBuffer(16);
     }
 
     private void initCamera()
@@ -162,7 +147,6 @@ public class SpriteLayer extends Layer
       
     private Camera camera;
     private ModelShader shader = null;
-    private FloatBuffer floatBuffer16;
     private Matrix4f tmp = new Matrix4f();
     private Matrix4f vpmatrix = new Matrix4f();
 }

@@ -3,6 +3,7 @@ package lwjgl;
 import defaults.DefaultButton;
 import defaults.DefaultCheckbox;
 import defaults.DefaultPanel;
+import defaults.DefaultWidgetLayer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,14 +13,13 @@ import java.util.logging.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
-import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
 import vvv.engine.Camera;
-import vvv.engine.shader.ModelShader;
 import vvv.engine.sprite.AnimatedSprite;
 import vvv.engine.sprite.SpriteAnimation;
 import vvv.engine.sprite.StaticSprite;
@@ -35,15 +35,14 @@ import vvv.math.FloatMath;
  * @author jediTofu
  * @see <a href="http://lwjgl.org/">LWJGL Home Page</a>
  */
-public class Lwjgl
+public class VVVEngine
 {
-    public static final int DISPLAY_HEIGHT = 700;
-    public static final int DISPLAY_WIDTH  = 1000;
-    public static final Logger LOGGER = Logger.getLogger(Lwjgl.class.getName());
-    private int squareSize;
-    private int squareZ;
-
-    private ModelShader shm;
+    private  int DISPLAY_HEIGHT = 600;
+    private  int DISPLAY_WIDTH  = 800;
+    private  boolean fullScreen = false;
+    
+    public static final Logger LOGGER = Logger.getLogger(VVVEngine.class.getName());
+ 
     private Texture tll;
     private Texture[] texlist = new Texture[10];
     private TextureContainer tcontainer = null;
@@ -62,24 +61,17 @@ public class Lwjgl
 
     public static void main(String[] args)
     {
-        Lwjgl main = null;
+        VVVEngine main = null;
         
         try
         {
-           // vvvtest();
-            System.out.println( "Keys:" );
-            System.out.println( "down  - Shrink" );
-            System.out.println( "up    - Grow" );
-            System.out.println( "left  - Rotate left" );
-            System.out.println( "right - Rotate right" );
-            System.out.println( "esc   - Exit" );
-            main = new Lwjgl();
+            main = new VVVEngine();
             main.create();
             main.run();
         }
         catch (LWJGLException /*| IOException*/ ex)
         {
-            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VVVEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally
         {
@@ -90,32 +82,37 @@ public class Lwjgl
         }
     }
 
-    public Lwjgl()
+
+    public void setDisplayMode(int width, int height, boolean fullScreen )
     {
-
+        DISPLAY_HEIGHT = height;
+        DISPLAY_WIDTH = width;
+        this.fullScreen = fullScreen;
     }
-
+    
     public void create() throws LWJGLException
     {
         //Display
         DisplayMode displayMode = new DisplayMode(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         DisplayMode[] modes = Display.getAvailableDisplayModes();
 
-         for (int i = 0; i < modes.length; i++)
-         {
-             if (modes[i].getWidth() == DISPLAY_WIDTH
-             && modes[i].getHeight() == DISPLAY_HEIGHT
-             && modes[i].isFullscreenCapable())
-               {
-                    displayMode = modes[i];
-               }
-         }
-         
+        if( fullScreen)
+        {
+            for (DisplayMode mode : modes) 
+            {
+                if (mode.getWidth() == DISPLAY_WIDTH && mode.getHeight() == DISPLAY_HEIGHT && mode.isFullscreenCapable()) 
+                {
+                    displayMode = mode;
+                    Display.setFullscreen(true );
+                }
+            }
+        }
+        
         Display.setDisplayMode(displayMode);
-        //Display.setVSyncEnabled(true);
-        //Display.setFullscreen(true);
+        Display.setVSyncEnabled(true);
+        //
         Display.setTitle("Hello LWJGL World!");   
-        Display.create();
+        Display.create( new PixelFormat(), new ContextAttribs(3, 3));
         
         //Keyboard
         Keyboard.create();
@@ -137,41 +134,6 @@ public class Lwjgl
         Display.destroy();
     }
 
-    public int vvvShaderStatus(int shader, int param)
-    {
-        int result = glGetShaderi(shader, param);
-        if( result != GL_TRUE)
-        {
-            String str = glGetShaderInfoLog(shader, result);
-            System.out.println("Shader Error: " + str);
-        }
-        return result;
-    }
-    
-    public int vvvProgramStatus(int shader, int param)
-    {
-        int result = glGetProgrami(param, param);
-        if( result != GL_TRUE)
-        {
-            String str = glGetProgramInfoLog(shader, result);
-            System.out.println("Program Error: " + str);
-        }
-        return result;
-    }
-    
-    public void vvvInitShader()
-    {
-        try
-        {
-            shm = defaults.Defaults.getSpriteShader();
-        }
-        catch(IOException ex)
-        {
-            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-      
-    
     public void vvvInitTexture() throws IOException
     {
         tcontainer = new TextureContainer();
@@ -245,199 +207,181 @@ public class Lwjgl
     
     public void vvvInitGui(Screen screen) throws IOException
     {
-        ModelShader textShader = new ModelShader();
-        ModelShader imageShader = new ModelShader();
-        
-        try {
-            textShader.loadFromFiles("shaders/text.vs", "shaders/text.fs");
-            imageShader.loadFromFiles("shaders/sprite.vs", "shaders/sprite.fs");
-        } catch (IOException ex) {
-            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-  
-        WidgetLayer wl = new WidgetLayer();
-        wl.setDepth(0.1f);
-        wl.setTextShader(textShader);
-        wl.setImageShader(imageShader);
+        WidgetLayer wl = new DefaultWidgetLayer();
         
         
-        DefaultPanel panel3 = new DefaultPanel();
-            for( int i = 0; i < 5; ++i)
-            {
-                DefaultButton bb = new DefaultButton();
-                bb.setText( "Button " + i);
-                bb.setSize( 100, 30 );
-                panel3.addWidget(bb);
+        final ActionListener listener = new ActionListener() {
+
+            @Override
+            public void action() {
+                StaticSprite     spr = new StaticSprite();
+                tll = texlist[11];
+                spr.setTexture( tll );
+                spr.setScale( tll.getWidth(), tll.getHeight(), 1 );
+                spr.setPosition( sprite1.getPosition().getX(), 
+                                 sprite1.getPosition().getY(),
+                                 sprite1.getPosition().getZ()+1);
+                bgSpriteLayer.addObject(spr);
             }
-            DefaultCheckbox check = new DefaultCheckbox();
-            panel3.addWidget(check);
-                   
-            panel3.setPosition(50, 300);
-            panel3.setSize( 500, 350);    
- 
+        };
         
-            
-            
-            
-        DefaultPanel panel4 = new DefaultPanel();
+        DefaultPanel panel3 = new DefaultPanel(500,350);
+            panel3.setPosition(50, 300);
+            Layout vlayout = new VerticalLayout();
+                for( int i = 0; i < 5; ++i)
+                {
+                    DefaultButton bb = new DefaultButton("Button " + i);
+                    bb.addOnClickListener(listener);
+                    vlayout.addWidget(bb);
+                }
+                
+                DefaultCheckbox check = new DefaultCheckbox("My Checkbox");
+                final ActionListener onCheckListener = new ActionListener() 
+                {
+                    @Override
+                    public void action() 
+                    {
+                        TestDisable.setEnabled(false);
+                    }
+                };
+                
+                final ActionListener onUncheckListener = new ActionListener() 
+                {
+                    @Override
+                    public void action() 
+                    {
+                        TestDisable.setEnabled(true);
+                    }
+                };
+                
+                check.addOnCheckListener(onCheckListener);
+                check.addOnUncheckListener(onUncheckListener);
+                
+                vlayout.addWidget(check);
+               
+            panel3.addWidget(vlayout);
+        wl.addObject(panel3);       
+  
+        DefaultPanel panel4 = new DefaultPanel(500,50);
+            panel4.setColor( 1, 1, 1, 1.5f);
             panel4.setPosition(50, 240);
-            panel4.setSize( 500, 50); 
-            Panel hlayout = new HorizontalLayout();
-                hlayout.setSize( 500, 20);
+            Layout hlayout = new HorizontalLayout();
                 for( int i = 0; i < 4; ++i)
                 {
-                    DefaultButton bb = new DefaultButton();
-                    bb.setText( "Button " + i);
-                    bb.setSize( 100, 30 );
+                    DefaultButton bb = new DefaultButton("Button " + i);
                     hlayout.addWidget( bb );
                 }
-               
+               TestDisable = panel4;
             panel4.addWidget(hlayout);
         panel4.addWidget(hlayout);    
         wl.addObject(panel4);
         
-        
-        wl.addObject(panel3);        
+                
+        tl = new TextLabel( "text" );
+        tl.setColor(1, 1, 1, 1);
+        tl.setPosition(500, 100);
+        wl.addObject(tl);
+              
         screen.setGuiLayer(wl); 
     }
     TextLabel activeLabel = null;
     int       clickcounter = 0;
+    Widget TestDisable = null;
     
     public void vvvInit() throws IOException
     {  
         vvvInitTexture();
         vvvInitAnimation();
-        vvvInitShader();
         
         screen = new Screen();
-        SpriteLayer sl = new SpriteLayer();
+        SpriteLayer backGroundLayer = new SpriteLayer();
             
-        screen.addLayer(sl);
-        sl.setShader(shm);
+        screen.addLayer(backGroundLayer);
+            backGroundLayer.setShader( defaults.Defaults.getSpriteShader() );
+
+            Random r = new Random();
+
+            for(int i=0; i < 20000; ++i)
+            {
+                StaticSprite     spr = new StaticSprite();
+                tll = texlist[i%10];
+                spr.setTexture( tll );
+                spr.setScale( tll.getWidth(), tll.getHeight(), 1 );
+                spr.setPosition( (r.nextInt()%DISPLAY_WIDTH * 20 ), 
+                                 (r.nextInt()%DISPLAY_HEIGHT* 20 ),
+                                 0);
+                backGroundLayer.addObject(spr);
+            }
         
-        Random r = new Random();
+        SpriteLayer frontLayer = new SpriteLayer();
+            frontLayer.setShader( defaults.Defaults.getSpriteShader() );
+            screen.addLayer(frontLayer);
+            sprite1 = new AnimatedSprite();
+                sprite1.setPosition( 0, 0, 0);
+                sprite1.setScale( 128, 128, 1);
+                sprite1.setAnimation(animationIdle);
+                sprite1.playAnimation();
+
+            frontLayer.addObject(sprite1);
+            
         
-        for(int i=0; i < 20000; ++i)
-        {
-            StaticSprite     spr = new StaticSprite();
-            tll = texlist[i%10];
-            spr.setTexture( tll );
-            spr.setScale( tll.getWidth(), tll.getHeight(), 1 );
-            spr.setPosition( (r.nextInt()%DISPLAY_WIDTH*20), 
-                             (r.nextInt()%DISPLAY_HEIGHT*20),
-                             0);
-            sl.addObject(spr);
-        }
-        sprite1 = new AnimatedSprite();
-        
-        
-        sprite1.setPosition( 0, 0, 0);
-        sprite1.setScale( 128, 128, 1);
-        sprite1.setAnimation(animationIdle);
-        sprite1.playAnimation();
-        
-        StaticSprite spr = new StaticSprite();
-        tll = texlist[11];
-        spr.setTexture( tll );
-        spr.setPosition( 32, 32, 0);
-        spr.setScale( tll.getWidth(), tll.getHeight(), 1);
-        
-        sl.addObject(spr);
-        sl.addObject(sprite1);
-        camera = sl.getCamera();
- 
+        bgCamera    = backGroundLayer.getCamera();
+        frontCamera = frontLayer.getCamera();
         vvvInitGui(screen);
+        bgSpriteLayer = backGroundLayer;
     }
-     
+    SpriteLayer bgSpriteLayer=null; 
+    
+    
     public void initGL()
     {
         //2D Initialization
        // glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glClearColor(0.0f, 0.1f, 0.2f, 1.0f);
+        //glEnable(GL_DEPTH_TEST);
         try
         {
             vvvInit();
         }
         catch (IOException ex)
         {
-            Logger.getLogger(Lwjgl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VVVEngine.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }
 
-    private int currentImage = 0;
-    private float velocity = 250;
+    private TextLabel tl = null;
+    private String texts = "";
+    
+    private final float velocity = 250;
     public void processKeyboard()
     {   
-        boolean pressed = false;
-        //Square's Size
-        if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
+ 
+        while( Keyboard.next() )
         {
-            --squareSize;
-            sprite1.move(0, -1, 0);
-           // camera.move(0, -1, 0, 1);
-            camera.moveDown(1.0f);
+            char c = Keyboard.getEventCharacter();
+            int  i = Keyboard.getEventKey();
             
-            pressed = true;
-        }
-                
-        if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-        {
-            ++squareSize;
-            sprite1.move(0, 1, 0);
-            //camera.move(0, 1, 0, 1);
-            camera.moveUp(1.0f);
-            pressed = true;
-        }
-
-        //Square's Z
-        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-        {
-            ++squareZ;
-            sprite1.move(-1, 0, 0);
-            camera.moveLeft(1.0f);
-            pressed = true;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-        {
-            --squareZ;
-            sprite1.move( 1, 0, 0);
-            camera.moveRight(1.0f);
-            pressed = true;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
-        {
-            --squareZ;
-            sprite1.setAnimationSpeed(4);
-            velocity = 1000;
-           // tll = texlist[currentImage++ % 10];
-           // sprite1.setTexture(tll);   
-           // sprite1.setScale(tll.getWidth(), tll.getHeight(), 1);
-        }
-        else
-        {
-            sprite1.setAnimationSpeed(1);
-            velocity = 500;
-        }
-        
-        if (Keyboard.isKeyDown(Keyboard.KEY_Z))
-        {
-            sprite1.rotate(  0.01f, 0.0f,0.0f,1.0f);    
-        }
-        
-        if( Keyboard.isKeyDown(Keyboard.KEY_S))
-        {
-            Matrix4f matrix4f = sprite1.getMatrix4f();
-            System.out.println(matrix4f);
-        }
-        
-//        if( pressed == false)
-//        {
-//            sprite1.setAnimation(animationIdle);
-//        }
-//        else
-//        {
-//            sprite1.setAnimation(animationRotation);
-//        }
+            if( Keyboard.getEventKeyState() )
+            {    
+                System.out.println("+ " + c + " " + i);
+                tl.setText( texts + c );
+                texts = texts + c;
+            }
+            else
+            {
+                System.out.println("- " + c + " " + i);
+            }
+            
+            if( i == Keyboard.KEY_V )
+            {
+                Display.setVSyncEnabled(true);
+            }
+            else if( i == Keyboard.KEY_B)
+            {
+                Display.setVSyncEnabled(false);
+            }
+            
+        }        
     }
 
     
@@ -479,9 +423,7 @@ public class Lwjgl
             lastMouse.set(guiMouse);
             wl.onMouseMove( guiMouse.x, guiMouse.y );
         }
-        
-        
-        
+
         if( mouse.lengthSquared() > 0)
         {
             mouse.normalise();
@@ -521,7 +463,8 @@ public class Lwjgl
             
             float s = dtf * velocity;
             sprite1.move( direction.x * s, direction.y * s, 0);
-            camera.move(direction.x * s, direction.y * s, 0);
+            bgCamera.move(direction.x * s, direction.y * s, 0);
+            frontCamera.move(direction.x * s, direction.y * s, 0);
             sprite1.setAnimation(animationRotation);
         }
         else
@@ -541,12 +484,13 @@ public class Lwjgl
             {
                 zoom /= 1.1;
             } 
-            float top = DISPLAY_HEIGHT / 2 *zoom;
+            float top   = DISPLAY_HEIGHT / 2 * zoom;
             float botom = -top;
-            float left = -DISPLAY_WIDTH/2 *zoom;
+            float left  = -DISPLAY_WIDTH / 2 * zoom;
             float right = -left;
             
-            camera.setOrtho( top, botom, left, right, -1, 1);
+            bgCamera.setOrtho( top, botom, left, right, -1, 1);
+            frontCamera.setOrtho( top, botom, left, right, -1, 1);
         }
        // sprite1.setPosition( squareX-DISPLAY_WIDTH/2, squareY-DISPLAY_HEIGHT/2, 0 );
     }
@@ -558,11 +502,7 @@ public class Lwjgl
     
     public void render() throws TextureNotLoadedException
     {
-        glClear(GL_COLOR_BUFFER_BIT);
-        
-        //glEnable( GL_BLEND );
-        //glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);        
         screen.draw();
     }
 
@@ -579,20 +519,20 @@ public class Lwjgl
         {
             try
             {
-            if (Display.isVisible())
-            {
-                processKeyboard();
-                processMouse();
-                update();
-                render();
-            }
-            else
-            {
-                if (Display.isDirty())
+                if (Display.isVisible())
                 {
+                    processKeyboard();
+                    processMouse();
+                    update();
                     render();
                 }
-            }
+                else
+                {
+                    if (Display.isDirty())
+                    {
+                        render();
+                    }
+                }
             }
             catch(TextureNotLoadedException ex)
             {
@@ -605,19 +545,13 @@ public class Lwjgl
 
     public void update()
     {
-        if (squareSize < 5)
-        {
-            squareSize = 5;
-        }
-        else if (squareSize >= DISPLAY_HEIGHT)
-        {
-            squareSize = DISPLAY_HEIGHT;
-        }
+    
     }
     
     public Screen screen;
     public AnimatedSprite sprite1;
-    public Camera camera;
+    public Camera bgCamera;
+    public Camera frontCamera;
     public SpriteAnimation animationIdle;
     public SpriteAnimation animationRotation;
 }

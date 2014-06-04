@@ -24,7 +24,8 @@ public class Defaults
     private static final String DEFAULT_FONT_NAME    = "defaultFont.png";
     private static final String DEFAULT_SPRITE_VERTEX_SHADER_NAME = "defaults/shaders/sprite.vs";
     private static final String DEFAULT_SPRITE_FRAGMENT_SHADER_NAME = "defaults/shaders/sprite.fs";
-    
+    private static final String DEFAULT_TEXT_VERTEX_SHADER_NAME = "defaults/shaders/text.vs";
+    private static final String DEFAULT_TEXT_FRAGMENT_SHADER_NAME = "defaults/shaders/text.fs";
 
     static private Singletone<Texture> defaultTexture = 
             new Singletone<>(
@@ -60,6 +61,19 @@ public class Defaults
             ModelShader ret = new ModelShader();
             ret.loadFromFiles(DEFAULT_SPRITE_VERTEX_SHADER_NAME, 
                               DEFAULT_SPRITE_FRAGMENT_SHADER_NAME);
+            return ret;
+        }
+    });
+    
+    static private Singletone<ModelShader> textShader =
+            new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() 
+    {
+        @Override
+        public ModelShader create() throws IOException
+        {
+            ModelShader ret = new ModelShader();
+            ret.loadFromFiles(DEFAULT_TEXT_VERTEX_SHADER_NAME, 
+                              DEFAULT_TEXT_FRAGMENT_SHADER_NAME);
             return ret;
         }
     });
@@ -101,4 +115,10 @@ public class Defaults
     {
         return spriteShader.get();
     }
+    
+    static public ModelShader getTextShader() throws IOException
+    {
+        return textShader.get();
+    }
+    
 }

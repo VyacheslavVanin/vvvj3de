@@ -16,7 +16,7 @@ public class WidgetLayer extends Layer
     private ModelShader textShader = null;
     private ModelShader imageShader  = null;
     
-    private Matrix4f tmp = new Matrix4f();
+    private final Matrix4f tmp = new Matrix4f();
     private Matrix4f vpmatrix = new Matrix4f();
     
     public  WidgetLayer()
@@ -46,7 +46,6 @@ public class WidgetLayer extends Layer
         camera.setOrtho(h , 0, 0, w , -2, 2);
         camera.setBodyForward(new Vec3(0, 0, 1), new Vec3(0, 1, 0));
         camera.setPos( 0, 0, -1);    
-        //cam.setBodyForward( new Vec3(0, 0, 1), new Vec3(0,1,0) );
         camera.lookAt(0, 0, 0);
     }
 
@@ -106,13 +105,14 @@ public class WidgetLayer extends Layer
     
     public void onMouseMove( float x, float y )
     {
-        List<GraphicObject> objects = getObjects();
-        for(int i=0; i < objects.size(); ++i )
+        final List<GraphicObject> objects = getObjects();
+        final int numOjects = objects.size();
+        for(int i=0; i < numOjects; ++i )
         {
             Widget wgt = (Widget)objects.get(i);
-            if( wgt.isVisible() )
+            if( wgt.isVisible() && wgt.isEnabled() )
             {
-                if( wgt.onMouseMove(x, y) )
+                if( wgt.mouseMove(x, y) )
                 {
                     break;
                 }
@@ -126,9 +126,9 @@ public class WidgetLayer extends Layer
         for(int i=0; i < objects.size(); ++i )
         {
             Widget wgt = (Widget)objects.get(i);
-            if( wgt.isVisible() )
+            if( wgt.isVisible() && wgt.isEnabled() )
             {
-                if( wgt.onLeftMouseButtonDown(x, y) )
+                if( wgt.leftMouseButtonDown(x, y) )
                 {
                     break;
                 }
@@ -142,9 +142,9 @@ public class WidgetLayer extends Layer
         for(int i=0; i < objects.size(); ++i )
         {
             Widget wgt = (Widget)objects.get(i);
-            if( wgt.isVisible() )
+            if( wgt.isVisible() && wgt.isEnabled() )
             {
-                if( wgt.onLeftMouseButtonUp(x, y) )
+                if( wgt.leftMouseButtonUp(x, y) )
                 {
                     break;
                 }

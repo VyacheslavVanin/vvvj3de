@@ -15,7 +15,7 @@ import vvv.engine.texture.Texture;
 public class ImageWidget extends Widget
 {
     private StaticSprite       sprite = null;
-    private PositionProperties position = new PositionProperties();
+    
     private float              imageWidth = 0;
     private float              imageHeight = 0;
     
@@ -54,9 +54,9 @@ public class ImageWidget extends Widget
     @Override
     protected void onSetPosition(float x, float y)
     {
-        position.setPosition( (float)Math.floor(getGlobalPosX() + imageWidth/2), 
-                              (float)Math.floor(getGlobalPosY() + imageHeight/2),
-                              0);
+        position.setPosition(   (float) Math.floor(getGlobalPosX() + imageWidth / 2 ),
+                                (float) Math.floor(getGlobalPosY() + imageHeight / 2),
+                                0);
     }
 
     @Override
