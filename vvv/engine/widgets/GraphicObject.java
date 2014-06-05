@@ -10,7 +10,7 @@ public abstract class GraphicObject
 	}
 	
 	/* called from Layer only */
-	void setLayer(Layer layer)
+	final void setLayer(Layer layer)
 	{
 		this.layer = layer;
 	}
