@@ -10,28 +10,22 @@ package vvv.engine.widgets;
  *
  * @author vvv
  */
-public class AbstractSlider 
+public abstract class AbstractSlider extends Widget
 {
     private int range;
     private int value;
-    private int numTicks;
 
-    public AbstractSlider(int range, int numTicks)
+    public AbstractSlider(int range)
     {
-        setRange(range);
-        setNumTicks(numTicks);
+        setRange( range );
         setValue( range/2 );
     }
     
     public AbstractSlider() 
     {
-        this(100, 0);
+        this(100);
     }
     
-    public AbstractSlider(int range)
-    {
-        this(range,0);
-    }
     
     public final void setRange(int range)
     {
@@ -40,23 +34,9 @@ public class AbstractSlider
             throw new IllegalArgumentException("Range should be greater than zero");
         }
         
-        if(     ( this.numTicks > 0 ) 
-             && ( range < numTicks-1) )
-        {
-            setNumTicks(range+1);
-        }
-        
         this.range = range;
     }
     
-    public final void setNumTicks(int numTicks)
-    {
-        if( numTicks < 0 || numTicks > range + 1 )
-        {
-            throw new IllegalArgumentException( "numTicks should be ( 0 <= numTicks <= range+1)" );
-        }
-        this.numTicks = numTicks;
-    }
     
     public final void setValue( int value)
     {
@@ -73,14 +53,5 @@ public class AbstractSlider
     {
         return this.range;
     }
-    
-    public final int getTicks()
-    {
-        return this.numTicks;
-    }
-    
-    
-    
-    
-    
+       
 }
