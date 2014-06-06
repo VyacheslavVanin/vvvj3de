@@ -5,8 +5,6 @@
 package vvv.engine.text;
 
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
@@ -22,11 +20,11 @@ import vvv.engine.texture.Texture;
  */
 public class TextLine
 {
-    private Geometry geometry = new Geometry();
+    private final Geometry geometry = new Geometry();
     private Font     font = null;
     private String   text = "";
     private float    width = 0;
-    private Vector3f color = new Vector3f(1,1,1);
+    private final Vector3f color = new Vector3f(1,1,1);
 
     private boolean  changed = true;
     

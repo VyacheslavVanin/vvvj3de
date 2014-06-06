@@ -49,7 +49,7 @@ public class ImageWidget extends Widget
         gm.activate();
         gm.draw();    
     }
-    private static Matrix4f tmp = new Matrix4f();
+    private static final Matrix4f tmp = new Matrix4f();
 
     @Override
     protected void onSetPosition(float x, float y)

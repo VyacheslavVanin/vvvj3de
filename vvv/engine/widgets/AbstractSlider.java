@@ -52,6 +52,5 @@ public abstract class AbstractSlider extends Widget
     public final int getRange()
     {
         return this.range;
-    }
-       
+    }       
 }

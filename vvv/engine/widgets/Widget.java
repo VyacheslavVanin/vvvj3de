@@ -123,8 +123,6 @@ public abstract class Widget extends GraphicObject
     }
 
 
-
-    
     public boolean isContainPoint( float x, float y)
     {
         final float px = getGlobalPosX();
@@ -144,9 +142,6 @@ public abstract class Widget extends GraphicObject
         
         return true;
     }
-    
-    
-        
     
     
     final void draw() throws Exception
@@ -188,9 +183,7 @@ public abstract class Widget extends GraphicObject
         return false;
     }
 
-    
-   
-    
+ 
     protected final void  setPosX( float x)      { this.xpos = x; }
     protected final void  setPosY( float y)      { this.ypos = y; }
     
@@ -239,8 +232,6 @@ public abstract class Widget extends GraphicObject
         return getLayer().getCamera();
     }
    
-
-    
     protected final boolean deleteChild( Widget child )
     {
         if( children.remove(child) )
@@ -283,8 +274,6 @@ public abstract class Widget extends GraphicObject
     }
     
     
-    
-    
     protected void onSetPosition(float x, float y)
     {
         position.setPosition( (float)Math.floor(getGlobalPosX() ), 
@@ -307,7 +296,6 @@ public abstract class Widget extends GraphicObject
     
     protected void onEnable()  {}
     protected void onDisable() {}
-    
     
     
     private void onMouseMoveBase(float x, float y)
@@ -343,6 +331,5 @@ public abstract class Widget extends GraphicObject
         onMouseLeave();
         onLeaveListener.action();
     }
-    
 
 }
