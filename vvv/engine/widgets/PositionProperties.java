@@ -15,14 +15,14 @@ import vvv.math.Vec3;
  */
 public final class PositionProperties
 {
-    private Vector3f position = new Vector3f(0,0,0);
-    private Vector3f scale    = new Vector3f(1,1,1); 
-    private Quat     angle    = new Quat();
+    private final Vector3f position = new Vector3f(0,0,0);
+    private final Vector3f scale    = new Vector3f(1,1,1); 
+    private final Quat     angle    = new Quat();
     
-    private Matrix4f modelMatrix = new Matrix4f();
+    private final Matrix4f modelMatrix = new Matrix4f();
     
-    private Vec3 vAxis = new Vec3();
-    private Vector3f helpVector = new Vector3f();
+    private final Vec3 vAxis = new Vec3();
+    private final Vector3f helpVector = new Vector3f();
     private boolean  changed = true;
     
     public PositionProperties()
