@@ -4,13 +4,15 @@
  */
 package vvv.engine.widgets;
 
+import defaults.DefaultSystemColors;
 import defaults.Defaults;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Camera;
+import vvv.engine.Color;
+import vvv.engine.ConstColor;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.text.Font;
 import vvv.engine.text.TextLine;
@@ -23,7 +25,7 @@ public class TextLabel extends Widget
 {
     private TextLine textLine = null;
     private PositionProperties position = new PositionProperties();
-    private Vector4f textColor = new Vector4f();
+    private Color textColor = DefaultSystemColors.getTextColor();
     private VerticalAlign   vAlign;
     private HorizontalAlign hAlign;
     private boolean         autosize = true;
@@ -61,10 +63,12 @@ public class TextLabel extends Widget
     
     public final void setColor(float r, float g, float b, float a)
     {
-        textColor.x = r;
-        textColor.y = g;
-        textColor.z = b;
-        textColor.w = a;
+        textColor = new ConstColor(r, g, b, a);
+    }
+    
+    public final void setColor( Color c)
+    {
+        textColor = c;
     }
     
     public final void setText( String text )
@@ -161,7 +165,7 @@ public class TextLabel extends Widget
         Camera      cam     = getCamera();   
 
         shader.activate();
-        shader.setColor(0, textColor);
+        shader.setColor(0, textColor.getVector());
             Matrix4f.mul( cam.getViewProjectionMatrix4f(), 
                           position.getMatrix4f(), 
                           tmp);
