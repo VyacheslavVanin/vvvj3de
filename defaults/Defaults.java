@@ -27,7 +27,7 @@ public class Defaults
     private static final String DEFAULT_TEXT_VERTEX_SHADER_NAME = "defaults/shaders/text.vs";
     private static final String DEFAULT_TEXT_FRAGMENT_SHADER_NAME = "defaults/shaders/text.fs";
 
-    static private Singletone<Texture> defaultTexture = 
+    private static final Singletone<Texture> defaultTexture = 
             new Singletone<>(
                               new Singletone.SingletoneCreator<Texture>() 
     {
@@ -40,7 +40,7 @@ public class Defaults
         }
     });
     
-    static private Singletone<Font>    defaultFont = 
+    private static final Singletone<Font>    defaultFont = 
             new Singletone<>( 
                               new Singletone.SingletoneCreator<Font>() 
     {
@@ -52,7 +52,7 @@ public class Defaults
         }
     });
     
-    static private Singletone<ModelShader> spriteShader =
+    private static final Singletone<ModelShader> spriteShader =
             new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() 
     {
         @Override
@@ -65,7 +65,7 @@ public class Defaults
         }
     });
     
-    static private Singletone<ModelShader> textShader =
+    private static final Singletone<ModelShader> textShader =
             new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() 
     {
         @Override
@@ -78,7 +78,7 @@ public class Defaults
         }
     });
     
-    static public void setDefaultFont( Font font)
+    public static void setDefaultFont( Font font)
     {
         defaultFont.set(font);    
     }
