@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector4f;
  *
  * @author QwertyVVV
  */
-interface Color 
+public interface Color 
 {
-     public Vector4f getVector();
+    public Vector4f getVector();
 }
