@@ -71,6 +71,11 @@ public final class VariableColor implements Color
         color.setW(alpha);
     }
 
+    public void mulColor(float m)
+    {
+        color.set( color.x * m, color.y * m, color.z * m);
+    }
+    
     @Override
     public Vector4f getVector() 
     {
