@@ -31,6 +31,11 @@ public final class VariableColor implements Color
         color.set(c.getVector());
     }
     
+    public VariableColor()
+    {
+        this(1,1,1,1);
+    }
+    
     public void setColor(float red, float green, float blue, float alpha)
     {
         color.set(red, green, blue, alpha);
