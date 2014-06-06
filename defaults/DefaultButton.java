@@ -25,7 +25,7 @@ import vvv.engine.widgets.TextLabel;
  *
  * @author QwertyVVV
  */
-public class DefaultButton extends AbstractButton {
+public final class DefaultButton extends AbstractButton {
 
     private final TextLabel text = new TextLabel("Button");
     private Texture checked = null;
@@ -88,21 +88,21 @@ public class DefaultButton extends AbstractButton {
     }
 
     private void updateTextPosition() {
-        float textX = (int) (getWidth() - text.getWidth()) / 2;
-        float textY = (int) (getHeight() - text.getHeight()) / 2;
+        final float textX = (int) (getWidth() - text.getWidth()) / 2;
+        final float textY = (int) (getHeight() - text.getHeight()) / 2;
 
         text.setPosition(textX, textY);
     }
 
-    public void setColor(float r, float g, float b, float a) {
+    public final void setColor(float r, float g, float b, float a) {
         color.set(r, g, b, a);
     }
 
-    public void setTextColor(float r, float g, float b, float a) {
+    public final void setTextColor(float r, float g, float b, float a) {
         text.setColor(r, g, b, a);
     }
 
-    public void setText(String text) {
+    public final void setText(String text) {
         this.text.setText(text);
         
         if(autosize)
@@ -115,7 +115,8 @@ public class DefaultButton extends AbstractButton {
         updateTextPosition();
     }
 
-    public void setFont(Font font) {
+    public final void setFont(Font font) 
+    {
         this.text.setFont(font);
         updateTextPosition();
     }
@@ -160,18 +161,18 @@ public class DefaultButton extends AbstractButton {
         currentTexture = unchecked;
     }
 
-    static private Matrix4f tmp = new Matrix4f();
+    private static final Matrix4f tmp = new Matrix4f();
 
     private void drawButton() throws Exception {
         ModelShader sh = DefaultGui.getColorMapShader();
-        Camera cam = getCamera();
+        Camera     cam = getCamera();
 
         Defaults.enableTransparency();
         sh.activate();
         sh.setColor(0, color);
-        Matrix4f.mul(cam.getViewProjectionMatrix4f(),
-                position.getMatrix4f(),
-                tmp);
+        Matrix4f.mul(   cam.getViewProjectionMatrix4f(),
+                        position.getMatrix4f(),
+                        tmp);
         sh.setModelViewProjectionMatrix(tmp);
         sh.setTexture(0, currentTexture);
         geometry.activate();
@@ -196,7 +197,7 @@ public class DefaultButton extends AbstractButton {
         updateTextPosition();
     }
 
-    public void setAutoSize(boolean b)
+    public final void setAutoSize(boolean b)
     {
         autosize = b;
     }
