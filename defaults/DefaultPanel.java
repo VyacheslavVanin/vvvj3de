@@ -13,8 +13,9 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Camera;
+import vvv.engine.Color;
+import vvv.engine.ConstColor;
 import vvv.engine.Geometry;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.texture.Texture;
@@ -33,7 +34,7 @@ public class DefaultPanel extends Panel {
     private Texture texture = null;
     private static final float DEFAULT_SIZE = 100.0f;
     private static final float DEFAULT_BORDER = 4.0f;
-    
+
     static private final Geometry.VertexAttribs attribs = new Geometry.VertexAttribs();
 
     static {
@@ -42,13 +43,13 @@ public class DefaultPanel extends Panel {
     }
 
     private final ByteBuffer vbb = BufferUtils.createByteBuffer(16 * attribs.getStride());
+    /* 9 squares, 2 triangles per square,
+     * 3 indeces per triangle, 4 bytes per index */
     static private final int NUM_INDICES = 9 * 2 * 3;
     static private final int INDEX_BUFFER_SIZE = NUM_INDICES * 4;
     private final ByteBuffer ibb = BufferUtils.createByteBuffer(INDEX_BUFFER_SIZE);
-    /* 9 squares, 2 triangles per square,
-     * 3 indeces per triangle, 4 bytes per index */
-    
-    private final Vector4f color = new Vector4f(1.0f, 1.0f, 1.0f, 1);
+
+    private Color color = DefaultSystemColors.getPanelColor();
 
     private Layout layout = null;
 
@@ -67,12 +68,11 @@ public class DefaultPanel extends Panel {
         setSize(DEFAULT_SIZE, DEFAULT_SIZE);
     }
 
-    public DefaultPanel(float width, float height)
-    {
+    public DefaultPanel(float width, float height) {
         this();
         setSize(width, height);
     }
-    
+
     @Override
     protected void onAddWidget(Widget wgt) {
         rearrange();
@@ -94,7 +94,11 @@ public class DefaultPanel extends Panel {
     }
 
     public void setColor(float r, float g, float b, float a) {
-        color.set(r, g, b, a);
+        color = new ConstColor(r, g, b, a);
+    }
+
+    public void setColor(Color c) {
+        color = c;
     }
 
     private static final Matrix4f tmp = new Matrix4f();
@@ -105,7 +109,7 @@ public class DefaultPanel extends Panel {
 
         Defaults.enableTransparency();
         sh.activate();
-        sh.setColor(0, color);
+        sh.setColor(0, color.getVector());
         Matrix4f.mul(   cam.getViewProjectionMatrix4f(),
                         position.getMatrix4f(),
                         tmp);
@@ -141,8 +145,6 @@ public class DefaultPanel extends Panel {
         layout.setSize(w, h);
         rearrange();
     }
-
-    
 
     private void updateGeometry(float w, float h) {
         GridMeshCreator3x3.fillVertexBuffer(vbb, w, h, 4, 4, 4, 4);
