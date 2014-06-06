@@ -12,9 +12,11 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Camera;
+import vvv.engine.Color;
+import vvv.engine.ConstColor;
 import vvv.engine.Geometry;
+import vvv.engine.VariableColor;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.text.Font;
 import vvv.engine.texture.Texture;
@@ -34,25 +36,24 @@ public final class DefaultButton extends AbstractButton {
 
     private Geometry geometry = null;
     private static final float BORDER_WIDTH = 4;
-    private boolean  autosize = true;
-    
-    
+    private boolean autosize = true;
+
     static private final Geometry.VertexAttribs attribs = new Geometry.VertexAttribs();
 
-    static 
-    {
+    static {
         attribs.add(Geometry.VertexAttribs.VERTEX_ATTRIBUTE.POSITION, 3, GL_FLOAT);
         attribs.add(Geometry.VertexAttribs.VERTEX_ATTRIBUTE.TEXCOORD, 2, GL_FLOAT);
     }
     private final ByteBuffer vbb = BufferUtils.createByteBuffer(16 * attribs.getStride());
     static private final int NUM_INDICES = 9 * 2 * 3;
     static private final int INDEX_BUFFER_SIZE = NUM_INDICES * 4;
-    private final ByteBuffer ibb  = BufferUtils.createByteBuffer(INDEX_BUFFER_SIZE);
+    private final ByteBuffer ibb = BufferUtils.createByteBuffer(INDEX_BUFFER_SIZE);
     /* 9 squares, 2 triangles per square,
      * 3 indeces per triangle, 4 bytes per index */
 
-    private final Vector4f color = new Vector4f(1, 1, 1, 1);
-
+    private Color color = DefaultSystemColors.getControlColor();
+    private float colorIntensity = 1;
+    
     public DefaultButton() {
         try {
             checked = DefaultGui.getButtonCheckedTexture();
@@ -71,11 +72,10 @@ public final class DefaultButton extends AbstractButton {
         setPosition(0, 0);
         updateTextPosition();
     }
-    
-    public DefaultButton( String label)
-    {
+
+    public DefaultButton(String label) {
         this();
-        setText(label); 
+        setText(label);
     }
 
     private void updateGeometry(float w, float h) {
@@ -95,62 +95,59 @@ public final class DefaultButton extends AbstractButton {
     }
 
     public final void setColor(float r, float g, float b, float a) {
-        color.set(r, g, b, a);
+        color = new ConstColor(r, g, b, a);
+    }
+
+    public final void setColor(Color c) {
+        color = c;
     }
 
     public final void setTextColor(float r, float g, float b, float a) {
         text.setColor(r, g, b, a);
     }
+    
+    public final void setTextColor( Color c)
+    {
+        text.setColor(c);
+    }
 
     public final void setText(String text) {
         this.text.setText(text);
-        
-        if(autosize)
-        {
-            final float w = this.text.getWidth() + 2*BORDER_WIDTH;
-            final float h = this.text.getHeight() + 2*BORDER_WIDTH;
-            setSize( w, h );
+
+        if (autosize) {
+            final float w = this.text.getWidth() + 2 * BORDER_WIDTH;
+            final float h = this.text.getHeight() + 2 * BORDER_WIDTH;
+            setSize(w, h);
         }
-        
+
         updateTextPosition();
     }
 
-    public final void setFont(Font font) 
-    {
+    public final void setFont(Font font) {
         this.text.setFont(font);
         updateTextPosition();
     }
 
     @Override
     protected void onMouseEnter() {
-        color.x *= 1.5f;
-        color.y *= 1.5f;
-        color.z *= 1.5f;
+        colorIntensity = 1.5f;
     }
 
     @Override
     protected void onMouseLeave() {
-        color.x /= 1.5f;
-        color.y /= 1.5f;
-        color.z /= 1.5f;
+        colorIntensity = 1;
     }
 
-    @Override 
-    protected void onDisable()
-    {
-        color.x /= 1.5f;
-        color.y /= 1.5f;
-        color.z /= 1.5f;
+    @Override
+    protected void onDisable() {
+        colorIntensity = 1/1.5f;
     }
-    
-     @Override 
-    protected void onEnable()
-    {
-        color.x *= 1.5f;
-        color.y *= 1.5f;
-        color.z *= 1.5f;
+
+    @Override
+    protected void onEnable() {
+        colorIntensity = 1;
     }
-    
+
     @Override
     protected void onPress() {
         currentTexture = checked;
@@ -162,17 +159,19 @@ public final class DefaultButton extends AbstractButton {
     }
 
     private static final Matrix4f tmp = new Matrix4f();
-
+    private static final VariableColor colorToDraw = new VariableColor();
     private void drawButton() throws Exception {
         ModelShader sh = DefaultGui.getColorMapShader();
-        Camera     cam = getCamera();
+        Camera cam = getCamera();
 
+        colorToDraw.setColor(color);
+        colorToDraw.mulColor(colorIntensity);
         Defaults.enableTransparency();
         sh.activate();
-        sh.setColor(0, color);
-        Matrix4f.mul(   cam.getViewProjectionMatrix4f(),
-                        position.getMatrix4f(),
-                        tmp);
+        sh.setColor(0, colorToDraw.getVector());
+        Matrix4f.mul(cam.getViewProjectionMatrix4f(),
+                position.getMatrix4f(),
+                tmp);
         sh.setModelViewProjectionMatrix(tmp);
         sh.setTexture(0, currentTexture);
         geometry.activate();
@@ -197,9 +196,8 @@ public final class DefaultButton extends AbstractButton {
         updateTextPosition();
     }
 
-    public final void setAutoSize(boolean b)
-    {
+    public final void setAutoSize(boolean b) {
         autosize = b;
     }
-    
+
 }
