@@ -168,7 +168,7 @@ public final class DefaultButton extends AbstractButton {
         colorToDraw.mulColor(colorIntensity);
         Defaults.enableTransparency();
         sh.activate();
-        sh.setColor(0, colorToDraw.getVector());
+        sh.setColor(0, colorToDraw);
         Matrix4f.mul(cam.getViewProjectionMatrix4f(),
                 position.getMatrix4f(),
                 tmp);

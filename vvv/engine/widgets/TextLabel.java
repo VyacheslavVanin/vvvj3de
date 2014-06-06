@@ -164,7 +164,7 @@ public class TextLabel extends Widget
         Camera      cam     = getCamera();   
 
         shader.activate();
-        shader.setColor(0, textColor.getVector());
+        shader.setColor(0, textColor);
             Matrix4f.mul( cam.getViewProjectionMatrix4f(), 
                           position.getMatrix4f(), 
                           tmp);

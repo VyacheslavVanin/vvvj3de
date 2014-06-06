@@ -109,7 +109,7 @@ public class DefaultPanel extends Panel {
 
         Defaults.enableTransparency();
         sh.activate();
-        sh.setColor(0, color.getVector());
+        sh.setColor(0, color);
         Matrix4f.mul(   cam.getViewProjectionMatrix4f(),
                         position.getMatrix4f(),
                         tmp);
