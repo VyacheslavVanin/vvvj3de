@@ -112,7 +112,7 @@ public class WidgetLayer extends Layer
             Widget wgt = (Widget)objects.get(i);
             if( wgt.isVisible() && wgt.isEnabled() )
             {
-                if( wgt.mouseMove(x, y) )
+                if( wgt.invokeMouseMove(x, y) )
                 {
                     break;
                 }
@@ -128,7 +128,7 @@ public class WidgetLayer extends Layer
             Widget wgt = (Widget)objects.get(i);
             if( wgt.isVisible() && wgt.isEnabled() )
             {
-                if( wgt.leftMouseButtonDown(x, y) )
+                if( wgt.invokeLeftMouseButtonDown(x, y) )
                 {
                     break;
                 }
@@ -144,7 +144,7 @@ public class WidgetLayer extends Layer
             Widget wgt = (Widget)objects.get(i);
             if( wgt.isVisible() && wgt.isEnabled() )
             {
-                if( wgt.leftMouseButtonUp(x, y) )
+                if( wgt.invokeLeftMouseButtonUp(x, y) )
                 {
                     break;
                 }

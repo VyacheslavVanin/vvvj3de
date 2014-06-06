@@ -25,6 +25,9 @@ public abstract class Widget extends GraphicObject
     protected Widget parent = null;
     private final List<Widget> children = new LinkedList<>();
     protected PositionProperties position = new PositionProperties();
+    protected final ListenerContainer onEnterListener = new ListenerContainer();
+    protected final ListenerContainer onLeaveListener = new ListenerContainer();
+    private boolean inArea = false;
     
     
     public final float getWidth()  { return this.width; }
@@ -34,39 +37,8 @@ public abstract class Widget extends GraphicObject
     
     public final void  setWidth( float width)    { this.width = width; }
     public final void  setHeight( float height ) { this.height = height; }
-    protected final void  setPosX( float x)      { this.xpos = x; }
-    protected final void  setPosY( float y)      { this.ypos = y; }
-    
-    protected final float getGlobalPosX()
-    {
-        float  parentPosX;
-        if( parent==null )
-        {
-            parentPosX = 0;
-        }
-        else
-        {
-            parentPosX = parent.getGlobalPosX();
-        }
-        return this.xpos + parentPosX;
-    }
-    
-    protected final float getGlobalPosY()
-    {
-        float  parentPosY;
-        if( parent==null )
-        {
-            parentPosY = 0;
-        }
-        else
-        {
-            parentPosY = parent.getGlobalPosY();
-        }
-        return this.ypos + parentPosY;
-    }
     
     
-   
     public final void setPosition( float x, float y)
     {
         this.setPosX(x);
@@ -82,20 +54,8 @@ public abstract class Widget extends GraphicObject
     }
     
     
-    final void draw() throws Exception
-    {
-        if( visible )
-        {
-            onDraw();
-            for( Widget chld: children )
-            {
-               chld.draw();
-            }
-        }
-    }
-    
     @Override
-    public WidgetLayer getLayer()
+    public final WidgetLayer getLayer()
     {
         if( parent != null )
         {
@@ -107,20 +67,6 @@ public abstract class Widget extends GraphicObject
         }
     }
     
-    protected final ModelShader getTextShader()
-    {
-        return getLayer().getTextShader();
-    }
-    
-    protected final ModelShader getImageShader()
-    {
-        return getLayer().getImageShader();
-    }
-    
-    protected final Camera getCamera()
-    {
-        return getLayer().getCamera();
-    }
     
     public final void setVisible( boolean b)
     {
@@ -158,6 +104,27 @@ public abstract class Widget extends GraphicObject
         return this.enabled;
     }
     
+    
+    
+    public final void addOnEnterListener(ActionListener listener) {
+        this.onEnterListener.addListener(listener);
+    }
+
+    public final void addOnLeaveListener(ActionListener listener) {
+        this.onLeaveListener.addListener(listener);
+    }
+
+    public final void removeOnEnterListener(ActionListener listener) {
+        this.onEnterListener.removeListener(listener);
+    }
+
+    public final void removeOnLeaveListener(ActionListener listener) {
+        this.onLeaveListener.removeListener(listener);
+    }
+
+
+
+    
     public boolean isContainPoint( float x, float y)
     {
         final float px = getGlobalPosX();
@@ -178,7 +145,103 @@ public abstract class Widget extends GraphicObject
         return true;
     }
     
-    protected boolean deleteChild( Widget child )
+    
+        
+    
+    
+    final void draw() throws Exception
+    {
+        if( visible )
+        {
+            onDraw();
+            for( Widget chld: children )
+            {
+               chld.draw();
+            }
+        }
+    }
+        
+    final boolean invokeMouseMove( float x, float y) 
+    {
+        if(enabled && visible)
+        {
+            onMouseMoveBase(x, y);
+        }
+        return false;
+    }
+
+    final boolean invokeLeftMouseButtonDown( float x, float y) 
+    { 
+        if( enabled && visible)
+        {
+            onLeftMouseButtonDown(x, y);
+        }
+        return false;
+    }
+
+    final boolean invokeLeftMouseButtonUp( float x, float y) 
+    { 
+        if( enabled && visible)
+        {
+            onLeftMouseButtonUp(x, y);
+        }
+        return false;
+    }
+
+    
+   
+    
+    protected final void  setPosX( float x)      { this.xpos = x; }
+    protected final void  setPosY( float y)      { this.ypos = y; }
+    
+    protected final float getGlobalPosX()
+    {
+        float  parentPosX;
+        if( parent==null )
+        {
+            parentPosX = 0;
+        }
+        else
+        {
+            parentPosX = parent.getGlobalPosX();
+        }
+        return this.xpos + parentPosX;
+    }
+    
+    protected final float getGlobalPosY()
+    {
+        float  parentPosY;
+        if( parent==null )
+        {
+            parentPosY = 0;
+        }
+        else
+        {
+            parentPosY = parent.getGlobalPosY();
+        }
+        return this.ypos + parentPosY;
+    }
+    
+
+    protected final ModelShader getTextShader()
+    {
+        return getLayer().getTextShader();
+    }
+    
+    protected final ModelShader getImageShader()
+    {
+        return getLayer().getImageShader();
+    }
+    
+    
+    protected final Camera getCamera()
+    {
+        return getLayer().getCamera();
+    }
+   
+
+    
+    protected final boolean deleteChild( Widget child )
     {
         if( children.remove(child) )
         {
@@ -191,7 +254,7 @@ public abstract class Widget extends GraphicObject
         return true;
     }
     
-    protected boolean addChild( Widget child)
+    protected final boolean addChild( Widget child)
     {
         if( children.contains(child) )
         {
@@ -209,12 +272,19 @@ public abstract class Widget extends GraphicObject
         return true;
     }
     
-    protected List<Widget> getChildren()
+    protected final List<Widget> getChildren()
     {
         return children;
     }
     
-    protected abstract void onDraw() throws Exception;
+    protected final boolean isMouseInArea() 
+    {
+        return inArea;
+    }
+    
+    
+    
+    
     protected void onSetPosition(float x, float y)
     {
         position.setPosition( (float)Math.floor(getGlobalPosX() ), 
@@ -222,42 +292,57 @@ public abstract class Widget extends GraphicObject
                               0);
     }
     
+    protected abstract void onDraw() throws Exception;
+   
     protected abstract void onSetSize( float w, float h);
     protected void onAttach() {};
     
 
     protected void onMouseMove(float x,float y) {}
-    protected void onLeftMouseButtonDown( float x, float y) { }
+    protected void onLeftMouseButtonDown( float x, float y) {}
     protected void onLeftMouseButtonUp(float x, float y) {}
     
-    final boolean mouseMove( float x, float y) 
-    {
-        if(enabled && visible)
-        {
-            onMouseMove(x, y);
-        }
-        return false;
-    }
-
-    final boolean leftMouseButtonDown( float x, float y) 
-    { 
-        if( enabled && visible)
-        {
-            onLeftMouseButtonDown(x, y);
-        }
-        return false;
-    }
-
-    final boolean leftMouseButtonUp( float x, float y) 
-    { 
-        if( enabled && visible)
-        {
-            onLeftMouseButtonUp(x, y);
-        }
-        return false;
-    }
-
-    protected void    onEnable()  {}
-    protected void    onDisable() {}
+    protected void onMouseEnter() {}
+    protected void onMouseLeave() {}
     
+    protected void onEnable()  {}
+    protected void onDisable() {}
+    
+    
+    
+    private void onMouseMoveBase(float x, float y)
+    {
+        if( isContainPoint(x, y) )
+        {
+            if( !inArea )
+            {
+                inArea = true;
+                onMouseEnterBase();
+            }
+        }
+        else
+        {
+            if( inArea )
+            {
+                inArea = false;
+                onMouseLeaveBase();
+            }    
+        }
+        
+        onMouseMove(x, y);
+    }
+    
+    private void onMouseEnterBase()
+    {  
+        onMouseEnter();
+        onEnterListener.action();
+    }
+    
+    private void onMouseLeaveBase()
+    {  
+        onMouseLeave();
+        onLeaveListener.action();
+    }
+    
+
 }

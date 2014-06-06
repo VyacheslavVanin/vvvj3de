@@ -43,7 +43,7 @@ public abstract class Panel extends Widget
             List<Widget> list = getChildren();
             for( Widget wgt : list )
             {
-                wgt.leftMouseButtonDown(x, y); 
+                wgt.invokeLeftMouseButtonDown(x, y); 
             }   
         }
     }
@@ -54,7 +54,7 @@ public abstract class Panel extends Widget
         List<Widget> list = getChildren();
         for( Widget wgt : list )
         {
-             wgt.mouseMove(x, y);      
+             wgt.invokeMouseMove(x, y);      
         }   
     }
 
@@ -66,7 +66,7 @@ public abstract class Panel extends Widget
             List<Widget> list = getChildren();
             for( Widget wgt : list )
             {
-                 wgt.leftMouseButtonUp(x, y);
+                 wgt.invokeLeftMouseButtonUp(x, y);
             }   
         }
     }

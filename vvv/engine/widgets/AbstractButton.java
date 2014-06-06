@@ -6,11 +6,9 @@ package vvv.engine.widgets;
  */
 public abstract class AbstractButton extends Widget
 {
-    private final ListenerContainer onClickListener      = new ListenerContainer();
-    private final ListenerContainer onEnterListener      = new ListenerContainer();
-    private final ListenerContainer onLeaveListener      = new ListenerContainer();
-    private final ListenerContainer onPressListener      = new ListenerContainer();
-    private final ListenerContainer onReleaseListener    = new ListenerContainer();
+    private final ListenerContainer onClickListener   = new ListenerContainer();
+    private final ListenerContainer onPressListener   = new ListenerContainer();
+    private final ListenerContainer onReleaseListener = new ListenerContainer();
     
     
     public final void addOnClickListener( ActionListener listener )
@@ -23,29 +21,7 @@ public abstract class AbstractButton extends Widget
         this.onClickListener.removeListener(listener);
     }
     
-    
-    public final void addOnEnterListener( ActionListener listener)
-    {
-        this.onEnterListener.addListener(listener);
-    }
-        
-    public final void removeOnEnterListener( ActionListener listener)
-    {
-        this.onEnterListener.removeListener(listener);
-    }
-    
-    
-    public final void addOnLeaveListener( ActionListener listener )
-    {
-        this.onLeaveListener.addListener(listener);
-    }
-    
-    public final void removeOnLeaveListener( ActionListener listener)
-    {
-        this.onLeaveListener.removeListener(listener);
-    }
-    
-    
+
     public final void addOnPressListener( ActionListener listener )
     {
         this.onPressListener.addListener(listener);
@@ -67,11 +43,9 @@ public abstract class AbstractButton extends Widget
         this.onReleaseListener.removeListener(listener);
     }
     
-    protected  void onClick() {};
-    protected  void onMouseEnter() {};
-    protected  void onMouseLeave() {};
-    protected  void onPress() {};
-    protected  void onRelease() {};
+    protected  void onClick() {}
+    protected  void onPress() {}
+    protected  void onRelease() {}
     
     private void onClickBase()
     {
@@ -79,19 +53,6 @@ public abstract class AbstractButton extends Widget
         onClickListener.action();
     }
     
-    private void onMouseEnterBase()
-    {  
-        onMouseEnter();
-        onEnterListener.action();
-    }
-    
-    private void onMouseLeaveBase()
-    {  
-        onMouseLeave();
-        onLeaveListener.action();
-    }
-    
- 
     private void onPressBase()
     {
         onPress();
@@ -104,38 +65,30 @@ public abstract class AbstractButton extends Widget
         onReleaseListener.action(); 
     }
     
-    protected final boolean isMouseInArea()    { return inArea;         }
-    protected final boolean isLeftButtonHold() { return leftButtonHold; }
     
-    private boolean inArea         = false;
+    
     private boolean leftButtonHold = false;
     
-    @Override
-    protected final void onMouseMove( float x, float y )
-    { 
-        if( isContainPoint(x, y) )
+    protected final boolean isLeftButtonHeld() 
+    {
+        return leftButtonHold; 
+    }
+    
+    @Override 
+    protected void onMouseEnter()
+    {
+        if (leftButtonHold ) 
         {
-            if( !inArea )
-            {
-                inArea = true;
-                onMouseEnterBase();
-                if( leftButtonHold )
-                {
-                    onPressBase();
-                }
-            }
+            onPressBase();
         }
-        else
+    }
+    
+    @Override
+    protected void onMouseLeave()
+    {
+        if( leftButtonHold )
         {
-            if( inArea )
-            {
-                inArea = false;
-                onMouseLeaveBase();
-                if( leftButtonHold )
-                {
-                    onReleaseBase();
-                }
-            }    
+            onReleaseBase();
         }
     }
     

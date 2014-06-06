@@ -256,7 +256,7 @@ public class VVVEngine
                 
                 check.addOnCheckListener(onCheckListener);
                 check.addOnUncheckListener(onUncheckListener);
-                
+               
                 vlayout.addWidget(check);
                
             panel3.addWidget(vlayout);
@@ -538,10 +538,12 @@ public class VVVEngine
             {
                 LOGGER.log(Level.SEVERE,ex.toString(),ex);
             }
-            Display.update();
+            Display.update();            
             Display.sync(60);
         }
     }
+static int frameCounter = 0;
+
 
     public void update()
     {
