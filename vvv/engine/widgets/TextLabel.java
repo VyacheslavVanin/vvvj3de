@@ -24,7 +24,6 @@ import vvv.engine.text.TextLine;
 public class TextLabel extends Widget
 {
     private TextLine textLine = null;
-    private PositionProperties position = new PositionProperties();
     private Color textColor = DefaultSystemColors.getTextColor();
     private VerticalAlign   vAlign;
     private HorizontalAlign hAlign;
