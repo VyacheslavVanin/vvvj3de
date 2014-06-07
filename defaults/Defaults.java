@@ -27,6 +27,9 @@ public class Defaults
     private static final String DEFAULT_TEXT_VERTEX_SHADER_NAME = "defaults/shaders/text.vs";
     private static final String DEFAULT_TEXT_FRAGMENT_SHADER_NAME = "defaults/shaders/text.fs";
 
+    private static final String DEFAULT_SOLID_VERTEX_SHADER_NAME = "defaults/shaders/solidColor.vs";
+    private static final String DEFAULT_SOLID_FRAGMENT_SHADER_NAME = "defaults/shader/solidColor.fs";
+    
     private static final Singletone<Texture> defaultTexture = 
             new Singletone<>(
                               new Singletone.SingletoneCreator<Texture>() 
@@ -78,6 +81,19 @@ public class Defaults
         }
     });
     
+    private static final Singletone<ModelShader> solidColorShader = 
+	    new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() {
+
+	    @Override
+	    public ModelShader create() throws IOException 
+	    {
+		ModelShader ret = new ModelShader();
+		ret.loadFromFiles(DEFAULT_SOLID_VERTEX_SHADER_NAME, 
+                              DEFAULT_SOLID_FRAGMENT_SHADER_NAME);
+		return ret;
+	    }
+    } );
+    
     public static void setDefaultFont( Font font)
     {
         defaultFont.set(font);    
@@ -119,6 +135,11 @@ public class Defaults
     static public ModelShader getTextShader() throws IOException
     {
         return textShader.get();
+    }
+    
+    static public ModelShader getSolidColorShader() throws IOException
+    {
+	return solidColorShader.get();
     }
     
 }
