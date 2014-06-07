@@ -25,8 +25,8 @@ public abstract class Widget extends GraphicObject
     protected Widget parent = null;
     private final List<Widget> children = new LinkedList<>();
     protected PositionProperties position = new PositionProperties();
-    protected final ListenerContainer onEnterListener = new ListenerContainer();
-    protected final ListenerContainer onLeaveListener = new ListenerContainer();
+    private final ListenerContainer onEnterListener = new ListenerContainer();
+    private final ListenerContainer onLeaveListener = new ListenerContainer();
     private boolean inArea = false;
     
     
