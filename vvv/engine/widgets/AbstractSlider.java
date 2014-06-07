@@ -15,6 +15,8 @@ public abstract class AbstractSlider extends Widget
     private int range;
     private int value;
 
+    private final ListenerContainer onDragListener = new ListenerContainer();
+    
     public AbstractSlider(int range)
     {
         setRange( range );
@@ -53,4 +55,58 @@ public abstract class AbstractSlider extends Widget
     {
         return this.range;
     }       
+    
+    
+    public final void addOnDragListener( ActionListener listener)
+    {
+        this.onDragListener.addListener(listener);
+    }
+    
+    public final void removeOnDragListener( ActionListener listener)
+    {
+        this.onDragListener.removeListener(listener);
+    }
+    
+    
+    
+    protected void onMouseDrag(float x, float y) {}
+    
+    
+    
+    private void onDragBase(float x, float y)
+    {
+        onMouseDrag(x, y);
+        onDragListener.action();
+    }
+    
+    
+    private boolean dragged = false;
+    
+    @Override
+    protected void onLeftMouseButtonDown(float x, float y)
+    {
+        if( isContainPoint(x, y) )
+        {
+            dragged = true;
+        } 
+    }
+    
+    @Override 
+    protected void onLeftMouseButtonUp( float x, float y)
+    {
+	    if( dragged )
+        {
+            dragged = false;
+        }
+    }
+    
+    @Override
+    protected void onMouseMove( float x, float y)
+    {
+	    if( dragged )
+        {
+            onDragBase(x, y);
+        }
+    }
+    
 }
