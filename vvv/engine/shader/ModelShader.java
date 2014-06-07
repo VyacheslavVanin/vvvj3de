@@ -20,8 +20,8 @@ public class ModelShader extends Shader
     private int location_modelMatrix;
     private int location_modelNormalMatrix;
     private int location_viewPosition;
-    private int[] location_texture = new int[Constants.NUM_TEXTURE_UNITS];
-    private int[] location_color = new int[Constants.NUM_COLOR_UNIFORMS];
+    private final int[] location_texture = new int[Constants.NUM_TEXTURE_UNITS];
+    private final int[] location_color = new int[Constants.NUM_COLOR_UNIFORMS];
     private int location_textureCoordData;
     private int location_materialDiffuseColor;
     private int location_materialDiffuseIntensity;
@@ -29,7 +29,7 @@ public class ModelShader extends Shader
     private int location_materialSpecularIntensity;
     private int location_materialSpecularHardness;
     private int location_materialEmit;
-    private FloatBuffer fb;
+    private final FloatBuffer fb;
     public static final String UNIFORM_NAME_MODEL_VIEW_PROJECTION_MATRIX = "MVPMatrix";
     public static final String UNIFORM_NAME_MODEL_MATRIX = "MMatrix";
     public static final String UNIFORM_NAME_NORMAL_MATRIX = "NormalMatrix";
