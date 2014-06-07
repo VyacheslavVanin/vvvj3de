@@ -228,9 +228,11 @@ public class VVVEngine
         DefaultPanel panel3 = new DefaultPanel(500,350);
             panel3.setPosition(50, 300);
             Layout vlayout = new VerticalLayout();
-                for( int i = 0; i < 5; ++i)
+                for( int i = 0; i < 6; ++i)
                 {
                     DefaultButton bb = new DefaultButton("Button " + i);
+                    bb.setAutoSize(false);
+                    bb.setText("Very very Long Strin");
                     bb.addOnClickListener(listener);
                     vlayout.addWidget(bb);
                 }
@@ -502,7 +504,13 @@ public class VVVEngine
     
     public void render() throws TextureNotLoadedException
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
+       
+        // Scissor test
+       // glScissor( 50, 50, 400, 400);
+       // glEnable(GL_SCISSOR_TEST);
+       // glDisable(GL_SCISSOR_TEST);
+        
         screen.draw();
     }
 
