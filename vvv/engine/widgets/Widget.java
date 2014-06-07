@@ -6,7 +6,9 @@ package vvv.engine.widgets;
 
 import java.util.LinkedList;
 import java.util.List;
+import static org.lwjgl.opengl.GL11.*;
 import vvv.engine.Camera;
+import vvv.engine.Rect;
 import vvv.engine.shader.ModelShader;
 
 /**
@@ -19,6 +21,9 @@ public abstract class Widget extends GraphicObject
     private float height;
     private float xpos;
     private float ypos;
+    
+    private final Rect  clipArea = new Rect();
+    
     private boolean visible = true;
     private boolean enabled = true;
     
@@ -35,8 +40,17 @@ public abstract class Widget extends GraphicObject
     public final float getPosX()   { return this.xpos;  }
     public final float getPosY()   { return this.ypos;  }
     
-    public final void  setWidth( float width)    { this.width = width; }
-    public final void  setHeight( float height ) { this.height = height; }
+    public final void  setWidth( float width)    
+    { 
+        this.width = width;   
+        clipArea.setWidth(width);
+    }
+    
+    public final void  setHeight( float height ) 
+    { 
+        this.height = height; 
+        clipArea.setHeight(height);
+    }
     
     
     public final void setPosition( float x, float y)
@@ -148,7 +162,20 @@ public abstract class Widget extends GraphicObject
     {
         if( visible )
         {
+            if( parent != null )
+            {
+                Rect.intersection(clipArea, parent.clipArea, clipArea);
+            }
+            else
+            {
+                clipArea.set(getGlobalPosX(), getGlobalPosY(), getWidth(), getHeight());
+            }
+            glEnable( GL_SCISSOR_TEST );
+            glScissor( (int)clipArea.getLeft(),  (int)clipArea.getBottom(), 
+                       (int)clipArea.getWidth(), (int)clipArea.getHeight() );
             onDraw();
+            glDisable( GL_SCISSOR_TEST );
+            
             for( Widget chld: children )
             {
                chld.draw();
@@ -184,8 +211,17 @@ public abstract class Widget extends GraphicObject
     }
 
  
-    protected final void  setPosX( float x)      { this.xpos = x; }
-    protected final void  setPosY( float y)      { this.ypos = y; }
+    protected final void  setPosX( float x)      
+    { 
+        this.xpos = x; 
+        clipArea.setLeft( getGlobalPosX());
+    }
+    
+    protected final void  setPosY( float y)      
+    { 
+        this.ypos = y; 
+        clipArea.setBottom( getGlobalPosY());
+    }
     
     protected final float getGlobalPosX()
     {

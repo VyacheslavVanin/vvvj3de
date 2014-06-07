@@ -172,10 +172,8 @@ public class TextLabel extends Widget
         shader.setModelViewProjectionMatrix(tmp);
         shader.setTexture( 0, textLine.getTexture() );
         
-        GL11.glScissor((int)getGlobalPosX(), (int)getGlobalPosY(), (int)getWidth(), (int)getHeight());
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+       
         textLine.draw();
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
         
     }   
     private static  Matrix4f tmp = new Matrix4f();
