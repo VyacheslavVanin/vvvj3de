@@ -198,6 +198,7 @@ public final class DefaultButton extends AbstractButton {
 
     public final void setAutoSize(boolean b) {
         autosize = b;
+        text.setAutoSize(b);
     }
 
 }
