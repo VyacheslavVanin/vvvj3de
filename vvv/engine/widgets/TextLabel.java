@@ -177,6 +177,7 @@ public class TextLabel extends Widget
     @Override
     protected void onSetSize(float w, float h)
     {
+        autosize = false;
         onSetPosition( getPosX(), getPosY() );
     }
 }
