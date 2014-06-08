@@ -28,7 +28,7 @@ public class DefaultGui
     private static final String GUI_TRANSPARENT_COLOR_VERTEX_SHADER = "transparent_color.vs";
     private static final String GUI_COLOR_MAP_FRAG_SHADER = "color_map.fs";
     private static final String GUI_COLOR_MAP_VERTEX_SHADER = "color_map.vs";
-    
+  
     
     private static final Singletone<TextureContainer> guiTextures = 
             new Singletone<>(new Singletone.SingletoneCreator<TextureContainer>() 

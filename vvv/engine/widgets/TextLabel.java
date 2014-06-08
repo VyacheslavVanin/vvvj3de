@@ -9,7 +9,6 @@ import defaults.Defaults;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
 import vvv.engine.Color;

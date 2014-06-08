@@ -28,7 +28,7 @@ public class Defaults
     private static final String DEFAULT_TEXT_FRAGMENT_SHADER_NAME = "defaults/shaders/text.fs";
 
     private static final String DEFAULT_SOLID_VERTEX_SHADER_NAME = "defaults/shaders/solidColor.vs";
-    private static final String DEFAULT_SOLID_FRAGMENT_SHADER_NAME = "defaults/shader/solidColor.fs";
+    private static final String DEFAULT_SOLID_FRAGMENT_SHADER_NAME = "defaults/shaders/solidColor.fs";
     
     private static final Singletone<Texture> defaultTexture = 
             new Singletone<>(
