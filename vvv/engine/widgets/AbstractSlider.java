@@ -37,6 +37,7 @@ public abstract class AbstractSlider extends Widget
         }
         
         this.range = range;
+        setValue( range / 2);
     }
     
     
