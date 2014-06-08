@@ -67,8 +67,7 @@ public final class DefaultButton extends AbstractButton {
         GridMeshCreator3x3.fillIndexBuffer(ibb);
 
         addChild(text);
-        text.setColor(0, 0, 0, 1);
-        setSize(text.getWidth(), text.getHeight());
+        text.setColor(0, 0, 0, 1);   
         setPosition(0, 0);
         updateTextPosition();
     }
@@ -88,9 +87,17 @@ public final class DefaultButton extends AbstractButton {
     }
 
     private void updateTextPosition() {
-        final float textX = (int) (getWidth() - text.getWidth()) / 2;
-        final float textY = (int) (getHeight() - text.getHeight()) / 2;
-
+        final float widgetWidth = getWidth();
+        final float widgetHeight= getHeight();
+            
+        final float textX = (int) (widgetWidth - text.getWidth()) / 2;
+        final float textY = (int) (widgetHeight - text.getHeight()) / 2;
+        
+        if(autosize == false)
+        {
+            text.setSize( widgetWidth - 2*BORDER_WIDTH , widgetHeight  - 2*BORDER_WIDTH);
+        }
+        
         text.setPosition(textX, textY);
     }
 
@@ -192,8 +199,9 @@ public final class DefaultButton extends AbstractButton {
 
     @Override
     protected void onSetSize(float w, float h) {
+        setAutoSize(false);
         updateGeometry(w, h);
-        updateTextPosition();
+        updateTextPosition();     
     }
 
     public final void setAutoSize(boolean b) {

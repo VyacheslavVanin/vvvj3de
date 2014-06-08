@@ -164,6 +164,7 @@ public abstract class Widget extends GraphicObject
         {
             if( parent != null )
             {
+                clipArea.set(getGlobalPosX(), getGlobalPosY(), getWidth(), getHeight());
                 Rect.intersection(clipArea, parent.clipArea, clipArea);
             }
             else

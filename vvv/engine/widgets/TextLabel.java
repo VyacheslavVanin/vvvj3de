@@ -175,7 +175,7 @@ public class TextLabel extends Widget
         textLine.draw();
         
     }   
-    private static  Matrix4f tmp = new Matrix4f();
+    private static final Matrix4f tmp = new Matrix4f();
 
     @Override
     protected void onSetSize(float w, float h)
