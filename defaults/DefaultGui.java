@@ -30,7 +30,7 @@ public class DefaultGui
     private static final String GUI_COLOR_MAP_VERTEX_SHADER = "color_map.vs";
     
     
-    private static Singletone<TextureContainer> guiTextures = 
+    private static final Singletone<TextureContainer> guiTextures = 
             new Singletone<>(new Singletone.SingletoneCreator<TextureContainer>() 
     {
         @Override
@@ -48,7 +48,7 @@ public class DefaultGui
         }
     });
     
-    private static Singletone<ModelShader> panelShader = 
+    private static final Singletone<ModelShader> panelShader = 
             new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() 
             {
                 @Override
@@ -61,7 +61,7 @@ public class DefaultGui
                 }
             });
     
-    private static  Singletone<ModelShader> colorMapShader = 
+    private static final  Singletone<ModelShader> colorMapShader = 
             new Singletone<>(new Singletone.SingletoneCreator<ModelShader>() {
 
         @Override
