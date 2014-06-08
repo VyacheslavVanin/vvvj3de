@@ -61,14 +61,11 @@ public abstract class Panel extends Widget
     @Override
     protected void onLeftMouseButtonUp(float x, float y)
     {
-        if( isContainPoint(x, y) )
+        List<Widget> list = getChildren();
+        for( Widget wgt : list )
         {
-            List<Widget> list = getChildren();
-            for( Widget wgt : list )
-            {
-                 wgt.invokeLeftMouseButtonUp(x, y);
-            }   
-        }
+             wgt.invokeLeftMouseButtonUp(x, y);
+        }   
     }
 
   
