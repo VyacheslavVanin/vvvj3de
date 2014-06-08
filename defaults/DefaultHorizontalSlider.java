@@ -28,7 +28,7 @@ public class DefaultHorizontalSlider extends AbstractSlider
         leftPart.setColor( DefaultSystemColors.getSliderActivePartColor() );
         rightPart.setColor( DefaultSystemColors.getSliderPassivePartColor());
         
-        setSize(200, 40);
+        setSize(200, 24);
     }
     
     public DefaultHorizontalSlider()
@@ -128,6 +128,6 @@ public class DefaultHorizontalSlider extends AbstractSlider
         rightPart.setPosition( globalPosX + rightOffset, offsetY, 0);
     }
     
-    private final int DEFAULT_CENTER_WIDTH = 15;
+    private final int DEFAULT_CENTER_WIDTH = 30;
     
 }
