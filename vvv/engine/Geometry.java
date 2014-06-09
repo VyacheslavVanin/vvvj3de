@@ -107,7 +107,7 @@ public class Geometry
         }
         
  
-        private List<VertexAttribPtr> list = new ArrayList<>();
+        private final List<VertexAttribPtr> list = new ArrayList<>();
         private int stride = 0;
         
         /**
