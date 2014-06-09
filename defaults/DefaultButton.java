@@ -124,7 +124,7 @@ public final class DefaultButton extends AbstractButton {
         if (autosize) {
             final float w = this.text.getWidth() + 2 * BORDER_WIDTH;
             final float h = this.text.getHeight() + 2 * BORDER_WIDTH;
-            setSize(w, h);
+            privateSetSize(w, h);
         }
 
         updateTextPosition();
@@ -204,6 +204,14 @@ public final class DefaultButton extends AbstractButton {
         updateTextPosition();     
     }
 
+    private void privateSetSize(float w, float h)
+    {
+        setWidth(w);
+        setHeight(h);
+        updateGeometry(w, h);
+        updateTextPosition(); 
+    }
+    
     public final void setAutoSize(boolean b) {
         autosize = b;
         text.setAutoSize(b);
