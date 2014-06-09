@@ -40,12 +40,24 @@ public abstract class Layout extends Panel
         other.rearrange();
     }
     
-    protected abstract void rearrange();
+    protected void rearrange() 
+    {
+        List<Widget> l = getChildren();
+        for( Widget w : l )
+        {
+            if( w instanceof Layout )
+            {
+                w.setSize( getWidth(), getHeight() );
+            }
+        }
+    };
     
     @Override
     protected void onSetSize(float w, float h)
     {
         super.onSetSize(w, h); //To change body of generated methods, choose Tools | Templates.
+        
+        
         rearrange();
     }
 

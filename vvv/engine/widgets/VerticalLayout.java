@@ -15,6 +15,7 @@ public class VerticalLayout extends Layout
     @Override
     protected void rearrange()
     {
+        super.rearrange();
         List<Widget> l = getChildren();
         float fullWeight = 0;
         for( Widget wgt: l)
@@ -34,6 +35,6 @@ public class VerticalLayout extends Layout
             
             wgt.setPosition( offsetX, (h + offsetY));
         }
-   
+
     }   
 }
