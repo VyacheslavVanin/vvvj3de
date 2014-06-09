@@ -160,8 +160,8 @@ public class TextLabel extends Widget
     @Override
     protected void onDraw() throws Exception
     {
-        ModelShader shader  = getTextShader();
-        Camera      cam     = getCamera();   
+        final ModelShader shader  = getTextShader();
+        final Camera      cam     = getCamera();   
 
         shader.activate();
         shader.setColor(0, textColor);

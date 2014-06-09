@@ -181,6 +181,7 @@ public class TextLine
         if( changed )
         {
             genMesh();
+            changed = false;
         }
     }
     
