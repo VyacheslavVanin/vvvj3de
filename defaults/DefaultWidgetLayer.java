@@ -19,8 +19,8 @@ public class DefaultWidgetLayer extends WidgetLayer
     public DefaultWidgetLayer() throws IOException
     {
         super();
-        ModelShader textShader = DefaultGui.getTextShader();
-        ModelShader imageShader = DefaultGui.getSpriteShader();
+        final ModelShader textShader = DefaultGui.getTextShader();
+        final ModelShader imageShader = DefaultGui.getSpriteShader();
         
         setDepth(0.1f);
         setTextShader(textShader);

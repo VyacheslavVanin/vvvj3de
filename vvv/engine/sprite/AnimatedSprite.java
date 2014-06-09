@@ -73,7 +73,7 @@ public class AnimatedSprite extends Sprite
         
         if( state == ANIMATION_STATE.PLAY )
         {
-            long millis = Globals.Time.get();
+            final long millis = Globals.Time.get();
             return  animation.getCurrent(animationStartTime, millis, 
                                          animationSpeed, looped);
         }

@@ -5,7 +5,6 @@
 package vvv.engine.widgets;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
 import vvv.engine.Camera;
@@ -30,7 +29,7 @@ public abstract class Widget extends GraphicObject
     
     protected Widget parent = null;
     private final List<Widget> children = new ArrayList<>();
-    protected PositionProperties position = new PositionProperties();
+    protected final PositionProperties position = new PositionProperties();
     private final ListenerContainer onEnterListener = new ListenerContainer();
     private final ListenerContainer onLeaveListener = new ListenerContainer();
     private boolean inArea = false;

@@ -12,10 +12,10 @@ package vvv.engine.texture;
 
 public class Texture
 {
-    private TextureLowLevel texture;
-    private TexCoordData    coords;
-    private int             width;
-    private int             height;
+    private final TextureLowLevel texture;
+    private final TexCoordData    coords;
+    private final int             width;
+    private final int             height;
     
     Texture(TextureLowLevel texture, TexCoordData coords, int widht, int height)
     {

@@ -14,10 +14,10 @@ import vvv.engine.texture.Texture;
  * @brief  Class contain frames of one animation, and return current frame in 
  *         current time
  */
-public class SpriteAnimation
+public final class SpriteAnimation
 {
-    private List<Texture> frames;
-    private long          duration;
+    private final List<Texture> frames;
+    private final long          duration;
     
     /**
      * @brief Constructor
@@ -37,17 +37,17 @@ public class SpriteAnimation
     /**
      * 
      * @param begin start time of animation
-     * @param now current time in milliseconds srom epoch (System.currentTimeMillis())
+     * @param now current time in milliseconds from epoch (System.currentTimeMillis())
      * @param speed play speed multiplier 
      * @param looped is animation Looped
      * @return  Texture corresponding to current time (now)
      */
     public Texture getCurrent(long begin, long now, float speed, boolean looped)
     {    
-        int numFrames = frames.size();
-        long frameDuration = (long)(duration/speed) / numFrames;
+        final int numFrames = frames.size();
+        final long frameDuration = (long)(duration/speed) / numFrames;
         
-        int CurrentIndex = (int)( ( now - begin ) / frameDuration );
+        final int CurrentIndex = (int)( ( now - begin ) / frameDuration );
         if( looped )
         {
             return frames.get(CurrentIndex % numFrames);

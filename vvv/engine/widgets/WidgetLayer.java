@@ -28,12 +28,13 @@ public class WidgetLayer extends Layer
     @Override
     public void draw() throws Exception 
     {
-        List<GraphicObject> objects = getObjects();
+        final List<GraphicObject> objects = getObjects();
         vpmatrix = camera.getViewProjectionMatrix4f();
         
-        for(int i=0; i < objects.size(); ++i )
+        final int size = objects.size();
+        for(int i=0; i < size; ++i )
         {
-            Widget wgt = (Widget)objects.get(i);
+            final Widget wgt = (Widget)objects.get(i);
             wgt.draw();
         }
     }
@@ -41,8 +42,8 @@ public class WidgetLayer extends Layer
     @Override
     public void onResize() 
     {
-        float h = getHeight();
-        float w = getWidth();
+        final float h = getHeight();
+        final float w = getWidth();
         camera.setOrtho(h , 0, 0, w , -2, 2);
         camera.setBodyForward(new Vec3(0, 0, 1), new Vec3(0, 1, 0));
         camera.setPos( 0, 0, -1);    
@@ -109,7 +110,7 @@ public class WidgetLayer extends Layer
         final int numOjects = objects.size();
         for(int i=0; i < numOjects; ++i )
         {
-            Widget wgt = (Widget)objects.get(i);
+            final Widget wgt = (Widget)objects.get(i);
             if( wgt.isVisible() && wgt.isEnabled() )
             {
                 if( wgt.invokeMouseMove(x, y) )
@@ -122,10 +123,11 @@ public class WidgetLayer extends Layer
     
     public void onLeftMouseButtonDown( float x, float y) 
     {
-        List<GraphicObject> objects = getObjects();
-        for(int i=0; i < objects.size(); ++i )
+        final List<GraphicObject> objects = getObjects();
+        final int size = objects.size();
+        for(int i=0; i < size; ++i )
         {
-            Widget wgt = (Widget)objects.get(i);
+            final Widget wgt = (Widget)objects.get(i);
             if( wgt.isVisible() && wgt.isEnabled() )
             {
                 if( wgt.invokeLeftMouseButtonDown(x, y) )
@@ -138,10 +140,11 @@ public class WidgetLayer extends Layer
     
     public void onLeftMouseButtonUp( float x, float y) 
     {
-        List<GraphicObject> objects = getObjects();
-        for(int i=0; i < objects.size(); ++i )
+        final List<GraphicObject> objects = getObjects();
+        final int size = objects.size();
+        for(int i=0; i < size; ++i )
         {
-            Widget wgt = (Widget)objects.get(i);
+            final Widget wgt = (Widget)objects.get(i);
             if( wgt.isVisible() && wgt.isEnabled() )
             {
                 if( wgt.invokeLeftMouseButtonUp(x, y) )

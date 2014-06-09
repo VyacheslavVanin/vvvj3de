@@ -29,16 +29,16 @@ public class SpriteLayer extends Layer
         init();      
     }
 
-    private Vector4f res = new Vector4f();
-    private Vector4f src = new Vector4f();
+    private final Vector4f res = new Vector4f();
+    private final Vector4f src = new Vector4f();
     
     
     private boolean isInView(Sprite spr)
     {
-        float x = spr.getScale().x * 0.5f;
-        float y = spr.getScale().y * 0.5f;
+        final float x = spr.getScale().x * 0.5f;
+        final float y = spr.getScale().y * 0.5f;
 
-        Vector3f v3 = spr.getPosition();
+        final Vector3f v3 = spr.getPosition();
         src.set(v3.x+x, v3.y+y, v3.z, 1);
         Matrix4f.transform(camera.getViewProjectionMatrix4f(), src, res);
 
@@ -99,8 +99,8 @@ public class SpriteLayer extends Layer
     @Override
     public void onResize()
     {
-        float h = getHeight();
-        float w = getWidth();
+        final float h = getHeight();
+        final float w = getWidth();
         camera.setOrtho(h / 2, -h / 2, -w / 2, w / 2, -2, 2);
         camera.setBodyForward(new Vec3(0, 0, 1), new Vec3(0, 1, 0));
         camera.setPos(0, 0, 0);
@@ -110,11 +110,7 @@ public class SpriteLayer extends Layer
     @Override
     protected boolean onAddObject(GraphicObject obj)
     {
-        if (obj instanceof Sprite)
-        {
-            return true;
-        }
-        return false;
+        return obj instanceof Sprite;
     }
 
     @Override
@@ -129,8 +125,7 @@ public class SpriteLayer extends Layer
     }
 
     private void initCamera()
-    {
-        camera = new Camera();
+    {  
         camera.setOrtho(1, -1, -1, 1, -1, 1);
         camera.setBodyForward(new Vec3(0, 0, 1), new Vec3(0, 1, 0));
         camera.lookAt(0, 0, 1);
@@ -146,8 +141,8 @@ public class SpriteLayer extends Layer
         this.shader = shader;
     }
       
-    private Camera camera;
+    private final Camera camera = new Camera();
     private ModelShader shader = null;
-    private Matrix4f tmp = new Matrix4f();
-    private Matrix4f vpmatrix = new Matrix4f();
+    private final Matrix4f tmp = new Matrix4f();
+    private Matrix4f vpmatrix = null;
 }

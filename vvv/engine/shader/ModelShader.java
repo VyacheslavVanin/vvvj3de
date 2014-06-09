@@ -48,7 +48,6 @@ public class ModelShader extends Shader
     public ModelShader()
     {
         fb = BufferUtils.createFloatBuffer(16);
-        //fb.flip();
     }
 
     @Override
@@ -176,7 +175,7 @@ public class ModelShader extends Shader
         {
             glUniform1i(location_texture[ unit], unit);
         }
-        Vector4f v = tex.getTexCoord().get();
+        final Vector4f v = tex.getTexCoord().get();
         glUniform4f(location_textureCoordData, v.x, v.y, v.z, v.w);
         return true;
     }

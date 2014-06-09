@@ -2,7 +2,9 @@ package lwjgl;
 
 import defaults.DefaultButton;
 import defaults.DefaultCheckbox;
+import defaults.DefaultHorizontalSlider;
 import defaults.DefaultPanel;
+import defaults.DefaultSystemColors;
 import defaults.DefaultWidgetLayer;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
 import vvv.engine.Camera;
+import vvv.engine.VariableColor;
 import vvv.engine.sprite.AnimatedSprite;
 import vvv.engine.sprite.SpriteAnimation;
 import vvv.engine.sprite.StaticSprite;
@@ -205,13 +208,14 @@ public class VVVEngine
         animationRotation = new SpriteAnimation(framesRot, 1200);
     }
     
+    static Random random = new Random();
+    
     public void vvvInitGui(Screen screen) throws IOException
     {
         WidgetLayer wl = new DefaultWidgetLayer();
         
         
         final ActionListener listener = new ActionListener() {
-
             @Override
             public void action() {
                 StaticSprite     spr = new StaticSprite();
@@ -225,14 +229,25 @@ public class VVVEngine
             }
         };
         
+        final ActionListener changeColor = new ActionListener()
+        {
+            @Override
+            public void action() 
+            {
+                VariableColor c = DefaultSystemColors.getControlColor();
+                c.setColor( random.nextFloat(), random.nextFloat(), random.nextFloat());
+            }
+        };
+        
         DefaultPanel panel3 = new DefaultPanel(500,350);
             panel3.setPosition(50, 300);
             Layout vlayout = new VerticalLayout();
-                for( int i = 0; i < 6; ++i)
+                for( int i = 0; i < 5; ++i)
                 {
                     DefaultButton bb = new DefaultButton("Button " + i);
                     bb.setAutoSize(false);
-                    bb.setText("Very very Long Strin");
+                    bb.setText("Very very Long String 1234567890!");
+                    bb.setSize( 200, bb.getHeight()); 
                     bb.addOnClickListener(listener);
                     vlayout.addWidget(bb);
                 }
@@ -261,6 +276,27 @@ public class VVVEngine
                
                 vlayout.addWidget(check);
                
+                
+                
+                ActionListener sliderListener = new ActionListener() 
+                {
+                    @Override
+                    public void action() 
+                    {
+                        tl.setText( "" + slider.getValue() );
+                        //VariableColor c = DefaultSystemColors.getPanelColor();
+                        //c.setAlpha( slider.getValue() / (float)slider.getRange() );
+                        //panel.setWidth( 200 + slider.getValue()/(float)slider.getRange() * 200 );
+                        panel.setSize( 300 + slider.getValue()/(float)slider.getRange() * 200, panel.getHeight());
+                    }
+                };
+                slider = new DefaultHorizontalSlider();
+                slider.setRange(50);
+                slider.addOnDragListener(sliderListener);
+                vlayout.addWidget(slider);
+                
+                
+                
             panel3.addWidget(vlayout);
         wl.addObject(panel3);       
   
@@ -271,12 +307,14 @@ public class VVVEngine
                 for( int i = 0; i < 4; ++i)
                 {
                     DefaultButton bb = new DefaultButton("Button " + i);
+                    bb.addOnClickListener( changeColor);
                     hlayout.addWidget( bb );
                 }
                TestDisable = panel4;
             panel4.addWidget(hlayout);
         panel4.addWidget(hlayout);    
         wl.addObject(panel4);
+        panel = panel4;
         
                 
         tl = new TextLabel( "text" );
@@ -286,6 +324,7 @@ public class VVVEngine
               
         screen.setGuiLayer(wl); 
     }
+    Panel     panel = null;
     TextLabel activeLabel = null;
     int       clickcounter = 0;
     Widget TestDisable = null;
@@ -351,6 +390,7 @@ public class VVVEngine
         }  
     }
 
+    private DefaultHorizontalSlider slider;
     private TextLabel tl = null;
     private String texts = "";
     

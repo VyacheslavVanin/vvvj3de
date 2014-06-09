@@ -88,7 +88,7 @@ public class DefaultHorizontalSlider extends AbstractSlider
     protected void onMouseDrag(float x, float y)
     {
         final float xpos = getGlobalPosX();
-        final float dx = Math.max( x - getGlobalPosX(), 0 );
+        final float dx = Math.max( x - xpos, 0 );
         final float width = getWidth();
         setValue(  (int) ((dx / width) * getRange()));
         calcParts();
