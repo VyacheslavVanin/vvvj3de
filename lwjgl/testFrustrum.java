@@ -20,7 +20,7 @@ public class testFrustrum
         VVVEngine l = new VVVEngine();
         try
         {
-            l.setDisplayMode(1920, 1080, true);
+            l.setDisplayMode(1920, 1080, false);
             l.create();
             l.run();         
         }
