@@ -67,22 +67,23 @@ public class SpriteLayer extends Layer
         {
             throw new Exception("no assigned Shader to layer");
         }
-        List<GraphicObject> objects = getObjects();
+        final List<GraphicObject> objects = getObjects();
         
         vpmatrix = camera.getViewProjectionMatrix4f();
        
-        Geometry sg = SpriteGeometry.getGeometry();
+        final Geometry sg = SpriteGeometry.getGeometry();
         sg.activate();
         shader.activate();
      
         Globals.Time.update();
         
-        for( int i = 0; i < objects.size(); ++i)
+        final int size = objects.size();
+        for( int i = 0; i < size; ++i)
         {
-            GraphicObject go = objects.get(i);
+            final GraphicObject go = objects.get(i);
             // all objects in list are instances of Sprite
             // (was checked onAddObject). So it's safe to cast.
-            Sprite spr = (Sprite) go;     
+            final Sprite spr = (Sprite) go;     
             
             if( isInView(spr))
             { 
