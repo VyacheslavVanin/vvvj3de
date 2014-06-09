@@ -41,8 +41,10 @@ public abstract class Panel extends Widget
         if( isContainPoint(x, y) )
         {
             List<Widget> list = getChildren();
-            for( Widget wgt : list )
+            final int s = list.size();
+            for( int i =0; i < s; ++i )
             {
+                final Widget wgt = list.get(i);
                 wgt.invokeLeftMouseButtonDown(x, y); 
             }   
         }
@@ -52,9 +54,11 @@ public abstract class Panel extends Widget
     protected void onMouseMove(float x, float y)
     {
         List<Widget> list = getChildren();
-        for( Widget wgt : list )
+        final int s = list.size();
+        for( int i =0; i < s; ++i )
         {
-             wgt.invokeMouseMove(x, y);      
+            final Widget wgt = list.get(i);
+            wgt.invokeMouseMove(x, y);      
         }   
     }
 
@@ -62,9 +66,11 @@ public abstract class Panel extends Widget
     protected void onLeftMouseButtonUp(float x, float y)
     {
         List<Widget> list = getChildren();
-        for( Widget wgt : list )
+        final int s = list.size();
+        for( int i =0; i < s; ++i )
         {
-             wgt.invokeLeftMouseButtonUp(x, y);
+            final Widget wgt = list.get(i);
+            wgt.invokeLeftMouseButtonUp(x, y);
         }   
     }
 

@@ -18,15 +18,19 @@ public class HorizontalLayout extends Layout
         super.rearrange();
         List<Widget> l = getChildren();
         float fullWeight = 0;
-        for( Widget wgt: l)
+        
+        final int size = l.size();
+        for( int i =0; i < size; ++i )
         {
+            final Widget wgt = l.get(i);
             fullWeight += wgt.getWidth();
         }
         
         float fullWidth = getWidth();
         float h = 0;
-        for( Widget wgt: l)
+        for( int i =0; i < size; ++i )
         {
+            final Widget wgt = l.get(i);
             float weight = wgt.getWidth() / fullWeight;
             float partWidth = fullWidth * weight; // height of part
             

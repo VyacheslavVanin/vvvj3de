@@ -4,6 +4,7 @@
  */
 package vvv.engine.widgets;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
@@ -28,7 +29,7 @@ public abstract class Widget extends GraphicObject
     private boolean enabled = true;
     
     protected Widget parent = null;
-    private final List<Widget> children = new LinkedList<>();
+    private final List<Widget> children = new ArrayList<>();
     protected PositionProperties position = new PositionProperties();
     private final ListenerContainer onEnterListener = new ListenerContainer();
     private final ListenerContainer onLeaveListener = new ListenerContainer();
@@ -177,8 +178,11 @@ public abstract class Widget extends GraphicObject
             onDraw();
             glDisable( GL_SCISSOR_TEST );
             
-            for( Widget chld: children )
+            final int size = children.size();
+            for(int i =0; i < size; ++i)
+            //for( Widget chld: children )
             {
+               final Widget chld = children.get(i);
                chld.draw();
             }
         }

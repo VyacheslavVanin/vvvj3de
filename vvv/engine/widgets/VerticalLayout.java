@@ -18,15 +18,19 @@ public class VerticalLayout extends Layout
         super.rearrange();
         List<Widget> l = getChildren();
         float fullWeight = 0;
-        for( Widget wgt: l)
+        
+        final int size = l.size();
+        for( int i = 0; i < size; ++i)
         {
+            final Widget wgt = l.get(i);
             fullWeight += wgt.getHeight();
         }
         
         float fullHeight = getHeight();
         float h = fullHeight;
-        for( Widget wgt: l)
+        for( int i = 0; i < size; ++i)
         {
+            final Widget wgt = l.get(i);
             float weight = wgt.getHeight() / fullWeight;
             float partHeight = fullHeight * weight; // height of part
             h -= partHeight;

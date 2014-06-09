@@ -26,8 +26,10 @@ public class ListenerContainer
     
     public synchronized void action()
     {
-        for( ActionListener al: list )
+        final int size = list.size();
+        for( int i = 0; i < size; ++i )
         {
+            final ActionListener al = list.get(i);
             al.action();
         }
     }

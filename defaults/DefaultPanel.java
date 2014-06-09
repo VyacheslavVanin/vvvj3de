@@ -133,7 +133,10 @@ public class DefaultPanel extends Panel {
 
     private void rearrange() {
         List<Widget> list = getChildren();
-        for (Widget wgt : list) {
+        final int size = list.size();
+        for ( int i = 0; i < size; ++i) 
+        {
+            final Widget wgt = list.get(i);
             wgt.setPosition(wgt.getPosX(), wgt.getPosY());
         }
     }
