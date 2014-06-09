@@ -56,7 +56,15 @@ public abstract class AbstractSlider extends Widget
     {
         return this.range;
     }       
-    
+
+    /**
+     * return value / range 
+     * @return value / range
+     */
+    public final float getRelativeValue()
+    {
+        return value / (float)range;
+    }
     
     public final void addOnDragListener( ActionListener listener)
     {
