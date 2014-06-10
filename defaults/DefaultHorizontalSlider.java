@@ -28,7 +28,7 @@ public class DefaultHorizontalSlider extends AbstractSlider
         leftPart.setColor( DefaultSystemColors.getSliderActivePartColor() );
         rightPart.setColor( DefaultSystemColors.getSliderPassivePartColor());
         
-        setSize(200, 24);
+        setSize(200, 16);
     }
     
     public DefaultHorizontalSlider()
@@ -106,7 +106,7 @@ public class DefaultHorizontalSlider extends AbstractSlider
         final float widgetWidth = getWidth();
         final float widgetHeight= getHeight();
         final float globalPosX  = getGlobalPosX();
-        final float offsetY  = getGlobalPosY() + widgetHeight;
+        final float offsetY  = getGlobalPosY() + widgetHeight/2;
         
         final float centerWidth = Math.min( DEFAULT_CENTER_WIDTH, widgetWidth );
         final float centerOffset= (widgetWidth - centerWidth) * ( (float)value/range ) + centerWidth/2;
