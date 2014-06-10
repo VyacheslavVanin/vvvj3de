@@ -19,20 +19,15 @@ import vvv.engine.widgets.TextLabel;
  */
 public class DefaultCheckbox extends AbstractCheckBox
 {
-    private final TextLabel text = new TextLabel();
-    private final ImageWidget box = new ImageWidget();
+    private final TextLabel text;
+    private final ImageWidget box;
     private Texture   checked = null;
     private Texture   unchecked = null;
     private boolean   autosize = true;
     
-    private static final float DEFAULT_WIDTH = 200;
-    private static final float DEFAULT_HEIGHT = 50;
-    
     
     public DefaultCheckbox()
     {
-        addChild(text);
-        addChild(box);
         try
         {
             checked   = DefaultGui.getCheckBoxCheckedTexture();
@@ -43,8 +38,11 @@ public class DefaultCheckbox extends AbstractCheckBox
             Logger.getLogger(DefaultCheckbox.class.getName()).log(Level.SEVERE, null, ex);
         }  
            
-        box.setTexture(unchecked);
-        text.setText("Checkbox");
+        box = new ImageWidget(unchecked);
+        box.setSize(16, 16);
+        text = new TextLabel("Checkbox");
+        addChild(text);
+        addChild(box);
         setOptimalSize();
     }
     
@@ -71,8 +69,10 @@ public class DefaultCheckbox extends AbstractCheckBox
     
     private void setOptimalSize()
     {
-        float h = Math.max( box.getHeight(), text.getHeight());
-        float w = calcWidth();
+        final float boxHeight = box.getHeight();
+        final float textHeight = text.getHeight();
+        final float h = Math.max( boxHeight, textHeight);
+        final float w = calcWidth();
         setSize(w, h);
     }
     
