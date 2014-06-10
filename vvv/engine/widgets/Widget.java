@@ -19,8 +19,8 @@ public abstract class Widget extends GraphicObject
 {
     private float width = 0;
     private float height = 0;
-    private float xpos = 0;
-    private float ypos = 0;
+    private float local_position_x = 0;
+    private float local_position_y = 0;
     
     private final Rect  clipArea = new Rect();
     
@@ -37,8 +37,8 @@ public abstract class Widget extends GraphicObject
     
     public final float getWidth()  { return this.width; }
     public final float getHeight() { return this.height;}
-    public final float getPosX()   { return this.xpos;  }
-    public final float getPosY()   { return this.ypos;  }
+    public final float getPosX()   { return this.local_position_x;  }
+    public final float getPosY()   { return this.local_position_y;  }
     
     protected final void  setWidth( float width)    
     { 
@@ -217,13 +217,13 @@ public abstract class Widget extends GraphicObject
  
     protected final void  setPosX( float x)      
     { 
-        this.xpos = x; 
+        this.local_position_x = x; 
         clipArea.setLeft( getGlobalPosX());
     }
     
     protected final void  setPosY( float y)      
     { 
-        this.ypos = y; 
+        this.local_position_y = y; 
         clipArea.setBottom( getGlobalPosY());
     }
     
@@ -238,7 +238,7 @@ public abstract class Widget extends GraphicObject
         {
             parentPosX = parent.getGlobalPosX();
         }
-        return this.xpos + parentPosX;
+        return this.local_position_x + parentPosX;
     }
     
     protected final float getGlobalPosY()
@@ -252,7 +252,7 @@ public abstract class Widget extends GraphicObject
         {
             parentPosY = parent.getGlobalPosY();
         }
-        return this.ypos + parentPosY;
+        return this.local_position_y + parentPosY;
     }
     
 
