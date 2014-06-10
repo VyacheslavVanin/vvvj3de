@@ -25,14 +25,14 @@ public class ImageWidget extends Widget
     {
         this();
         setTexture(tex);
+        final float imageHeight = tex.getHeight();
+        final float imageWidth  = tex.getWidth();
+        setSize(imageWidth, imageHeight);  
     }
     
     public final void setTexture( Texture tex)
     {
-        sprite.setTexture( tex );
-        final float imageHeight = tex.getHeight();
-        final float imageWidth  = tex.getWidth();
-        setSize(imageWidth, imageHeight);    
+        sprite.setTexture( tex ); 
     }
     
     
