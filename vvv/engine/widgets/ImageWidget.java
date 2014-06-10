@@ -50,7 +50,9 @@ public class ImageWidget extends Widget
         sh.setModelViewProjectionMatrix(tmp);
         final Geometry gm = SpriteGeometry.getGeometry();
         gm.activate();
+        defaults.Defaults.enableTransparency();
         gm.draw();    
+        defaults.Defaults.disableTransparency();
     }
     private static final Matrix4f tmp = new Matrix4f();
 
