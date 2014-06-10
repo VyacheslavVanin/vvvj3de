@@ -17,10 +17,10 @@ import vvv.engine.shader.ModelShader;
  */
 public abstract class Widget extends GraphicObject
 {
-    private float width;
-    private float height;
-    private float xpos;
-    private float ypos;
+    private float width = 0;
+    private float height = 0;
+    private float xpos = 0;
+    private float ypos = 0;
     
     private final Rect  clipArea = new Rect();
     
