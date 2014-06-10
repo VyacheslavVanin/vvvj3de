@@ -6,13 +6,8 @@
 
 package defaults;
 
-import org.lwjgl.util.vector.Matrix4f;
-import vvv.engine.Camera;
-import vvv.engine.Geometry;
-import vvv.engine.colorRectangle.RectangleGeometry;
-import vvv.engine.colorRectangle.SolidColorRectangle;
-import vvv.engine.shader.ModelShader;
 import vvv.engine.widgets.AbstractSlider;
+import vvv.engine.widgets.ColorRectangleWidget;
 
 /**
  *
@@ -24,10 +19,13 @@ public class DefaultHorizontalSlider extends AbstractSlider
     public DefaultHorizontalSlider(int range)
     {
         super(range);
-        center.setColor( DefaultSystemColors.getControlColor());
+        centerPart.setColor( DefaultSystemColors.getControlColor());
         leftPart.setColor( DefaultSystemColors.getSliderActivePartColor() );
         rightPart.setColor( DefaultSystemColors.getSliderPassivePartColor());
-        
+        addChild(leftPart);
+        addChild(rightPart);
+        addChild(centerPart);
+          
         setSize(200, 16);
     }
     
@@ -36,39 +34,10 @@ public class DefaultHorizontalSlider extends AbstractSlider
         this(100);
     }
     
-    private static final Matrix4f tmp = new Matrix4f();
 
     @Override
     protected void onDraw() throws Exception 
-    {
-        ModelShader shader = Defaults.getSolidColorShader();
-        Camera cam = getCamera();
-        shader.activate();
-        Geometry geometry = RectangleGeometry.getGeometry();
-        geometry.activate();
-        
-        
-        shader.setColor( 0, leftPart.getColor() );
-                Matrix4f.mul( cam.getViewProjectionMatrix4f(),
-                              leftPart.getMatrix4f(),
-                              tmp);
-        shader.setModelViewProjectionMatrix(tmp);
-        geometry.draw();
-        
-        shader.setColor( 0, center.getColor() );
-                Matrix4f.mul( cam.getViewProjectionMatrix4f(),
-                              center.getMatrix4f(),
-                              tmp);
-        shader.setModelViewProjectionMatrix(tmp);
-        geometry.draw();
-        
-  
-        shader.setColor( 0, rightPart.getColor() );
-                Matrix4f.mul( cam.getViewProjectionMatrix4f(),
-                              rightPart.getMatrix4f(),
-                              tmp);
-        shader.setModelViewProjectionMatrix(tmp);
-        geometry.draw();
+    {  
     }
 
     @Override
@@ -92,12 +61,11 @@ public class DefaultHorizontalSlider extends AbstractSlider
         final float width = getWidth();
         setValue(  (int) ((dx / width) * getRange()));
         calcParts();
-        
     }
-    
-    private final SolidColorRectangle leftPart = new SolidColorRectangle();
-    private final SolidColorRectangle rightPart = new SolidColorRectangle();
-    private final SolidColorRectangle center = new SolidColorRectangle();
+
+    private final ColorRectangleWidget leftPart   = new ColorRectangleWidget();
+    private final ColorRectangleWidget centerPart = new ColorRectangleWidget();
+    private final ColorRectangleWidget rightPart  = new ColorRectangleWidget();
     
     private void  calcParts()
     {
@@ -105,27 +73,23 @@ public class DefaultHorizontalSlider extends AbstractSlider
         final int range = getRange();
         final float widgetWidth = getWidth();
         final float widgetHeight= getHeight();
-        final float globalPosX  = getGlobalPosX();
-        final float offsetY  = getGlobalPosY() + widgetHeight/2;
         
         final float centerWidth = Math.min( DEFAULT_CENTER_WIDTH, widgetWidth );
-        final float centerOffset= (widgetWidth - centerWidth) * ( (float)value/range ) + centerWidth/2;
-        
-        final float leftWidth = centerOffset - centerWidth/2;
-        final float leftOffset = leftWidth / 2;
-        
+        final float centerOffset= (widgetWidth - centerWidth) * ( (float)value/range ); 
+        final float leftWidth = centerOffset;
+        final float leftOffset = 0;
         
         final float rightWidth  = widgetWidth - (centerWidth + leftWidth);
-        final float rightOffset = centerOffset + centerWidth/2 + rightWidth/2;
+        final float rightOffset = centerOffset + centerWidth;
         
-        leftPart.setScale( leftWidth, widgetHeight, 1);
-        leftPart.setPosition( globalPosX +leftOffset, offsetY, 0 );
+        leftPart.setPosition( leftOffset, 0);
+        leftPart.setSize(leftWidth, widgetHeight);
         
-        center.setScale( centerWidth, widgetHeight, 1);
-        center.setPosition( globalPosX + centerOffset, offsetY, 0);
+        centerPart.setPosition(centerOffset, 0);
+        centerPart.setSize(centerWidth, widgetHeight);
         
-        rightPart.setScale( rightWidth, widgetHeight, 1);
-        rightPart.setPosition( globalPosX + rightOffset, offsetY, 0);
+        rightPart.setPosition( rightOffset, 0);
+        rightPart.setSize( rightWidth, widgetHeight);
     }
     
     private final int DEFAULT_CENTER_WIDTH = 30;
