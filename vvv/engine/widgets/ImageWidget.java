@@ -14,21 +14,24 @@ import vvv.engine.texture.Texture;
  */
 public class ImageWidget extends Widget
 {
-    private StaticSprite       sprite = null;
-    
-    private float              imageWidth = 0;
-    private float              imageHeight = 0;
+    private final StaticSprite       sprite;  
     
     public ImageWidget()
     {
-       sprite = new StaticSprite();
+        sprite = new StaticSprite();
     }
     
-    public void setTexture( Texture tex)
+    public ImageWidget( Texture tex)
+    {
+        this();
+        setTexture(tex);
+    }
+    
+    public final void setTexture( Texture tex)
     {
         sprite.setTexture( tex );
-        imageHeight = tex.getHeight();
-        imageWidth  = tex.getWidth();
+        final float imageHeight = tex.getHeight();
+        final float imageWidth  = tex.getWidth();
         setSize(imageWidth, imageHeight);    
     }
     
@@ -36,8 +39,8 @@ public class ImageWidget extends Widget
     @Override
     protected void onDraw() throws Exception
     {
-        ModelShader sh = getImageShader();
-        Camera camera  = getCamera();
+        final ModelShader sh = getImageShader();
+        final Camera camera  = getCamera();
         
         sh.activate();
         sh.setTexture(0, sprite.getTexture() );
@@ -45,23 +48,29 @@ public class ImageWidget extends Widget
                       position.getMatrix4f(), 
                       tmp);
         sh.setModelViewProjectionMatrix(tmp);
-        Geometry gm = SpriteGeometry.getGeometry();
+        final Geometry gm = SpriteGeometry.getGeometry();
         gm.activate();
         gm.draw();    
     }
     private static final Matrix4f tmp = new Matrix4f();
 
+    private void repositionBySize()
+    {
+        position.setPosition(   (float) Math.floor(getGlobalPosX() + getWidth()  / 2 ),
+                                (float) Math.floor(getGlobalPosY() + getHeight() / 2 ),
+                                0);
+    }
+    
     @Override
     protected void onSetPosition(float x, float y)
     {
-        position.setPosition(   (float) Math.floor(getGlobalPosX() + imageWidth / 2 ),
-                                (float) Math.floor(getGlobalPosY() + imageHeight / 2),
-                                0);
+        repositionBySize();
     }
 
     @Override
     protected void onSetSize(float w, float h)
     {
         position.setScale(w, h, 1);
+        repositionBySize();
     }
 }
