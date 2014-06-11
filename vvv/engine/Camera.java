@@ -10,13 +10,13 @@ import vvv.math.help;
 public class Camera
 {
 
-    private float[] matrix_view = new float[16];
-    private float[] matrix_projection = new float[16];
-    private float[] matrix_viewProjection = new float[16];
+    private final float[] matrix_view = new float[16];
+    private final float[] matrix_projection = new float[16];
+    private final float[] matrix_viewProjection = new float[16];
 
-    private Matrix4f matrix4f_viewProjection = new Matrix4f();
-    private Matrix4f matrix4f_view = new Matrix4f();
-    private Matrix4f matrix4f_projection = new Matrix4f();
+    private final Matrix4f matrix4f_viewProjection = new Matrix4f();
+    private final Matrix4f matrix4f_view = new Matrix4f();
+    private final Matrix4f matrix4f_projection = new Matrix4f();
     
     private enum PROJECTION_TYPE
     {
@@ -24,12 +24,12 @@ public class Camera
         PERSPECTIVE
     }
     private PROJECTION_TYPE projection;
-    private Vec3 cam_position;
-    private Vec3 body_direction_front;
-    private Vec3 head_direction_front;
-    private Vec3 body_upVector;
-    private Vec3 head_upVector;
-    private Vec3 body_direction_left;
+    private final Vec3 cam_position;
+    private final Vec3 body_direction_front;
+    private final Vec3 head_direction_front;
+    private final Vec3 body_upVector;
+    private final Vec3 head_upVector;
+    private final Vec3 body_direction_left;
     private float head_pitchAngle;
     private float persp_fieldOfView;
     private float persp_aspectRatio;
@@ -43,8 +43,8 @@ public class Camera
     private float ortho_zFar;
     private boolean updatedView;
     private boolean updatedProjection;
-    private Vec3 tempVec3 = new Vec3();
-    private float[] tempMat4 = new float[16];
+    private final Vec3 tempVec3 = new Vec3();
+    private final float[] tempMat4 = new float[16];
 
     
     public boolean isChanged()
@@ -175,7 +175,7 @@ public class Camera
         return matrix4f_viewProjection;
     }
     
-    private FloatBuffer floatBuffer16 = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer floatBuffer16 = BufferUtils.createFloatBuffer(16);
     private void float16ToMatrix4f(float[] f, Matrix4f m)
     {
         floatBuffer16.position(0);
@@ -212,20 +212,29 @@ public class Camera
     }
 
     /**
-     * @param fov in degrees
+     * 
+     * @param fov - field of view in degrees
+     * @param aspect
+     * @param zNear
+     * @param zFar 
      */
     public void setPerspective(float fov, float aspect, float zNear, float zFar)
     {
         persp_fieldOfView = fov;
         persp_aspectRatio = aspect;
-        persp_near = zNear;
-        persp_far = zFar;
-        projection = PROJECTION_TYPE.PERSPECTIVE;
+        persp_near        = zNear;
+        persp_far         = zFar;
+        projection        = PROJECTION_TYPE.PERSPECTIVE;
         updatedProjection = true;
     }
 
     /**
-     * @param fov in degrees
+     * 
+     * @param fov - field of view in degrees
+     * @param sizeX
+     * @param sizeY
+     * @param zNear
+     * @param zFar 
      */
     public void setPerspective(float fov, int sizeX, int sizeY, float zNear, float zFar)
     {
@@ -377,4 +386,19 @@ public class Camera
     {
         return persp_aspectRatio;
     }
+    
+    public static void convertWorldToCamera( Camera cam, Vec3 worldPos, Vec3 camPos)
+    {
+        camPos.set( worldPos );
+        camPos.applyMatrix4( cam.matrix_viewProjection );
+    }
+ 
+    private static final float[] tmpInvMat16 = new float[16];
+    public static void convertCameraToWorld( Camera cam, Vec3 camPos, Vec3 worldPos)
+    {
+        camPos.set(worldPos);
+        Matrix.inverseMat4(cam.matrix_viewProjection, tmpInvMat16);
+        camPos.applyMatrix4( tmpInvMat16 );
+    }
+    
 }
