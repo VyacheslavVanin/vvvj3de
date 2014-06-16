@@ -1,6 +1,6 @@
 package vvv.engine.widgets;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class ListenerContainer
 {
-    private final List<ActionListener> list = new LinkedList<>();
+    private final List<ActionListener> list = new ArrayList<>();
     
     public synchronized void addListener( ActionListener listener )
     {
