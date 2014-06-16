@@ -196,20 +196,20 @@ public abstract class Widget extends GraphicObject
         return false;
     }
 
-    final boolean invokeLeftMouseButtonDown( float x, float y) 
+    final boolean invokeLeftMouseButtonDown( int button, float x, float y) 
     { 
         if( enabled && visible)
         {
-            onLeftMouseButtonDown(x, y);
+            onMouseButtonDown( button, x, y);
         }
         return false;
     }
 
-    final boolean invokeLeftMouseButtonUp( float x, float y) 
+    final boolean invokeLeftMouseButtonUp( int button, float x, float y) 
     { 
         if( enabled && visible)
         {
-            onLeftMouseButtonUp(x, y);
+            onMouseButtonUp( button, x, y);
         }
         return false;
     }
@@ -328,8 +328,8 @@ public abstract class Widget extends GraphicObject
     
 
     protected void onMouseMove(float x,float y) {}
-    protected void onLeftMouseButtonDown( float x, float y) {}
-    protected void onLeftMouseButtonUp(float x, float y) {}
+    protected void onMouseButtonDown( int button, float x, float y) {}
+    protected void onMouseButtonUp(int button, float x, float y) {}
     
     protected void onMouseEnter() {}
     protected void onMouseLeave() {}

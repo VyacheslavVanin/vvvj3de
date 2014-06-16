@@ -93,9 +93,9 @@ public abstract class AbstractButton extends Widget
     }
     
     @Override
-    protected final void onLeftMouseButtonDown( float x, float y) 
+    protected final void onMouseButtonDown( int button, float x, float y) 
     {
-        if( isContainPoint(x, y) )
+        if( button == 0 && isContainPoint(x, y) )
         {
             leftButtonHold = true;
             onPressBase();
@@ -103,11 +103,11 @@ public abstract class AbstractButton extends Widget
     }
     
     @Override
-    protected final void onLeftMouseButtonUp( float x, float y) 
+    protected final void onMouseButtonUp( int button, float x, float y) 
     {
-        if( isContainPoint(x, y))
+        if( button == 0 )
         {
-            if( leftButtonHold )
+            if( leftButtonHold && isContainPoint(x, y))
             {
                 onReleaseBase();
                 onClickBase();
@@ -116,8 +116,8 @@ public abstract class AbstractButton extends Widget
             {
                 onReleaseBase();
             }
+            leftButtonHold = false;
         }
-        leftButtonHold = false;
     }
     
 }

@@ -1,7 +1,6 @@
 package vvv.engine.widgets;
 
 import java.util.List;
-import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
 import vvv.engine.shader.ModelShader;
 import vvv.math.Vec3;
@@ -15,9 +14,7 @@ public class WidgetLayer extends Layer
     private Camera camera = null;
     private ModelShader textShader = null;
     private ModelShader imageShader  = null;
-    
-    private final Matrix4f tmp = new Matrix4f();
-    private Matrix4f vpmatrix = new Matrix4f();
+
     
     public  WidgetLayer()
     {
@@ -29,7 +26,6 @@ public class WidgetLayer extends Layer
     public void draw() throws Exception 
     {
         final List<GraphicObject> objects = getObjects();
-        vpmatrix = camera.getViewProjectionMatrix4f();
         
         final int size = objects.size();
         for(int i=0; i < size; ++i )
@@ -53,11 +49,7 @@ public class WidgetLayer extends Layer
     @Override
     protected boolean onAddObject(GraphicObject obj) 
     {
-        if( obj instanceof Widget)
-        {
-            return true;
-        }
-        return false;
+        return obj instanceof Widget;
     }
 
     @Override
@@ -121,24 +113,27 @@ public class WidgetLayer extends Layer
         }
     }
     
-    public void onLeftMouseButtonDown( float x, float y) 
+    public boolean onLeftMouseButtonDown( int button, float x, float y) 
     {
         final List<GraphicObject> objects = getObjects();
         final int size = objects.size();
+        boolean ret = false;
         for(int i=0; i < size; ++i )
         {
             final Widget wgt = (Widget)objects.get(i);
-            if( wgt.isVisible() && wgt.isEnabled() )
+            if( wgt.isVisible()  && wgt.isContainPoint(x, y))
             {
-                if( wgt.invokeLeftMouseButtonDown(x, y) )
+                ret = true;
+                if( wgt.isEnabled() && wgt.invokeLeftMouseButtonDown(button, x, y) )
                 {
                     break;
                 }
             }
         }
+        return ret;
     }
     
-    public void onLeftMouseButtonUp( float x, float y) 
+    public void onLeftMouseButtonUp( int button, float x, float y) 
     {
         final List<GraphicObject> objects = getObjects();
         final int size = objects.size();
@@ -147,7 +142,7 @@ public class WidgetLayer extends Layer
             final Widget wgt = (Widget)objects.get(i);
             if( wgt.isVisible() && wgt.isEnabled() )
             {
-                if( wgt.invokeLeftMouseButtonUp(x, y) )
+                if( wgt.invokeLeftMouseButtonUp(button, x, y) )
                 {
                     break;
                 }
