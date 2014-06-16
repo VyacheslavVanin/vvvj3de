@@ -1,5 +1,6 @@
 package vvv.engine.widgets;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,12 +8,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Screen
+/**
+ * @brief Screen object used to hold Layers of GraphicObjects. 
+ * @author vvv
+ */
+public final class Screen
 {
-
     private int width;
     private int height;
-    private List< Layer> layers;
+    private final List< Layer> layers; // List of attached layers
     private WidgetLayer guiLayer = null;
 
     public Screen()
@@ -22,17 +26,10 @@ public class Screen
         layers = new ArrayList<>();
     }
 
-    @Override
-    protected void finalize() throws Throwable
-    {
-        if (layers != null)
-        {
-            layers.clear();
-            layers = null;
-        }
-        super.finalize();
-    }
-
+   /**
+    * @brief Set size of screen object (not real screen)
+    * @param width - in pixels
+    * @param height - in pixels */
     public void setSize(int width, int height)
     {
         this.width = width;
@@ -49,19 +46,33 @@ public class Screen
 
     }
 
+    /**
+     * @brief Get height of Screen object
+     * @return height in pixels */
     public int getHeight()
     {
         return this.height;
     }
 
+    /**
+     * @brief
+     * @return width in pixels */
     public int getWidth()
     {
         return this.width;
     }
 
+    /**
+     * @brief Add layer to screen
+     * @param layer - layer to add to Screen object 
+     * @return true if layer added or false if layer already attached to this Screen */
     public boolean addLayer(Layer layer)
     {
-        if (!layers.contains(layer))
+        if( layer == null )
+        {
+            throw new InvalidParameterException( "layer should not be null" );
+        }
+        if( !layers.contains(layer))
         {
             layers.add(layer);
             Screen old = layer.getScreen();
@@ -79,6 +90,10 @@ public class Screen
         }
     }
 
+    /**
+     * @brief Remove specified Layer from list of attached Layers
+     * @param layer - layer to remove from object
+     * @return true if removed or <br>false if there no such layer in list of attached layers */
     public boolean removeLayer(Layer layer)
     {
         boolean ret = layers.remove(layer);
@@ -89,6 +104,10 @@ public class Screen
         return ret;
     }
 
+    /**
+     * @brief Attach GUI layer to screen (Currently can be only one widget layer) 
+     * @param layer - layer to attach
+     * @return true if successful or false if failed to attach */
     public boolean setGuiLayer(WidgetLayer layer)
     {
         if( layer != null )
@@ -104,10 +123,15 @@ public class Screen
         return true;
     }
     
+    /**
+     * @brief Check if Screen object contain specified layer
+     * @param layer
+     * @return true if contain and false otherwise */
     public boolean contains(Layer layer)
     {
         return layers.contains(layer);
     }
+    
     private final Comparator<Layer> comparator = new Comparator<Layer>()
     {
         @Override
@@ -127,11 +151,15 @@ public class Screen
         }
     };
 
+    /**
+     * @brief Sort layers by depth */
     public void sortLayers()
     {
         Collections.sort(layers, comparator);
     }
 
+    /**
+     * @brief draw all layers of screen, first all layers from list of attached layers and then GUI layer*/
     public void draw()
     {
         try

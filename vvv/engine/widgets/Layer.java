@@ -3,6 +3,10 @@ package vvv.engine.widgets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @brief Layer used to contain GraphicObjects <br>
+ *        Layers can be attached to Screen object.
+ * @author vvv */
 public abstract class Layer
 {
     private Screen screen;
@@ -26,16 +30,23 @@ public abstract class Layer
         return this.screen;
     }
 
+    /**
+     * @return Width of screen in pixels */
     public int getWidth()
     {
         return screen.getWidth();
     }
 
+    /**
+     * @return Height of screen in pixels */
     public int getHeight()
     {
         return screen.getHeight();
     }
 
+    /**
+     * @brief Set Layer Depth. Depth describes an order layers drawn
+     * @param depth  */
     public void setDepth(float depth)
     {
         this.depth = depth;
@@ -50,16 +61,34 @@ public abstract class Layer
         return depth;
     }
 
+    /**
+     * @brief Implement how to draw Objects which belong to this layer
+     * @throws Exception */
     abstract public void draw() throws Exception;
 
+    /**
+     * @brief implement what to do when resize (for example, change camera parameters )  */
     abstract public void onResize();
     
+    /**
+     * @brief This method call before add object to list.<br> 
+     *        If method return true then object obj will be added to list of objects<br>
+     *        You can override this to filter objects
+     * @param obj
+     * @return  */
+    protected boolean onAddObject(final GraphicObject obj) {return true;}
 
-    abstract protected boolean onAddObject(final GraphicObject obj);
+    /**
+     * @brief This method called before removal object obj from list of objects.<br>
+     *        You can override this if you need.
+     * @param obj  */
+    protected void onRemoveObject(final GraphicObject obj) {};
 
-    abstract protected boolean onRemoveObject(final GraphicObject obj);
-
-    public boolean addObject(GraphicObject obj)
+    /**
+     * @brief Add GraphicObject to layer
+     * @param obj - object to add
+     * @return true if added, false otherwise */
+    public final boolean addObject(GraphicObject obj)
     {
         if (!objects.contains(obj))
         {
@@ -83,14 +112,21 @@ public abstract class Layer
         return false;
     }
 
-    public boolean removeObject(GraphicObject obj)
+    /**
+     * @brief Remove object from list
+     * @param obj
+     * @return  */
+    public final boolean removeObject(GraphicObject obj)
     {
         obj.setLayer(null);
         onRemoveObject(obj);
         return objects.remove(obj);
     }
 
-    protected List<GraphicObject> getObjects()
+    /**
+     * @brief get list of objects in layer
+     * @return  */
+    protected final List<GraphicObject> getObjects()
     {
         return objects;
     }
