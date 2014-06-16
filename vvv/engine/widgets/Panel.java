@@ -36,16 +36,19 @@ public abstract class Panel extends Widget
 
 
     @Override
-    protected void onLeftMouseButtonDown(float x, float y)
+    protected void onMouseButtonDown(int button, float x, float y)
     {
         if( isContainPoint(x, y) )
         {
-            List<Widget> list = getChildren();
+            final List<Widget> list = getChildren();
             final int s = list.size();
             for( int i =0; i < s; ++i )
             {
                 final Widget wgt = list.get(i);
-                wgt.invokeLeftMouseButtonDown(x, y); 
+                if( wgt.invokeLeftMouseButtonDown(button, x, y) )
+                {
+                    break;
+                } 
             }   
         }
     }
@@ -53,7 +56,7 @@ public abstract class Panel extends Widget
     @Override
     protected void onMouseMove(float x, float y)
     {
-        List<Widget> list = getChildren();
+        final List<Widget> list = getChildren();
         final int s = list.size();
         for( int i =0; i < s; ++i )
         {
@@ -63,14 +66,14 @@ public abstract class Panel extends Widget
     }
 
     @Override
-    protected void onLeftMouseButtonUp(float x, float y)
+    protected void onMouseButtonUp(int button, float x, float y)
     {
-        List<Widget> list = getChildren();
+        final List<Widget> list = getChildren();
         final int s = list.size();
         for( int i =0; i < s; ++i )
         {
             final Widget wgt = list.get(i);
-            wgt.invokeLeftMouseButtonUp(x, y);
+            wgt.invokeLeftMouseButtonUp( button, x, y);
         }   
     }
 
