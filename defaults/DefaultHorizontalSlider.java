@@ -15,7 +15,6 @@ import vvv.engine.widgets.ColorRectangleWidget;
  */
 public class DefaultHorizontalSlider extends AbstractSlider
 {
-
     public DefaultHorizontalSlider(int range)
     {
         super(range);
@@ -93,5 +92,4 @@ public class DefaultHorizontalSlider extends AbstractSlider
     }
     
     private final int DEFAULT_CENTER_WIDTH = 30;
-    
 }

@@ -16,7 +16,6 @@ public abstract class Panel extends Widget
     {
         if( addChild(wgt) )
         {
-            wgt.onAttach();
             onAddWidget(wgt);
             return true;
         }
@@ -45,7 +44,7 @@ public abstract class Panel extends Widget
             for( int i =0; i < s; ++i )
             {
                 final Widget wgt = list.get(i);
-                if( wgt.invokeLeftMouseButtonDown(button, x, y) )
+                if( wgt.invokeMouseButtonDown(button, x, y) )
                 {
                     break;
                 } 
@@ -73,7 +72,7 @@ public abstract class Panel extends Widget
         for( int i =0; i < s; ++i )
         {
             final Widget wgt = list.get(i);
-            wgt.invokeLeftMouseButtonUp( button, x, y);
+            wgt.invokeMouseButtonUp( button, x, y);
         }   
     }
 

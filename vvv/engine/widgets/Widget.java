@@ -34,25 +34,56 @@ public abstract class Widget extends GraphicObject
     private final ListenerContainer onLeaveListener = new ListenerContainer();
     private boolean inArea = false;
     
-    
+    /**
+     * @return Return widget width in pixels*/
     public final float getWidth()  { return this.width; }
+    
+    /**
+     * @return Widget height in pixels */
     public final float getHeight() { return this.height;}
+    
+    /**
+     * @brief Return local widget position respective to parent widget. 
+     *        <br>If no parent widget then equals layer width
+     * @return horizontal component of position in pixels */
     public final float getPosX()   { return this.local_position_x;  }
+    
+    /**
+     * @brief Return local widget position respective to parent widget. 
+     *        <br>If no parent widget then equals layer width
+     * @return vertical component of position in pixels */
     public final float getPosY()   { return this.local_position_y;  }
     
+    /**
+     * @brief Set width of widget.
+     * @param width Width of widget in pixels, should be non-negative value */
     protected final void  setWidth( float width)    
-    { 
-        this.width = width;   
-        clipArea.setWidth(width);
+    {
+        if( width < 0 )
+        {
+            throw new IllegalArgumentException( "width must be >= 0" );
+        }
+        this.width =  width;   
+        clipArea.setWidth( this.width );
     }
     
+    /**
+     * @brief Set height of widget.
+     * @param height Height of widget in pixels, should be non-negative value */
     protected final void  setHeight( float height ) 
     { 
+        if( height < 0 )
+        {
+            throw new IllegalArgumentException( "height must be >= 0" );
+        }
         this.height = height; 
-        clipArea.setHeight(height);
+        clipArea.setHeight( this.height );
     }
     
-    
+    /**
+     * @brief Set local position of widget on parent widget  
+     * @param x - horizontal component
+     * @param y - vertical component */
     public final void setPosition( float x, float y)
     {
         this.setPosX(x);
@@ -60,6 +91,11 @@ public abstract class Widget extends GraphicObject
         onSetPosition( x, y);
     }
     
+    /**
+     * @brief Set size of widget. Invokes onSetSize method.
+     * @param width Width in pixels
+     * @param height Height in pixels
+     */
     public final void setSize( float width, float height)
     {
         setWidth(width);
@@ -67,7 +103,9 @@ public abstract class Widget extends GraphicObject
         onSetSize(width, height);
     }
     
-    
+    /**
+     * @return WidgetLayer of widget 
+     */    
     @Override
     public final WidgetLayer getLayer()
     {
@@ -81,17 +119,25 @@ public abstract class Widget extends GraphicObject
         }
     }
     
-    
+    /**
+     * @brief Set visibility flag
+     * @param b - if true widget visible, else hide widget */
     public final void setVisible( boolean b)
     {
         this.visible = b;
     }
     
+    /**
+     * @brief Get visibility flag
+     * @return visibility flag  */
     public final boolean isVisible()
     {
         return this.visible;
     }
     
+    /**
+     * @brief Set enabling flag of widget
+     * @param b - if true set widget to enabled state, else to disabled  */
     public final void setEnabled(boolean b)
     {
         if( this.enabled != b )
@@ -110,33 +156,49 @@ public abstract class Widget extends GraphicObject
                 w.setEnabled(b);
             }
         }
-
     }
     
+    /**
+     * @brief Get enable state of widget
+     * @return if true - widget enabled, if false - disabled */
     public final boolean isEnabled()
     {
         return this.enabled;
     }
     
-    
-    
+    /**
+     * @brief Add ActionListener on MouseEnter-event  to widget
+     * @param listener  */
     public final void addOnEnterListener(ActionListener listener) {
         this.onEnterListener.addListener(listener);
     }
 
+    /**
+     * @brief Add ActionListener on MouseLeave-event to widget
+     * @param listener  */
     public final void addOnLeaveListener(ActionListener listener) {
         this.onLeaveListener.addListener(listener);
     }
 
+    /**
+     * @brief Remove listener from widget
+     * @param listener */
     public final void removeOnEnterListener(ActionListener listener) {
         this.onEnterListener.removeListener(listener);
     }
 
+    /**
+     * @brief Remove listener from widget
+     * @param listener */
     public final void removeOnLeaveListener(ActionListener listener) {
         this.onLeaveListener.removeListener(listener);
     }
 
-
+   /**
+    * @brief Check if widget contain point. (0,0 - bottom-left corner)
+    * @param x - x component of point in screen pixels
+    * @param y - y component of point in screen pixels
+    * @return true if contain or false if not */
     public boolean isContainPoint( float x, float y)
     {
         final float px = getGlobalPosX();
@@ -157,24 +219,26 @@ public abstract class Widget extends GraphicObject
         return true;
     }
     
+    private void updateClipArea()
+    {
+        if (parent != null) {
+            clipArea.set(getGlobalPosX(), getGlobalPosY(), getWidth(), getHeight());
+            Rect.intersection(clipArea, parent.clipArea, clipArea); // clipArea must match parent clipArea
+        }
+        else {
+            clipArea.set(getGlobalPosX(), getGlobalPosY(), getWidth(), getHeight());
+        }
+    }
     
     final void draw() throws Exception
     {
         if( visible )
         {
-            if( parent != null )
-            {
-                clipArea.set(getGlobalPosX(), getGlobalPosY(), getWidth(), getHeight());
-                Rect.intersection(clipArea, parent.clipArea, clipArea);
-            }
-            else
-            {
-                clipArea.set(getGlobalPosX(), getGlobalPosY(), getWidth(), getHeight());
-            }
+            updateClipArea();
             glEnable( GL_SCISSOR_TEST );
             glScissor( (int)clipArea.getLeft(),  (int)clipArea.getBottom(), 
                        (int)clipArea.getWidth(), (int)clipArea.getHeight() );
-            onDraw();
+            onDraw(); // Call user defined behavior on draw
             glDisable( GL_SCISSOR_TEST );
             
             final int size = children.size();
@@ -187,6 +251,11 @@ public abstract class Widget extends GraphicObject
         }
     }
         
+    /**
+     * @brief Notify widget about MouseMove-event.
+     * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
+     * @param y - Mouse position y component in pixels 
+     * @return  */
     final boolean invokeMouseMove( float x, float y) 
     {
         if(enabled && visible)
@@ -196,16 +265,28 @@ public abstract class Widget extends GraphicObject
         return false;
     }
 
-    final boolean invokeLeftMouseButtonDown( int button, float x, float y) 
+    /**
+     * @brief Notify widget about MouseButtonDown-event.
+     * @param button - button pressed ( 0 - left, 1 -right, 2 - middle and so on)
+     * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
+     * @param y - Mouse position y component in pixels 
+     * @return  */
+    final boolean invokeMouseButtonDown( int button, float x, float y) 
     { 
-        if( enabled && visible)
+        if( enabled && visible )
         {
             onMouseButtonDown( button, x, y);
         }
         return false;
     }
 
-    final boolean invokeLeftMouseButtonUp( int button, float x, float y) 
+    /**
+     * @brief Notify widget about MouseButtonUp-event.
+     * @param button - button released ( 0 - left, 1 -right, 2 - middle and so on)
+     * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
+     * @param y - Mouse position y component in pixels 
+     * @return  */
+    final boolean invokeMouseButtonUp( int button, float x, float y) 
     { 
         if( enabled && visible)
         {
@@ -218,15 +299,16 @@ public abstract class Widget extends GraphicObject
     protected final void  setPosX( float x)      
     { 
         this.local_position_x = x; 
-        clipArea.setLeft( getGlobalPosX());
     }
     
     protected final void  setPosY( float y)      
     { 
         this.local_position_y = y; 
-        clipArea.setBottom( getGlobalPosY());
     }
     
+    /**
+     * @brief Get real position of widget in screen coordinates (0,0 - bottom-left corner) 
+     * @return x component of widget position */
     protected final float getGlobalPosX()
     {
         float  parentPosX;
@@ -241,6 +323,9 @@ public abstract class Widget extends GraphicObject
         return this.local_position_x + parentPosX;
     }
     
+    /**
+     * @brief Get real position of widget in screen coordinates (0,0 - bottom-left corner) 
+     * @return y component of widget position */
     protected final float getGlobalPosY()
     {
         float  parentPosY;
@@ -255,12 +340,19 @@ public abstract class Widget extends GraphicObject
         return this.local_position_y + parentPosY;
     }
     
-
+    /**
+     * @deprecated
+     * @return 
+     */
     protected final ModelShader getTextShader()
     {
         return getLayer().getTextShader();
     }
     
+    /**
+     * @deprecated
+     * @return 
+     */
     protected final ModelShader getImageShader()
     {
         return getLayer().getImageShader();
@@ -272,6 +364,10 @@ public abstract class Widget extends GraphicObject
         return getLayer().getCamera();
     }
    
+    /**
+     * @brief Remove child widget 
+     * @param child
+     * @return true if removed, false if there was not such child widget on this widget */
     protected final boolean deleteChild( Widget child )
     {
         if( children.remove(child) )
@@ -285,6 +381,10 @@ public abstract class Widget extends GraphicObject
         return true;
     }
     
+    /**
+     * @brief Add child Widget to current widget
+     * @param child
+     * @return true if added, false if child already in list of children */
     protected final boolean addChild( Widget child)
     {
         if( children.contains(child) )
@@ -299,15 +399,22 @@ public abstract class Widget extends GraphicObject
  
         children.add(child);
         child.parent = this;
+        child.onAttach();
         
         return true;
     }
     
+    /**
+     * @brief Get list of child widgets attached to current widget
+     * @return list of child widgets */
     protected final List<Widget> getChildren()
     {
         return children;
     }
     
+    /**
+     * @brief return if mouse in Area of widget
+     * @return */
     protected final boolean isMouseInArea() 
     {
         return inArea;
@@ -324,6 +431,9 @@ public abstract class Widget extends GraphicObject
     protected abstract void onDraw() throws Exception;
    
     protected abstract void onSetSize( float w, float h);
+    
+    /**
+     * Method called after widget was attached to new parent  */
     protected void onAttach() {};
     
 
