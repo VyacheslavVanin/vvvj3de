@@ -14,7 +14,7 @@ public class WidgetLayer extends Layer
     private Camera camera = null;
     private ModelShader textShader = null;
     private ModelShader imageShader  = null;
-
+    private Widget      focusWidget = null;
     
     public  WidgetLayer()
     {
@@ -52,11 +52,6 @@ public class WidgetLayer extends Layer
         return obj instanceof Widget;
     }
 
-    @Override
-    protected boolean onRemoveObject(GraphicObject obj) 
-    {
-        return true; 
-    }
     
     public Camera getCamera()
     {
@@ -148,6 +143,16 @@ public class WidgetLayer extends Layer
                 }
             }
         }
+    }
+    
+    public final void setFocus(Widget wgt)
+    {
+        focusWidget = wgt;
+    }
+    
+    public final Widget getFocus()
+    {
+        return focusWidget;
     }
     
 }
