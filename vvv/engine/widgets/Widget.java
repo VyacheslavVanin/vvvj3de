@@ -339,26 +339,7 @@ public abstract class Widget extends GraphicObject
         }
         return this.local_position_y + parentPosY;
     }
-    
-    /**
-     * @deprecated
-     * @return 
-     */
-    protected final ModelShader getTextShader()
-    {
-        return getLayer().getTextShader();
-    }
-    
-    /**
-     * @deprecated
-     * @return 
-     */
-    protected final ModelShader getImageShader()
-    {
-        return getLayer().getImageShader();
-    }
-    
-    
+     
     protected final Camera getCamera()
     {
         return getLayer().getCamera();

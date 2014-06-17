@@ -7,7 +7,6 @@
 package defaults;
 
 import java.io.IOException;
-import vvv.engine.shader.ModelShader;
 import vvv.engine.widgets.WidgetLayer;
 
 /**
@@ -18,12 +17,7 @@ public class DefaultWidgetLayer extends WidgetLayer
 {
     public DefaultWidgetLayer() throws IOException
     {
-        super();
-        final ModelShader textShader = DefaultGui.getTextShader();
-        final ModelShader imageShader = DefaultGui.getSpriteShader();
-        
+        super();  
         setDepth(0.1f);
-        setTextShader(textShader);
-        setImageShader(imageShader);
     }
 }

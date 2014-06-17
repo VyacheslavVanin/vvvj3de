@@ -1,5 +1,6 @@
 package vvv.engine.widgets;
 
+import defaults.Defaults;
 import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
 import vvv.engine.Geometry;
@@ -39,7 +40,7 @@ public class ImageWidget extends Widget
     @Override
     protected void onDraw() throws Exception
     {
-        final ModelShader sh = getImageShader();
+        final ModelShader sh = Defaults.getSpriteShader();
         final Camera camera  = getCamera();
         
         sh.activate();

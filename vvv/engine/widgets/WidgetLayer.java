@@ -2,7 +2,6 @@ package vvv.engine.widgets;
 
 import java.util.List;
 import vvv.engine.Camera;
-import vvv.engine.shader.ModelShader;
 import vvv.math.Vec3;
 
 /**
@@ -12,9 +11,7 @@ import vvv.math.Vec3;
 public class WidgetLayer extends Layer
 {
     private Camera camera = null;
-    private ModelShader textShader = null;
-    private ModelShader imageShader  = null;
-    private Widget      focusWidget = null;
+    private Widget focusWidget = null;
     
     public  WidgetLayer()
     {
@@ -41,9 +38,6 @@ public class WidgetLayer extends Layer
         final float h = getHeight();
         final float w = getWidth();
         camera.setOrtho(h , 0, 0, w , -2, 2);
-        camera.setBodyForward(new Vec3(0, 0, 1), new Vec3(0, 1, 0));
-        camera.setPos( 0, 0, -1);    
-        camera.lookAt(0, 0, 0);
     }
 
     @Override
@@ -58,15 +52,6 @@ public class WidgetLayer extends Layer
         return camera;
     }
     
-    public ModelShader getTextShader()
-    {
-        return textShader;
-    }
-    
-    public ModelShader getImageShader()
-    {
-        return imageShader;
-    }
     
     public final void init()
     {
@@ -81,16 +66,12 @@ public class WidgetLayer extends Layer
         camera.lookAt(0, 0, 1);
     }
 
-    public void setTextShader( ModelShader shader)
-    {
-        this.textShader = shader;
-    }
     
-    public void setImageShader( ModelShader shader)
-    {
-        this.imageShader = shader;
-    }
-    
+    /**
+     * @brief Notify WidgetLayer 
+     * @param x
+     * @param y 
+     */
     public void onMouseMove( float x, float y )
     {
         final List<GraphicObject> objects = getObjects();
@@ -119,7 +100,7 @@ public class WidgetLayer extends Layer
             if( wgt.isVisible()  && wgt.isContainPoint(x, y))
             {
                 ret = true;
-                if( wgt.isEnabled() && wgt.invokeLeftMouseButtonDown(button, x, y) )
+                if( wgt.isEnabled() && wgt.invokeMouseButtonDown(button, x, y) )
                 {
                     break;
                 }
@@ -137,7 +118,7 @@ public class WidgetLayer extends Layer
             final Widget wgt = (Widget)objects.get(i);
             if( wgt.isVisible() && wgt.isEnabled() )
             {
-                if( wgt.invokeLeftMouseButtonUp(button, x, y) )
+                if( wgt.invokeMouseButtonUp(button, x, y) )
                 {
                     break;
                 }
