@@ -32,32 +32,36 @@ public class SpriteLayer extends Layer
     private final Vector4f res = new Vector4f();
     private final Vector4f src = new Vector4f();
     
-    
+    /**
+     * @brief Determine if sprite in view
+     * @param spr
+     * @return 
+     */
     private boolean isInView(Sprite spr)
     {
-        final float x = spr.getScale().x * 0.5f;
-        final float y = spr.getScale().y * 0.5f;
+        /*
+           ---(*)
+           |   |
+           | c |
+           |   |
+          (*)---
+            Test is points marked with stars(*) in screen (-1,1 ; -1,1)
+        */
+        final float dx = spr.getScale().x * 0.5f; // from sprite center to left or right edge
+        final float dy = spr.getScale().y * 0.5f; // from sprite center to top or bottom edge
 
         final Vector3f v3 = spr.getPosition();
-        src.set(v3.x+x, v3.y+y, v3.z, 1);
-        Matrix4f.transform(camera.getViewProjectionMatrix4f(), src, res);
+        src.set(v3.x+dx, v3.y+dy, v3.z, 1);
+        Matrix4f.transform( camera.getViewProjectionMatrix4f(), src, res);
 
         final float c = 1.0f;
-        if( res.x < -c )
+        if( res.x < -c || res.y < -c)
             return false;
-        if( res.y < -c )
-            return false;
-        
-        src.set(v3.x-x, v3.y-y, v3.z, 1);
-        Matrix4f.transform(camera.getViewProjectionMatrix4f(), src, res);
+ 
+        src.set(v3.x-dx, v3.y-dy, v3.z, 1);
+        Matrix4f.transform( camera.getViewProjectionMatrix4f(), src, res);
 
-        if( res.x > c  )
-            return false;
-        if( res.y > c  )
-            return false;
-
-        
-        return true;
+        return res.x <= c && res.y <= c;
     }
     
     @Override
@@ -69,7 +73,7 @@ public class SpriteLayer extends Layer
         }
         final List<GraphicObject> objects = getObjects();
         
-        vpmatrix = camera.getViewProjectionMatrix4f();
+        final Matrix4f vpmatrix = camera.getViewProjectionMatrix4f();
        
         final Geometry sg = SpriteGeometry.getGeometry();
         sg.activate();
@@ -102,9 +106,9 @@ public class SpriteLayer extends Layer
         final float h = getHeight();
         final float w = getWidth();
         camera.setOrtho(h / 2, -h / 2, -w / 2, w / 2, -2, 2);
-        camera.setBodyForward(new Vec3(0, 0, 1), new Vec3(0, 1, 0));
-        camera.setPos(0, 0, 0);
-        camera.lookAt(0, 0, 1);
+      //  camera.setBodyForward(new Vec3(0, 0, 1), new Vec3(0, 1, 0));
+     //   camera.setPos(0, 0, 0);
+     //   camera.lookAt(0, 0, 1);
     }
 
     @Override
@@ -113,11 +117,6 @@ public class SpriteLayer extends Layer
         return obj instanceof Sprite;
     }
 
-    @Override
-    protected boolean onRemoveObject(GraphicObject obj)
-    {
-        return true;
-    }
 
     public final void init()
     {
@@ -131,12 +130,12 @@ public class SpriteLayer extends Layer
         camera.lookAt(0, 0, 1);
     }
 
-    public Camera getCamera()
+    public final Camera getCamera()
     {
         return camera;
     }
 
-    public void setShader(ModelShader shader)
+    public final void setShader(ModelShader shader)
     {
         this.shader = shader;
     }
@@ -144,5 +143,4 @@ public class SpriteLayer extends Layer
     private final Camera camera = new Camera();
     private ModelShader shader = null;
     private final Matrix4f tmp = new Matrix4f();
-    private Matrix4f vpmatrix = null;
 }
