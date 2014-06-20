@@ -127,6 +127,15 @@ public class WidgetLayer extends Layer
         }
     }
     
+    public void onKeyPress(int key, char character)
+    {
+        final Widget focus = getFocus();
+        if( focus != null )
+        {
+            focus.invokeKeyPress(key, character);
+        }
+    }
+    
     public final void setFocus(Widget wgt)
     {
         if(focusWidget != null)

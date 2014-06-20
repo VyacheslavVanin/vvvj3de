@@ -297,7 +297,10 @@ public abstract class Widget extends GraphicObject
         return false;
     }
 
-    
+    final void invokeKeyPress( int key, char character)
+    {
+        onKeyPress(key, character);
+    }
  
     protected final void  setPosX( float x)      
     { 
@@ -433,6 +436,8 @@ public abstract class Widget extends GraphicObject
     
     protected void onGetFocus() {}
     protected void onLooseFocus() {}
+    
+    protected void onKeyPress( int key, char character){}
     
     private void onMouseMoveBase(float x, float y)
     {
