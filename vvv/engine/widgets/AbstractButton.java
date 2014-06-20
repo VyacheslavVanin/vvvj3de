@@ -1,5 +1,7 @@
 package vvv.engine.widgets;
 
+import org.lwjgl.input.Keyboard;
+
 /**
  *
  * @author vvv
@@ -120,6 +122,20 @@ public abstract class AbstractButton extends Widget
             }
             leftButtonHold = false;
         }
+    }
+    
+    @Override
+    protected final void onKeyPress(int key, char ch)
+    {
+         switch( key )
+         {
+             case Keyboard.KEY_SPACE:
+             case Keyboard.KEY_RETURN:
+                 onClickBase();
+                 break;
+             default:
+                 break;
+         }
     }
     
 }
