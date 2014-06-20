@@ -93,13 +93,15 @@ public abstract class AbstractButton extends Widget
     }
     
     @Override
-    protected final void onMouseButtonDown( int button, float x, float y) 
+    protected final boolean onMouseButtonDown( int button, float x, float y) 
     {
         if( button == 0 && isContainPoint(x, y) )
         {
             leftButtonHold = true;
             onPressBase();
+            return true;
         }
+        return false;
     }
     
     @Override

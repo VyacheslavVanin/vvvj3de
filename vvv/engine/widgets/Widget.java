@@ -280,7 +280,7 @@ public abstract class Widget extends GraphicObject
                 final WidgetLayer layer = getLayer();
                 layer.setFocus(this);
             }
-            onMouseButtonDown( button, x, y);
+            return onMouseButtonDown( button, x, y);
         }
         return false;
     }
@@ -428,7 +428,7 @@ public abstract class Widget extends GraphicObject
     
 
     protected void onMouseMove(float x,float y) {}
-    protected void onMouseButtonDown( int button, float x, float y) {}
+    protected boolean onMouseButtonDown( int button, float x, float y) { return true;}
     protected void onMouseButtonUp(int button, float x, float y) {}
     
     protected void onMouseEnter() {}

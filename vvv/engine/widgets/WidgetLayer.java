@@ -102,7 +102,7 @@ public class WidgetLayer extends Layer
                 ret = true;
                 if( wgt.isEnabled() && wgt.invokeMouseButtonDown(button, x, y) )
                 {
-                    break;
+                    return ret;
                 }
             }
         }

@@ -35,7 +35,7 @@ public abstract class Panel extends Widget
 
 
     @Override
-    protected void onMouseButtonDown(int button, float x, float y)
+    protected boolean onMouseButtonDown(int button, float x, float y)
     {
         if( isContainPoint(x, y) )
         {
@@ -46,10 +46,11 @@ public abstract class Panel extends Widget
                 final Widget wgt = list.get(i);
                 if( wgt.invokeMouseButtonDown(button, x, y) )
                 {
-                    break;
+                    return true;
                 } 
             }   
         }
+        return false;
     }
 
     @Override
