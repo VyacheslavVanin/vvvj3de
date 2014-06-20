@@ -15,6 +15,12 @@ import vvv.engine.widgets.ColorRectangleWidget;
  */
 public class DefaultHorizontalSlider extends AbstractSlider
 {
+    private int handle_width = 30;
+    private final int HANDLE_WIDTH_MIN = 0;
+    private final ColorRectangleWidget leftPart   = new ColorRectangleWidget();
+    private final ColorRectangleWidget centerPart = new ColorRectangleWidget();
+    private final ColorRectangleWidget rightPart  = new ColorRectangleWidget();    
+    
     public DefaultHorizontalSlider(int range)
     {
         super(range);
@@ -69,11 +75,7 @@ public class DefaultHorizontalSlider extends AbstractSlider
     {
         calcParts();
     }
-
-    private final ColorRectangleWidget leftPart   = new ColorRectangleWidget();
-    private final ColorRectangleWidget centerPart = new ColorRectangleWidget();
-    private final ColorRectangleWidget rightPart  = new ColorRectangleWidget();
-    
+  
     private void  calcParts()
     {
         final int value = getValue();
@@ -81,7 +83,7 @@ public class DefaultHorizontalSlider extends AbstractSlider
         final int widgetWidth = getWidth();
         final int widgetHeight= getHeight();
         
-        final int centerWidth = Math.min( DEFAULT_CENTER_WIDTH, widgetWidth );
+        final int centerWidth = Math.min( handle_width, widgetWidth );
         final int centerOffset= (int)((widgetWidth - centerWidth) * ( (float)value/range )) ; 
         final int leftWidth = centerOffset;
         final int leftOffset = 0;
@@ -104,5 +106,9 @@ public class DefaultHorizontalSlider extends AbstractSlider
         rightPart.setSize( rightWidth, widgetHeight);
     }
     
-    private final int DEFAULT_CENTER_WIDTH = 30;
+    public void setHandleWidth( int width)
+    {
+        handle_width = Math.max( Math.min(width, getWidth()/2), HANDLE_WIDTH_MIN);
+        calcParts();
+    }
 }
