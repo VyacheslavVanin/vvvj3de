@@ -106,6 +106,7 @@ public class WidgetLayer extends Layer
                 }
             }
         }
+        setFocus(null);
         return ret;
     }
     
@@ -128,7 +129,15 @@ public class WidgetLayer extends Layer
     
     public final void setFocus(Widget wgt)
     {
+        if(focusWidget != null)
+        {
+            focusWidget.onLooseFocus();
+        }
         focusWidget = wgt;
+        if(wgt != null)
+        {
+            focusWidget.onGetFocus();
+        }
     }
     
     public final Widget getFocus()

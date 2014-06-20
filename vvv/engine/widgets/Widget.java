@@ -9,7 +9,6 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
 import vvv.engine.Camera;
 import vvv.engine.Rect;
-import vvv.engine.shader.ModelShader;
 
 /**
  *
@@ -26,6 +25,7 @@ public abstract class Widget extends GraphicObject
     
     private boolean visible = true;
     private boolean enabled = true;
+    
     
     protected Widget parent = null;
     private final List<Widget> children = new ArrayList<>();
@@ -275,6 +275,8 @@ public abstract class Widget extends GraphicObject
     { 
         if( enabled && visible )
         {
+            final WidgetLayer layer = getLayer();
+            layer.setFocus(this);
             onMouseButtonDown( button, x, y);
         }
         return false;
@@ -295,6 +297,7 @@ public abstract class Widget extends GraphicObject
         return false;
     }
 
+    
  
     protected final void  setPosX( float x)      
     { 
@@ -428,6 +431,8 @@ public abstract class Widget extends GraphicObject
     protected void onEnable()  {}
     protected void onDisable() {}
     
+    protected void onGetFocus() {}
+    protected void onLooseFocus() {}
     
     private void onMouseMoveBase(float x, float y)
     {
