@@ -59,8 +59,13 @@ public class ImageWidget extends Widget
 
     private void repositionBySize()
     {
-        position.setPosition(   (float) Math.floor(getGlobalPosX() + getWidth()  / 2 ),
-                                (float) Math.floor(getGlobalPosY() + getHeight() / 2 ),
+        final int w = getWidth();
+        final int w_2 = (w % 2 == 1) ? w+1 : w;
+        
+        final int h_2 = getHeight();
+
+        position.setPosition(   (float)(getGlobalPosX() + w_2*0.5f ),
+                                (float)(getGlobalPosY() + h_2* 0.5f ),
                                 0);
     }
     
