@@ -25,7 +25,7 @@ public abstract class Widget extends GraphicObject
     
     private boolean visible = true;
     private boolean enabled = true;
-    
+    private boolean focusable = true;
     
     protected Widget parent = null;
     private final List<Widget> children = new ArrayList<>();
@@ -275,8 +275,11 @@ public abstract class Widget extends GraphicObject
     { 
         if( enabled && visible )
         {
-            final WidgetLayer layer = getLayer();
-            layer.setFocus(this);
+            if( isFocusable() )
+            {
+                final WidgetLayer layer = getLayer();
+                layer.setFocus(this);
+            }
             onMouseButtonDown( button, x, y);
         }
         return false;
@@ -471,6 +474,20 @@ public abstract class Widget extends GraphicObject
     {  
         onMouseLeave();
         onLeaveListener.action();
+    }
+
+    /**
+     * @return the focusable
+     */
+    public boolean isFocusable() {
+        return focusable;
+    }
+
+    /**
+     * @param focusable the focusable to set
+     */
+    public void setFocusable(boolean focusable) {
+        this.focusable = focusable;
     }
 
 }
