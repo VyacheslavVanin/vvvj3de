@@ -96,7 +96,7 @@ public abstract class AbstractSlider extends Widget
     private boolean dragged = false;
     
     @Override
-    protected boolean onMouseButtonDown(int button, float x, float y)
+    protected boolean onMouseButtonDown(int button, int x, int y)
     {
         if( isContainPoint(x, y) && button == 0)
         {
@@ -107,7 +107,7 @@ public abstract class AbstractSlider extends Widget
     }
     
     @Override 
-    protected void onMouseButtonUp( int button, float x, float y)
+    protected void onMouseButtonUp( int button, int x, int y)
     {
 	    if( dragged && button == 0)
         {
@@ -116,7 +116,7 @@ public abstract class AbstractSlider extends Widget
     }
     
     @Override
-    protected void onMouseMove( float x, float y)
+    protected void onMouseMove( int x, int y)
     {
 	    if( dragged )
         {

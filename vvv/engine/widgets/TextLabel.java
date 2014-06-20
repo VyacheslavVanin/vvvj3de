@@ -91,13 +91,13 @@ public class TextLabel extends Widget
     
     public final void setHeightByContents()
     {
-        float h = textLine.getAscenderHight() - textLine.getDescenderHight();
+        int h = textLine.getAscenderHight() - textLine.getDescenderHight();
         setHeight( h );
     }
     
     public final void setWidthByContext()
     {
-        float w = textLine.getLineWidth();
+        int w = textLine.getLineWidth();
         setWidth(w);
     }
     
@@ -178,7 +178,7 @@ public class TextLabel extends Widget
     private static final Matrix4f tmp = new Matrix4f();
 
     @Override
-    protected void onSetSize(float w, float h)
+    protected void onSetSize(int w, int h)
     {
         autosize = false;
         onSetPosition( getPosX(), getPosY() );

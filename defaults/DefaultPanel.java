@@ -32,8 +32,8 @@ public class DefaultPanel extends Panel {
 
     private Geometry geometry = null;
     private Texture texture = null;
-    private static final float DEFAULT_SIZE = 100.0f;
-    private static final float DEFAULT_BORDER = 4.0f;
+    private static final int DEFAULT_SIZE = 100;
+    private static final int DEFAULT_BORDER = 4;
 
     static private final Geometry.VertexAttribs attribs = new Geometry.VertexAttribs();
 
@@ -68,7 +68,7 @@ public class DefaultPanel extends Panel {
         setSize(DEFAULT_SIZE, DEFAULT_SIZE);
     }
 
-    public DefaultPanel(float width, float height) {
+    public DefaultPanel(int width, int height) {
         this();
         setSize(width, height);
     }
@@ -142,7 +142,7 @@ public class DefaultPanel extends Panel {
     }
 
     @Override
-    protected void onSetSize(float w, float h) {
+    protected void onSetSize(int w, int h) {
         super.onSetSize(w, h);
         updateGeometry(w, h);
         layout.setSize(w, h);

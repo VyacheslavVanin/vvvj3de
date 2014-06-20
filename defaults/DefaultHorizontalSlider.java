@@ -43,7 +43,7 @@ public class DefaultHorizontalSlider extends AbstractSlider
     }
 
     @Override
-    protected void onSetSize(float w, float h) 
+    protected void onSetSize(int w, int h) 
     {
         calcParts();
     }
@@ -78,16 +78,21 @@ public class DefaultHorizontalSlider extends AbstractSlider
     {
         final int value = getValue();
         final int range = getRange();
-        final float widgetWidth = getWidth();
-        final float widgetHeight= getHeight();
+        final int widgetWidth = getWidth();
+        final int widgetHeight= getHeight();
         
-        final float centerWidth = Math.min( DEFAULT_CENTER_WIDTH, widgetWidth );
-        final float centerOffset= (widgetWidth - centerWidth) * ( (float)value/range ); 
-        final float leftWidth = centerOffset;
-        final float leftOffset = 0;
+        final int centerWidth = Math.min( DEFAULT_CENTER_WIDTH, widgetWidth );
+        final int centerOffset= (int)((widgetWidth - centerWidth) * ( (float)value/range )) ; 
+        final int leftWidth = centerOffset;
+        final int leftOffset = 0;
         
-        final float rightWidth  = widgetWidth - (centerWidth + leftWidth);
-        final float rightOffset = centerOffset + centerWidth;
+        final int rightWidth  = widgetWidth - (centerWidth + leftWidth);
+        final int rightOffset = centerOffset + centerWidth;
+        
+        System.out.println( String.format("ww: %d, lw: %d, cw: %d, rw: %d\n", 
+                                          widgetWidth, leftWidth, centerWidth, rightWidth));
+        System.out.println( String.format("ww: %d, lo: %d, co: %d, ro: %d\n", 
+                                          widgetWidth, leftOffset, centerOffset, rightOffset));
         
         leftPart.setPosition( leftOffset, 0);
         leftPart.setSize(leftWidth, widgetHeight);

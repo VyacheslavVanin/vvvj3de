@@ -73,7 +73,7 @@ public class TextButton extends AbstractButton
     }
 
     @Override
-    protected void onSetSize(float w, float h)
+    protected void onSetSize(int w, int h)
     {
         text.setSize(w, h);
     }

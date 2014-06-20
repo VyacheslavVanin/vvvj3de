@@ -25,11 +25,11 @@ import vvv.engine.widgets.VerticalAlign;
  */
 public class Font
 {
-    private Texture texture;
+    private final Texture texture;
 
-    private Map<Character, GlyphInfo> map;
-    private float ascenderHight;
-    private float descenderHight; 
+    private final Map<Character, GlyphInfo> map;
+    private int ascenderHight;
+    private int descenderHight; 
     
     /**
      * Load font information from "name" and "name.dsc"
@@ -88,11 +88,11 @@ public class Font
         }
         GlyphInfo ret = new GlyphInfo();
         ret.symbol      = l.get( base++ ).charAt(0);
-        ret.offsetX     = Float.parseFloat( l.get( base++ ) );
-        ret.offsetY     = Float.parseFloat( l.get( base++ ) );
-        ret.glyphWidth  = Float.parseFloat( l.get( base++ ) );
-        ret.glyphHeight = Float.parseFloat( l.get( base++ ) );
-        ret.width       = Float.parseFloat( l.get( base++ ) );
+        ret.offsetX     = (int)Float.parseFloat( l.get( base++ ) );
+        ret.offsetY     = (int)Float.parseFloat( l.get( base++ ) );
+        ret.glyphWidth  = (int)Float.parseFloat( l.get( base++ ) );
+        ret.glyphHeight = (int)Float.parseFloat( l.get( base++ ) );
+        ret.width       = (int)Float.parseFloat( l.get( base++ ) );
         ret.tx          = Float.parseFloat( l.get( base++ ) );
         ret.ty          = Float.parseFloat( l.get( base++ ) );
         ret.theight     = Float.parseFloat( l.get( base++ ) );
@@ -124,8 +124,8 @@ public class Font
     {    
         this.map = map;
         this.texture = texture;
-        this.ascenderHight = Float.MIN_VALUE;
-        this.descenderHight = Float.MAX_VALUE;
+        this.ascenderHight = Integer.MIN_VALUE;
+        this.descenderHight = Integer.MAX_VALUE;
         
         for( GlyphInfo gi: map.values() )
         {
@@ -133,7 +133,7 @@ public class Font
             {
                 this.ascenderHight = gi.offsetY;
             }
-            float bottom = gi.offsetY - gi.glyphHeight;
+            final int bottom = gi.offsetY - gi.glyphHeight;
             if( bottom < this.descenderHight )
             {
                 this.descenderHight = bottom;
@@ -141,12 +141,12 @@ public class Font
         }       
     }
     
-    public float getAscenderHight()
+    public int getAscenderHight()
     {
         return ascenderHight;
     }
     
-    public float getDescenderHight()
+    public int getDescenderHight()
     {
         return descenderHight;
     }
@@ -172,11 +172,11 @@ public class Font
         GlyphInfo()
         {
         }
-        public float offsetX;
-        public float offsetY;
-        public float glyphWidth;
-        public float glyphHeight;
-        public float width;
+        public int offsetX;
+        public int offsetY;
+        public int glyphWidth;
+        public int glyphHeight;
+        public int width;
         public float tx;
         public float ty;
         public float twidth;

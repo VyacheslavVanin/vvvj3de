@@ -54,9 +54,9 @@ public class DefaultCheckbox extends AbstractCheckBox
     }
     
     
-    private float calcWidth()
+    private int calcWidth()
     {
-        float ret = box.getWidth() + 
+        int ret = box.getWidth() + 
                     SPACE_BETWEN_BOX_AND_TEXT +
                     text.getWidth();
         return ret;
@@ -69,10 +69,10 @@ public class DefaultCheckbox extends AbstractCheckBox
     
     private void setOptimalSize()
     {
-        final float boxHeight = box.getHeight();
-        final float textHeight = text.getHeight();
-        final float h = Math.max( boxHeight, textHeight);
-        final float w = calcWidth();
+        final int boxHeight = box.getHeight();
+        final int textHeight = text.getHeight();
+        final int h = Math.max( boxHeight, textHeight);
+        final int w = calcWidth();
         setSize(w, h);
     }
     
@@ -136,14 +136,14 @@ public class DefaultCheckbox extends AbstractCheckBox
         
     }
 
-    private final static float SPACE_BETWEN_BOX_AND_TEXT = 3;
+    private final static int SPACE_BETWEN_BOX_AND_TEXT = 3;
     private void placeWidets()
     {
-        float boxOffsetY = (getHeight() - box.getHeight())*0.5f;
+        final int boxOffsetY = (getHeight() - box.getHeight())/2;
         box.setPosition( 0, boxOffsetY);
         
-        float textOffsetX = box.getWidth() + SPACE_BETWEN_BOX_AND_TEXT;
-        float textOffsetY = (getHeight() - text.getHeight())*0.5f;
+        final int textOffsetX = box.getWidth() + SPACE_BETWEN_BOX_AND_TEXT;
+        final int textOffsetY = (getHeight() - text.getHeight())/2;
         text.setPosition(textOffsetX, textOffsetY);
     }
     
@@ -154,7 +154,7 @@ public class DefaultCheckbox extends AbstractCheckBox
     }
 
     @Override
-    protected void onSetSize(float w, float h)
+    protected void onSetSize(int w, int h)
     {
         placeWidets();
     }

@@ -73,16 +73,16 @@ public class TestCheckBox extends AbstractCheckBox
     @Override
     protected void onSetPosition(float x, float y)
     {
-        float tH = text.getHeight();
-        float iH = image.getHeight();
-        float dy = (tH - iH ) /2;
+        int tH = text.getHeight();
+        int iH = image.getHeight();
+        int dy = (tH - iH ) /2;
         image.setPosition(0, dy);
         text.setPosition( image.getPosX() + image.getWidth() + 3,
                           0);
     }
 
     @Override
-    protected void onSetSize(float w, float h)
+    protected void onSetSize(int w, int h)
     {
         
     }

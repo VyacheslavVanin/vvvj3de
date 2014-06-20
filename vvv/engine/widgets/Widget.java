@@ -16,10 +16,10 @@ import vvv.engine.Rect;
  */
 public abstract class Widget extends GraphicObject
 {
-    private float width = 0;
-    private float height = 0;
-    private float local_position_x = 0;
-    private float local_position_y = 0;
+    private int width = 0;
+    private int height = 0;
+    private int local_position_x = 0;
+    private int local_position_y = 0;
     
     private final Rect  clipArea = new Rect();
     
@@ -36,28 +36,28 @@ public abstract class Widget extends GraphicObject
     
     /**
      * @return Return widget width in pixels*/
-    public final float getWidth()  { return this.width; }
+    public final int getWidth()  { return this.width; }
     
     /**
      * @return Widget height in pixels */
-    public final float getHeight() { return this.height;}
+    public final int getHeight() { return this.height;}
     
     /**
      * @brief Return local widget position respective to parent widget. 
      *        <br>If no parent widget then equals layer width
      * @return horizontal component of position in pixels */
-    public final float getPosX()   { return this.local_position_x;  }
+    public final int getPosX()   { return this.local_position_x;  }
     
     /**
      * @brief Return local widget position respective to parent widget. 
      *        <br>If no parent widget then equals layer width
      * @return vertical component of position in pixels */
-    public final float getPosY()   { return this.local_position_y;  }
+    public final int getPosY()   { return this.local_position_y;  }
     
     /**
      * @brief Set width of widget.
      * @param width Width of widget in pixels, should be non-negative value */
-    protected final void  setWidth( float width)    
+    protected final void  setWidth( int width)    
     {
         if( width < 0 )
         {
@@ -70,7 +70,7 @@ public abstract class Widget extends GraphicObject
     /**
      * @brief Set height of widget.
      * @param height Height of widget in pixels, should be non-negative value */
-    protected final void  setHeight( float height ) 
+    protected final void  setHeight( int height ) 
     { 
         if( height < 0 )
         {
@@ -84,7 +84,7 @@ public abstract class Widget extends GraphicObject
      * @brief Set local position of widget on parent widget  
      * @param x - horizontal component
      * @param y - vertical component */
-    public final void setPosition( float x, float y)
+    public final void setPosition( int x, int y)
     {
         this.setPosX(x);
         this.setPosY(y);
@@ -96,7 +96,7 @@ public abstract class Widget extends GraphicObject
      * @param width Width in pixels
      * @param height Height in pixels
      */
-    public final void setSize( float width, float height)
+    public final void setSize( int width, int height)
     {
         setWidth(width);
         setHeight(height);
@@ -199,12 +199,12 @@ public abstract class Widget extends GraphicObject
     * @param x - x component of point in screen pixels
     * @param y - y component of point in screen pixels
     * @return true if contain or false if not */
-    public boolean isContainPoint( float x, float y)
+    public boolean isContainPoint( int x, int y)
     {
-        final float px = getGlobalPosX();
-        final float py = getGlobalPosY();
-        final float w  = getWidth();
-        final float h  = getHeight();
+        final int px = getGlobalPosX();
+        final int py = getGlobalPosY();
+        final int w  = getWidth();
+        final int h  = getHeight();
         
         if( x > px + w || x < px )
         {
@@ -256,7 +256,7 @@ public abstract class Widget extends GraphicObject
      * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
      * @param y - Mouse position y component in pixels 
      * @return  */
-    final boolean invokeMouseMove( float x, float y) 
+    final boolean invokeMouseMove( int x, int y) 
     {
         if(enabled && visible)
         {
@@ -271,7 +271,7 @@ public abstract class Widget extends GraphicObject
      * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
      * @param y - Mouse position y component in pixels 
      * @return  */
-    final boolean invokeMouseButtonDown( int button, float x, float y) 
+    final boolean invokeMouseButtonDown( int button, int x, int y) 
     { 
         if( enabled && visible )
         {
@@ -291,7 +291,7 @@ public abstract class Widget extends GraphicObject
      * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
      * @param y - Mouse position y component in pixels 
      * @return  */
-    final boolean invokeMouseButtonUp( int button, float x, float y) 
+    final boolean invokeMouseButtonUp( int button, int x, int y) 
     { 
         if( enabled && visible)
         {
@@ -305,12 +305,12 @@ public abstract class Widget extends GraphicObject
         onKeyPress(key, character);
     }
  
-    protected final void  setPosX( float x)      
+    protected final void  setPosX( int x)      
     { 
         this.local_position_x = x; 
     }
     
-    protected final void  setPosY( float y)      
+    protected final void  setPosY( int y)      
     { 
         this.local_position_y = y; 
     }
@@ -318,9 +318,9 @@ public abstract class Widget extends GraphicObject
     /**
      * @brief Get real position of widget in screen coordinates (0,0 - bottom-left corner) 
      * @return x component of widget position */
-    protected final float getGlobalPosX()
+    protected final int getGlobalPosX()
     {
-        float  parentPosX;
+        int  parentPosX;
         if( parent==null )
         {
             parentPosX = 0;
@@ -335,9 +335,9 @@ public abstract class Widget extends GraphicObject
     /**
      * @brief Get real position of widget in screen coordinates (0,0 - bottom-left corner) 
      * @return y component of widget position */
-    protected final float getGlobalPosY()
+    protected final int getGlobalPosY()
     {
-        float  parentPosY;
+        int  parentPosY;
         if( parent==null )
         {
             parentPosY = 0;
@@ -420,16 +420,16 @@ public abstract class Widget extends GraphicObject
     
     protected abstract void onDraw() throws Exception;
    
-    protected abstract void onSetSize( float w, float h);
+    protected abstract void onSetSize( int w, int h);
     
     /**
      * Method called after widget was attached to new parent  */
     protected void onAttach() {};
     
 
-    protected void onMouseMove(float x,float y) {}
-    protected boolean onMouseButtonDown( int button, float x, float y) { return true;}
-    protected void onMouseButtonUp(int button, float x, float y) {}
+    protected void onMouseMove(int x, int y) {}
+    protected boolean onMouseButtonDown( int button, int x, int y) { return true;}
+    protected void onMouseButtonUp(int button, int x, int y) {}
     
     protected void onMouseEnter() {}
     protected void onMouseLeave() {}
@@ -442,7 +442,7 @@ public abstract class Widget extends GraphicObject
     
     protected void onKeyPress( int key, char character){}
     
-    private void onMouseMoveBase(float x, float y)
+    private void onMouseMoveBase(int x, int y)
     {
         if( isContainPoint(x, y) )
         {

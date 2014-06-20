@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class TestPanel extends Panel
 {
-    private float widgetsHeight = 0;
+    private int widgetsHeight = 0;
    
     @Override
     protected void onAddWidget(Widget wgt)
@@ -30,7 +30,7 @@ public class TestPanel extends Panel
     @Override
     protected void onDraw() throws Exception
     {
-        float h = 0;
+        int h = 0;
         List<Widget> list = getChildren();
         for( Widget wgt : list )
         {

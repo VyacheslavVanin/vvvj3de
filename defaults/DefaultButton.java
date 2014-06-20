@@ -35,7 +35,7 @@ public final class DefaultButton extends AbstractButton {
     private Texture currentTexture = null;
 
     private Geometry geometry = null;
-    private static final float BORDER_WIDTH = 4;
+    private static final int BORDER_WIDTH = 4;
     private boolean autosize = true;
 
     static private final Geometry.VertexAttribs attribs = new Geometry.VertexAttribs();
@@ -87,11 +87,11 @@ public final class DefaultButton extends AbstractButton {
     }
 
     private void updateTextPosition() {
-        final float widgetWidth = getWidth();
-        final float widgetHeight= getHeight();
+        final int widgetWidth = getWidth();
+        final int widgetHeight= getHeight();
             
-        final float textX = (int) (widgetWidth - text.getWidth()) / 2;
-        final float textY = (int) (widgetHeight - text.getHeight()) / 2;
+        final int textX = (int) (widgetWidth - text.getWidth()) / 2;
+        final int textY = (int) (widgetHeight - text.getHeight()) / 2;
         
         if(autosize == false)
         {
@@ -122,8 +122,8 @@ public final class DefaultButton extends AbstractButton {
         this.text.setText(text);
 
         if (autosize) {
-            final float w = this.text.getWidth() + 2 * BORDER_WIDTH;
-            final float h = this.text.getHeight() + 2 * BORDER_WIDTH;
+            final int w = this.text.getWidth() + 2 * BORDER_WIDTH;
+            final int h = this.text.getHeight() + 2 * BORDER_WIDTH;
             privateSetSize(w, h);
         }
 
@@ -198,13 +198,13 @@ public final class DefaultButton extends AbstractButton {
     }
 
     @Override
-    protected void onSetSize(float w, float h) {
+    protected void onSetSize(int w, int h) {
         setAutoSize(false);
         updateGeometry(w, h);
         updateTextPosition();     
     }
 
-    private void privateSetSize(float w, float h)
+    private void privateSetSize(int w, int h)
     {
         setWidth(w);
         setHeight(h);

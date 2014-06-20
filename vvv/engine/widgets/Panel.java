@@ -35,7 +35,7 @@ public abstract class Panel extends Widget
 
 
     @Override
-    protected boolean onMouseButtonDown(int button, float x, float y)
+    protected boolean onMouseButtonDown(int button, int x, int y)
     {
         if( isContainPoint(x, y) )
         {
@@ -54,7 +54,7 @@ public abstract class Panel extends Widget
     }
 
     @Override
-    protected void onMouseMove(float x, float y)
+    protected void onMouseMove(int x, int y)
     {
         final List<Widget> list = getChildren();
         final int s = list.size();
@@ -66,7 +66,7 @@ public abstract class Panel extends Widget
     }
 
     @Override
-    protected void onMouseButtonUp(int button, float x, float y)
+    protected void onMouseButtonUp(int button, int x, int y)
     {
         final List<Widget> list = getChildren();
         final int s = list.size();
@@ -79,7 +79,7 @@ public abstract class Panel extends Widget
 
   
     @Override
-    protected void onSetSize(float w, float h)
+    protected void onSetSize(int w, int h)
     { }   
     
     abstract protected void onAddWidget( Widget wgt );

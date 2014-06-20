@@ -23,7 +23,7 @@ public class TextLine
     private final Geometry geometry = new Geometry();
     private Font     font = null;
     private String   text = "";
-    private float    width = 0;
+    private int    width = 0;
     private final Vector3f color = new Vector3f(1,1,1);
 
     private boolean  changed = true;
@@ -160,18 +160,18 @@ public class TextLine
         this.width = x;
     }
     
-    public final float getLineWidth()
+    public final int getLineWidth()
     {
         updateGeometry();
         return this.width;
     }
     
-    public final float getAscenderHight()
+    public final int getAscenderHight()
     {
         return font.getAscenderHight();
     }
     
-    public final float getDescenderHight()
+    public final int getDescenderHight()
     {
         return font.getDescenderHight();
     }

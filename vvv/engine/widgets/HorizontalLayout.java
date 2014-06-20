@@ -27,22 +27,22 @@ public class HorizontalLayout extends Layout
         }
         
         float fullWidth = getWidth();
-        float h = 0;
+        int h = 0;
         for( int i =0; i < size; ++i )
         {
             final Widget wgt = l.get(i);
             float weight = wgt.getWidth() / fullWeight;
-            float partWidth = fullWidth * weight; // height of part
+            int partWidth = (int)(fullWidth * weight); // height of part
             
             
-            float offsetY = (( getHeight() - wgt.getHeight()) / 2);
-            float offsetX = (( partWidth - wgt.getWidth() ) / 2);
+            int offsetY = (int)(( getHeight() - wgt.getHeight()) / 2);
+            int offsetX = (int)(( partWidth - wgt.getWidth() ) / 2);
             
             wgt.setPosition( (h + offsetX), offsetY);
             h += partWidth;
         }
     }  
-    
-    
+
+
     
 }

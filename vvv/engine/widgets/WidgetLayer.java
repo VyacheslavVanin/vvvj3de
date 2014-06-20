@@ -72,7 +72,7 @@ public class WidgetLayer extends Layer
      * @param x
      * @param y 
      */
-    public void onMouseMove( float x, float y )
+    public void onMouseMove( int x, int y )
     {
         final List<GraphicObject> objects = getObjects();
         final int numOjects = objects.size();
@@ -89,7 +89,7 @@ public class WidgetLayer extends Layer
         }
     }
     
-    public boolean onLeftMouseButtonDown( int button, float x, float y) 
+    public boolean onLeftMouseButtonDown( int button, int x, int y) 
     {
         final List<GraphicObject> objects = getObjects();
         final int size = objects.size();
@@ -110,7 +110,7 @@ public class WidgetLayer extends Layer
         return ret;
     }
     
-    public void onLeftMouseButtonUp( int button, float x, float y) 
+    public void onLeftMouseButtonUp( int button, int x, int y) 
     {
         final List<GraphicObject> objects = getObjects();
         final int size = objects.size();

@@ -26,8 +26,8 @@ public class ImageWidget extends Widget
     {
         this();
         setTexture(tex);
-        final float imageHeight = tex.getHeight();
-        final float imageWidth  = tex.getWidth();
+        final int imageHeight = tex.getHeight();
+        final int imageWidth  = tex.getWidth();
         setSize(imageWidth, imageHeight);  
     }
     
@@ -71,7 +71,7 @@ public class ImageWidget extends Widget
     }
 
     @Override
-    protected void onSetSize(float w, float h)
+    protected void onSetSize(int w, int h)
     {
         position.setScale(w, h, 1);
         repositionBySize();

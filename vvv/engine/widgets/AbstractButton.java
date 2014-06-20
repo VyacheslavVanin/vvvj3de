@@ -95,7 +95,7 @@ public abstract class AbstractButton extends Widget
     }
     
     @Override
-    protected final boolean onMouseButtonDown( int button, float x, float y) 
+    protected final boolean onMouseButtonDown( int button, int x, int y) 
     {
         if( button == 0 && isContainPoint(x, y) )
         {
@@ -107,7 +107,7 @@ public abstract class AbstractButton extends Widget
     }
     
     @Override
-    protected final void onMouseButtonUp( int button, float x, float y) 
+    protected final void onMouseButtonUp( int button, int x, int y) 
     {
         if( button == 0 )
         {

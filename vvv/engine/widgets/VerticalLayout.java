@@ -26,16 +26,16 @@ public class VerticalLayout extends Layout
             fullWeight += wgt.getHeight();
         }
         
-        final float fullHeight = getHeight();
-        float h = fullHeight;
+        final int fullHeight = getHeight();
+        int h = fullHeight;
         for( int i = 0; i < size; ++i)
         {
             final Widget wgt = l.get(i);
             final float weight = wgt.getHeight() / fullWeight;
-            final float partHeight = fullHeight * weight; // height of part
+            final int partHeight = (int)(fullHeight * weight); // height of part
             h -= partHeight;
-            float offsetY = ( partHeight - wgt.getHeight()) / 2;
-            float offsetX = ( getWidth() - wgt.getWidth() ) / 2;
+            int offsetY = ( partHeight - wgt.getHeight()) / 2;
+            int offsetX = ( getWidth() - wgt.getWidth() ) / 2;
             
             wgt.setPosition( offsetX, (h + offsetY));
         }

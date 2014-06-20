@@ -57,7 +57,7 @@ public abstract class Layout extends Panel
     };
     
     @Override
-    protected void onSetSize(float w, float h)
+    protected void onSetSize(int w, int h)
     {
         super.onSetSize(w, h); //To change body of generated methods, choose Tools | Templates.
         rearrange();
@@ -73,8 +73,8 @@ public abstract class Layout extends Panel
     @Override
     protected void onAttach()
     {
-        final float h =  parent.getHeight();
-        final float w = parent.getWidth();
+        final int h =  parent.getHeight();
+        final int w = parent.getWidth();
         setSize(w, h);
     }
     

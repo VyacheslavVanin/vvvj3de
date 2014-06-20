@@ -72,7 +72,7 @@ public class ColorRectangleWidget extends Widget
     }
     
     @Override
-    protected void onSetSize(float w, float h) 
+    protected void onSetSize(int w, int h) 
     {
         position.setScale(w, h, 1);
         repositionBySize();
