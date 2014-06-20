@@ -24,7 +24,10 @@ public class DefaultHorizontalSlider extends AbstractSlider
         addChild(leftPart);
         addChild(rightPart);
         addChild(centerPart);
-          
+        leftPart.setFocusable( false );
+        rightPart.setFocusable( false );
+        centerPart.setFocusable( false );
+        
         setSize(200, 16);
     }
     
@@ -58,7 +61,12 @@ public class DefaultHorizontalSlider extends AbstractSlider
         final float xpos = getGlobalPosX();
         final float dx = Math.max( x - xpos, 0 );
         final float width = getWidth();
-        setValue(  (int) ((dx / width) * getRange()));
+        setValue(  (int) ((dx / width) * getRange()));        
+    }
+    
+    @Override
+    protected  void onSetValue(int value)
+    {
         calcParts();
     }
 
