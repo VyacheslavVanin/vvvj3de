@@ -2,8 +2,8 @@ package vvv.math;
 
 public class Matrix4
 {
-	private float[] matrix;
-	private Vec3    tmpVec = new Vec3();
+	private final float[] matrix;
+	private final Vec3    tmpVec = new Vec3();
 	
 	public Matrix4()
 	{
@@ -141,17 +141,11 @@ public class Matrix4
 	
 	public void scale( float s )
 	{
-		//matrix[0] *= s;
-		//matrix[5] *= s;
-		//matrix[10]*= s;
 		Matrix.scale(matrix, s);
 	}
 	
 	public void scale( float sx, float sy, float sz)
 	{
-		//matrix[0] *= sx;
-		//matrix[5] *= sy;
-		//matrix[10]*= sz;
 		Matrix.scale(matrix, sx, sy, sz);
 	}
 	
@@ -198,6 +192,14 @@ public class Matrix4
 		loadTranslate( vec.x(), vec.y(), vec.z() );
 	}
 	
-	
+	public void loadIdentity()
+    {
+        Matrix.loadIdentityMat4(matrix);
+    }
+    
+    public void loadLookAt(Vec3 eye, Vec3 center, Vec3 up)
+    {
+        Matrix.lookAt(matrix, eye, center, up);
+    }
 	
 }
