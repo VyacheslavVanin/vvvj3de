@@ -6,6 +6,8 @@
 
 package vvv.engine.widgets;
 
+import org.lwjgl.input.Keyboard;
+
 /**
  *
  * @author vvv
@@ -19,8 +21,8 @@ public abstract class AbstractSlider extends Widget
     
     public AbstractSlider(int range)
     {
-        setRange( range );
-        setValue( range/2 );
+        this.range =  range;
+        value = range/2;
     }
     
     public AbstractSlider() 
@@ -40,11 +42,14 @@ public abstract class AbstractSlider extends Widget
         setValue( range / 2);
     }
     
+    protected void onSetValue( int value ){}
     
     public final void setValue( int value)
     {
                             // clamp value to [0..range]
         this.value = Math.max(0, Math.min(range, value) );
+        onSetValue(value);
+        onDragListener.action();
     }
     
     public final int getValue()
@@ -85,7 +90,6 @@ public abstract class AbstractSlider extends Widget
     private void onDragBase(float x, float y)
     {
         onMouseDrag(x, y);
-        onDragListener.action();
     }
     
     
@@ -115,6 +119,24 @@ public abstract class AbstractSlider extends Widget
 	    if( dragged )
         {
             onDragBase(x, y);
+        }
+    }
+    
+    @Override
+    protected void onKeyPress( int key, char character)
+    {
+        switch( key )
+        {
+            case Keyboard.KEY_LEFT:
+                setValue( value - 1 );
+                break;
+
+            case Keyboard.KEY_RIGHT:
+                setValue( value + 1 );
+                break;
+                
+            default:
+                break;
         }
     }
     
