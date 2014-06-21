@@ -91,11 +91,6 @@ public class DefaultHorizontalSlider extends AbstractSlider
         final int rightWidth  = widgetWidth - (centerWidth + leftWidth);
         final int rightOffset = centerOffset + centerWidth;
         
-        System.out.println( String.format("ww: %d, lw: %d, cw: %d, rw: %d\n", 
-                                          widgetWidth, leftWidth, centerWidth, rightWidth));
-        System.out.println( String.format("ww: %d, lo: %d, co: %d, ro: %d\n", 
-                                          widgetWidth, leftOffset, centerOffset, rightOffset));
-        
         leftPart.setPosition( leftOffset, 0);
         leftPart.setSize(leftWidth, widgetHeight);
         
