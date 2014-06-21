@@ -23,14 +23,14 @@ public class TextureLoader
                                         TextureLowLevel.InternalFormat format )
             throws IOException
     {
-        Image im = ImageDesktop.read(filename, filename);
-        TextureLowLevel tll = new TextureLowLevel();
+        final Image im = ImageDesktop.read(filename, filename);
+        final TextureLowLevel tll = new TextureLowLevel();
         tll.setFilter(TextureLowLevel.MINFILTER.LINEAR, 
                       TextureLowLevel.MAGFILTER.LINEAR);
         tll.loadToHost(im, format);
-        TexCoordData tcd = new TexCoordData();
+        final TexCoordData tcd = new TexCoordData();
         tcd.set(0, 0, 1, 1);
-        Texture t = new Texture( tll, tcd, 
+        final Texture t = new Texture( tll, tcd, 
                                  (int)im.getWidth(), (int)im.getHeight());
         return t;
     }
