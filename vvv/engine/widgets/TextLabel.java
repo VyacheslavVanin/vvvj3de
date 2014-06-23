@@ -23,7 +23,7 @@ import vvv.engine.text.TextLine;
  */
 public class TextLabel extends Widget
 {
-    private TextLine textLine = null;
+    private final TextLine textLine;
     private Color textColor = DefaultSystemColors.getTextColor();
     private VerticalAlign   vAlign;
     private HorizontalAlign hAlign;
@@ -77,6 +77,11 @@ public class TextLabel extends Widget
         {
             setSizeByContents();
         }
+    }
+    
+    public final String getText()
+    {
+        return textLine.getText();
     }
     
     public final void setFont( Font font )
