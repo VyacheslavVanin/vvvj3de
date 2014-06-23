@@ -30,8 +30,8 @@ public abstract class Widget extends GraphicObject
     protected Widget parent = null;
     private final List<Widget> children = new ArrayList<>();
     protected final PositionProperties position = new PositionProperties();
-    private final ListenerContainer onEnterListener = new ListenerContainer();
-    private final ListenerContainer onLeaveListener = new ListenerContainer();
+    private final ListenerContainer onMouseEnterListener = new ListenerContainer();
+    private final ListenerContainer onMouseLeaveListener = new ListenerContainer();
     private boolean inArea = false;
     
     /**
@@ -169,29 +169,29 @@ public abstract class Widget extends GraphicObject
     /**
      * @brief Add ActionListener on MouseEnter-event  to widget
      * @param listener  */
-    public final void addOnEnterListener(ActionListener listener) {
-        this.onEnterListener.addListener(listener);
+    public final void addOnMouseEnterListener(ActionListener listener) {
+        this.onMouseEnterListener.addListener(listener);
     }
 
     /**
      * @brief Add ActionListener on MouseLeave-event to widget
      * @param listener  */
-    public final void addOnLeaveListener(ActionListener listener) {
-        this.onLeaveListener.addListener(listener);
+    public final void addOnMouseLeaveListener(ActionListener listener) {
+        this.onMouseLeaveListener.addListener(listener);
     }
 
     /**
      * @brief Remove listener from widget
      * @param listener */
-    public final void removeOnEnterListener(ActionListener listener) {
-        this.onEnterListener.removeListener(listener);
+    public final void removeOnMouseEnterListener(ActionListener listener) {
+        this.onMouseEnterListener.removeListener(listener);
     }
 
     /**
      * @brief Remove listener from widget
      * @param listener */
-    public final void removeOnLeaveListener(ActionListener listener) {
-        this.onLeaveListener.removeListener(listener);
+    public final void removeOnMouseLeaveListener(ActionListener listener) {
+        this.onMouseLeaveListener.removeListener(listener);
     }
 
    /**
@@ -464,13 +464,13 @@ public abstract class Widget extends GraphicObject
     private void onMouseEnterBase()
     {  
         onMouseEnter();
-        onEnterListener.action();
+        onMouseEnterListener.action();
     }
     
     private void onMouseLeaveBase()
     {  
         onMouseLeave();
-        onLeaveListener.action();
+        onMouseLeaveListener.action();
     }
 
     /**
