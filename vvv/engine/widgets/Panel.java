@@ -44,7 +44,7 @@ public abstract class Panel extends Widget
             for( int i =0; i < s; ++i )
             {
                 final Widget wgt = list.get(i);
-                if( wgt.invokeMouseButtonDown(button, x, y) )
+                if( wgt.isContainPoint(x, y) && wgt.invokeMouseButtonDown(button, x, y) )
                 {
                     return true;
                 } 
