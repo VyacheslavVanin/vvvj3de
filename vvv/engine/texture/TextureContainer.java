@@ -89,6 +89,6 @@ public class TextureContainer
         }
     }
 
-    private HashMap<String,Texture>   map = new HashMap<>();// map for output and searching
-    private HashMap<String,Image>   input = new HashMap<>();// list to accamulate input images before packing 
+    private final HashMap<String,Texture>   map = new HashMap<>();// map for output and searching
+    private final HashMap<String,Image>   input = new HashMap<>();// list to accamulate input images before packing 
 }

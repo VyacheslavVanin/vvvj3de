@@ -19,6 +19,9 @@ public class Globals
             currentTime = System.currentTimeMillis();
         }
         
+        /** 
+         * @return time in millis  
+         */
         static public long get()
         {
             return currentTime;
