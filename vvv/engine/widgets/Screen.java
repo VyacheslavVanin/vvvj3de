@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vvv.engine.Globals;
 
 /**
  * @brief Screen object used to hold Layers of GraphicObjects. 
@@ -162,6 +163,7 @@ public final class Screen
      * @brief draw all layers of screen, first all layers from list of attached layers and then GUI layer*/
     public void draw()
     {
+        Globals.Time.update();
         try
         {
             // draw regular layers

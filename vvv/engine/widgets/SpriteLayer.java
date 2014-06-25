@@ -78,9 +78,7 @@ public class SpriteLayer extends Layer
         final Geometry sg = SpriteGeometry.getGeometry();
         sg.activate();
         shader.activate();
-     
-        Globals.Time.update();
-        
+         
         final int size = objects.size();
         for( int i = 0; i < size; ++i)
         {
