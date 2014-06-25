@@ -47,20 +47,7 @@ public class DefaultHorizontalSlider extends AbstractSlider
     protected void onDraw() throws Exception 
     {  
     }
-
-    @Override
-    protected void onSetSize(int w, int h) 
-    {
-        calcParts();
-    }
-    
-    @Override
-    protected  void onSetPosition(float x, float y)
-    {
-        super.onSetPosition(x, y);
-        calcParts();
-    }
-    
+ 
     @Override
     protected void onMouseDrag(float x, float y)
     {
@@ -104,6 +91,12 @@ public class DefaultHorizontalSlider extends AbstractSlider
     public void setHandleWidth( int width)
     {
         handle_width = Math.max( Math.min(width, getWidth()/2), HANDLE_WIDTH_MIN);
+        calcParts();
+    }
+
+    @Override
+    protected void onRefresh() 
+    {
         calcParts();
     }
 }

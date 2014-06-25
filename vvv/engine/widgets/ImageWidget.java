@@ -69,16 +69,15 @@ public class ImageWidget extends Widget
                                 0);
     }
     
-    @Override
-    protected void onSetPosition(float x, float y)
-    {
-        repositionBySize();
-    }
 
     @Override
     protected void onSetSize(int w, int h)
     {
         position.setScale(w, h, 1);
-        repositionBySize();
+    }
+
+    @Override
+    protected void onRefresh() {
+         repositionBySize();
     }
 }

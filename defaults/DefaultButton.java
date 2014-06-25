@@ -191,17 +191,10 @@ public final class DefaultButton extends AbstractButton {
         drawButton();
     }
 
-    @Override
-    protected void onSetPosition(float x, float y) {
-        super.onSetPosition(x, y);
-        updateTextPosition();
-    }
 
     @Override
     protected void onSetSize(int w, int h) {
         setAutoSize(false);
-        updateGeometry(w, h);
-        updateTextPosition();     
     }
 
     private void privateSetSize(int w, int h)
@@ -215,6 +208,14 @@ public final class DefaultButton extends AbstractButton {
     public final void setAutoSize(boolean b) {
         autosize = b;
         text.setAutoSize(b);
+    }
+
+    @Override
+    protected void onRefresh() {
+        final int w = getWidth();
+        final int h = getHeight();
+        updateGeometry(w, h);
+        updateTextPosition(); 
     }
 
 }

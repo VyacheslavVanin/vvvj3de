@@ -251,19 +251,7 @@ public class DefaultEditBox extends Widget {
             }
         }  
     }
-
-    @Override
-    protected void onSetSize(int w, int h) {
-        background.setSize(w, h);
-        placeText();
-    }
-    
-    @Override
-    protected void onSetPosition(float x, float y)
-    {
-         placeText();
-    }
-    
+ 
     @Override
     protected void onGetFocus()
     {
@@ -280,6 +268,14 @@ public class DefaultEditBox extends Widget {
     public void setAlign( HorizontalAlign align)
     {
         this.align = align;
+        placeText();
+    }
+
+    @Override
+    protected void onRefresh() {
+        final int w = getWidth();
+        final int h = getHeight();
+        background.setSize(w, h);
         placeText();
     }
     

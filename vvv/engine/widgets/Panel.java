@@ -77,11 +77,7 @@ public abstract class Panel extends Widget
         }   
     }
 
-  
-    @Override
-    protected void onSetSize(int w, int h)
-    { }   
-    
+   
     abstract protected void onAddWidget( Widget wgt );
     abstract protected void onRemoveWidget( Widget wgt );
 }

@@ -136,27 +136,15 @@ public class DefaultCheckbox extends AbstractCheckBox
         
     }
 
-    private final static int SPACE_BETWEN_BOX_AND_TEXT = 3;
-    private void placeWidets()
-    {
+    private final static int SPACE_BETWEN_BOX_AND_TEXT = 3; 
+    @Override
+    protected void onRefresh() {
         final int boxOffsetY = (getHeight() - box.getHeight())/2;
         box.setPosition( 0, boxOffsetY);
         
         final int textOffsetX = box.getWidth() + SPACE_BETWEN_BOX_AND_TEXT;
         final int textOffsetY = (getHeight() - text.getHeight())/2;
         text.setPosition(textOffsetX, textOffsetY);
-    }
-    
-    @Override
-    protected void onSetPosition(float x, float y)
-    {
-        placeWidets();
-    }
-
-    @Override
-    protected void onSetSize(int w, int h)
-    {
-        placeWidets();
     }
     
 }

@@ -32,7 +32,7 @@ public abstract class Layout extends Panel
     
     public final void moveWidgets( Layout other )
     {
-        List<Widget> l = getChildren();
+        final List<Widget> l = getChildren();
         final int size = l.size();
         for( int i = 0; i < size; ++i )
         {
@@ -44,7 +44,7 @@ public abstract class Layout extends Panel
     
     protected void rearrange() 
     {
-        List<Widget> l = getChildren();
+        final List<Widget> l = getChildren();
         final int size = l.size();
         for( int i = 0; i < size; ++i )
         {
@@ -56,12 +56,6 @@ public abstract class Layout extends Panel
         }
     };
     
-    @Override
-    protected void onSetSize(int w, int h)
-    {
-        super.onSetSize(w, h); //To change body of generated methods, choose Tools | Templates.
-        rearrange();
-    }
 
     @Override
     protected void onSetPosition(float x, float y)
@@ -76,6 +70,12 @@ public abstract class Layout extends Panel
         final int h =  parent.getHeight();
         final int w = parent.getWidth();
         setSize(w, h);
+    }
+    
+    @Override
+    protected void onRefresh()
+    {
+         rearrange();
     }
     
 }

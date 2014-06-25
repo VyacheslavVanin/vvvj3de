@@ -125,12 +125,6 @@ public class DefaultPanel extends Panel {
         drawPanel();
     }
 
-    @Override
-    protected void onSetPosition(float x, float y) {
-        super.onSetPosition(x, y);
-        rearrange();
-    }
-
     private void rearrange() {
         List<Widget> list = getChildren();
         final int size = list.size();
@@ -141,18 +135,20 @@ public class DefaultPanel extends Panel {
         }
     }
 
-    @Override
-    protected void onSetSize(int w, int h) {
-        super.onSetSize(w, h);
-        updateGeometry(w, h);
-        layout.setSize(w, h);
-        rearrange();
-    }
 
     private void updateGeometry(float w, float h) {
         GridMeshCreator3x3.fillVertexBuffer(vbb, w, h, 4, 4, 4, 4);
         geometry.loadToHost(vbb, attribs, ibb,
                 NUM_INDICES, GL_UNSIGNED_INT);
+    }
+
+    @Override
+    protected void onRefresh() {
+        final int w = getWidth();
+        final int h = getHeight();
+        updateGeometry(w, h);
+        layout.setSize(w, h);
+        rearrange();
     }
 
 }

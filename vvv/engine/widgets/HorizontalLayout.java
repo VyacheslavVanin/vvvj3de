@@ -43,6 +43,4 @@ public class HorizontalLayout extends Layout
         }
     }  
 
-
-    
 }

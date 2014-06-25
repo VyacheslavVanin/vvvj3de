@@ -116,9 +116,35 @@ public class TextLabel extends Widget
     {
         this.autosize = b;
     }
-    
+       
     @Override
-    public final void onSetPosition( float x, float y)
+    protected void onDraw() throws Exception
+    {
+        final ModelShader shader  = Defaults.getTextShader();
+        final Camera      cam     = getCamera();   
+
+        shader.activate();
+        shader.setColor(0, textColor);
+            Matrix4f.mul( cam.getViewProjectionMatrix4f(), 
+                          position.getMatrix4f(), 
+                          tmp);
+        shader.setModelViewProjectionMatrix(tmp);
+        shader.setTexture( 0, textLine.getTexture() );
+        
+       
+        textLine.draw();
+        
+    }   
+    private static final Matrix4f tmp = new Matrix4f();
+
+    @Override
+    protected void onSetSize(int w, int h)
+    {
+        autosize = false;
+    }
+
+    @Override
+    protected void onRefresh() 
     {
         float alignOffsetX = 0;
         float alignOffsetY = 0;
@@ -159,33 +185,5 @@ public class TextLabel extends Widget
         position.setPosition( (float) Math.floor( getGlobalPosX() + alignOffsetX ),
                               (float) Math.floor( getGlobalPosY() + alignOffsetY ),
                               0 );
-    }
- 
-       
-    @Override
-    protected void onDraw() throws Exception
-    {
-        final ModelShader shader  = Defaults.getTextShader();
-        final Camera      cam     = getCamera();   
-
-        shader.activate();
-        shader.setColor(0, textColor);
-            Matrix4f.mul( cam.getViewProjectionMatrix4f(), 
-                          position.getMatrix4f(), 
-                          tmp);
-        shader.setModelViewProjectionMatrix(tmp);
-        shader.setTexture( 0, textLine.getTexture() );
-        
-       
-        textLine.draw();
-        
-    }   
-    private static final Matrix4f tmp = new Matrix4f();
-
-    @Override
-    protected void onSetSize(int w, int h)
-    {
-        autosize = false;
-        onSetPosition( getPosX(), getPosY() );
     }
 }

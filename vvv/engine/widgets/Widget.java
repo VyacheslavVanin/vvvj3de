@@ -89,6 +89,7 @@ public abstract class Widget extends GraphicObject
         this.setPosX(x);
         this.setPosY(y);
         onSetPosition( x, y);
+        onRefresh();
     }
     
     /**
@@ -101,6 +102,7 @@ public abstract class Widget extends GraphicObject
         setWidth(width);
         setHeight(height);
         onSetSize(width, height);
+        onRefresh();
     }
     
     /**
@@ -410,14 +412,16 @@ public abstract class Widget extends GraphicObject
     
     protected void onSetPosition(float x, float y)
     {
-        position.setPosition( (float)Math.floor(getGlobalPosX() ), 
-                              (float)Math.floor(getGlobalPosY() ),
+        position.setPosition( (float)(getGlobalPosX() ), 
+                              (float)(getGlobalPosY() ),
                               0);
     }
     
     protected abstract void onDraw() throws Exception;
    
-    protected abstract void onSetSize( int w, int h);
+    protected void onSetSize( int w, int h) {};
+    
+    protected abstract void onRefresh();
     
     /**
      * Method called after widget was attached to new parent  */

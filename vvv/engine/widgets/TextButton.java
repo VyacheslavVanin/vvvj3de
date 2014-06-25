@@ -72,9 +72,11 @@ public class TextButton extends AbstractButton
         text.setPosition(0, 0);
     }
 
+
     @Override
-    protected void onSetSize(int w, int h)
-    {
+    protected void onRefresh() {
+        final int w = getWidth();
+        final int h = getHeight();
         text.setSize(w, h);
     }
 }
