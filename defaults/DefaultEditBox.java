@@ -38,9 +38,6 @@ public class DefaultEditBox extends Widget {
     {
         leftPart.setText("");
         rightPart.setText("");
-        leftPart.setFocusable(false);
-        rightPart.setFocusable(false);
-        
 
         addChild( background );
         addChild(leftPart);
@@ -194,9 +191,7 @@ public class DefaultEditBox extends Widget {
                     leftOffset = leftMargin;
                     rightOffset = leftOffset + leftWidth;
                 }
-                
-               
-                
+  
                 break;
             }
 

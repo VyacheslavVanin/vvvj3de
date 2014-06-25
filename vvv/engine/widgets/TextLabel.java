@@ -48,6 +48,7 @@ public class TextLabel extends Widget
         this.vAlign = VerticalAlign.CENTER;
         this.hAlign = HorizontalAlign.CENTER;
         this.setText(text);
+        setFocusable(false);
     }
     
     public final void setVerticalAlign( VerticalAlign va )
