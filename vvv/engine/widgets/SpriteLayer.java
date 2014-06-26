@@ -10,7 +10,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import vvv.engine.Camera;
 import vvv.engine.Geometry;
-import vvv.engine.Globals;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.sprite.Sprite;
 import vvv.engine.sprite.SpriteGeometry;
@@ -33,7 +32,7 @@ public class SpriteLayer extends Layer
     private final Vector4f src = new Vector4f();
     
     /**
-     * @brief Determine if sprite in view
+     *  Determine if sprite in view
      * @param spr
      * @return 
      */

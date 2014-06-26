@@ -14,16 +14,17 @@ public class GridMeshCreator3x3
 {
     /**
      * Fill ibb with index information for a Mesh like this:<br>
-     * 0--1--2--3<br>
-     * |  |  |  |<br>
-     * 4--5--6--7<br>
-     * |  |  |  |<br>
-     * 8--9--10-11<br>
-     * |  |  |  |<br>
-     * 12-13-14-15<br>
+     * <pre>
+     * 0--1--2--3
+     * |  |  |  |
+     * 4--5--6--7
+     * |  |  |  |
+     * 8--9--10-11
+     * |  |  |  |
+     * 12-13-14-15
+     * </pre>
      * @param ibb Bytebuffer for storing indices
-     *            Capacity must be at least 216 bytes
-     */
+     *            Capacity must be at least 216 bytes  */
     static void fillIndexBuffer(ByteBuffer ibb)
     {
         ibb.clear();
@@ -64,7 +65,7 @@ public class GridMeshCreator3x3
     }
     
     /**
-     * @brief Fills vertex buffer with info for 3x3 Grid
+     *  Fills vertex buffer with info for 3x3 Grid
      * @param vbb
      * @param width full width of grid
      * @param height full height of grid

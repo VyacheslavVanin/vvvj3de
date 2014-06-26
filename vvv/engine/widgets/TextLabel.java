@@ -61,11 +61,7 @@ public class TextLabel extends Widget
         this.hAlign = ha;
     }
     
-    public final void setColor(float r, float g, float b, float a)
-    {
-        textColor = new ConstColor(r, g, b, a);
-    }
-    
+  
     public final void setColor( Color c)
     {
         textColor = c;

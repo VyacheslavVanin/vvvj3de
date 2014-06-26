@@ -68,7 +68,7 @@ public class WidgetLayer extends Layer
 
     
     /**
-     * @brief Notify WidgetLayer 
+     *  Notify WidgetLayer 
      * @param x
      * @param y 
      */

@@ -71,7 +71,7 @@ public class KeyboardInterpret
     }
     
     /**
-     * @brief Called when keyboard event occurs with data as it is
+     *  Called when keyboard event occurs with data as it is
      * @param key - scan code of key
      * @param state - true if pressed, false if released
      * @param character - character with current keyboard layout, language and so on */
@@ -80,7 +80,7 @@ public class KeyboardInterpret
     }
     
     /**
-     * @brief Called as raw but may also called in such cases as repeat keypress when hold key for a while
+     *  Called as raw but may also called in such cases as repeat keypress when hold key for a while
      * @param key
      * @param character */
     public void controlled(int key, char character)

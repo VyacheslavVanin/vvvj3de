@@ -4,6 +4,7 @@ import defaults.DefaultGui;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vvv.engine.ConstColor;
 import vvv.engine.texture.Texture;
 
 /**
@@ -33,7 +34,7 @@ public class TestCheckBox extends AbstractCheckBox
 
         image.setTexture( textureUnchecked );
         
-        text.setColor(0.5f, 0.5f, 0.5f, 1);
+        text.setColor( ConstColor.GRAY );
         
         setWidth( image.getWidth() + 3 + text.getWidth());
         setHeight( image.getHeight());
@@ -55,13 +56,13 @@ public class TestCheckBox extends AbstractCheckBox
     @Override
     protected void onMouseEnter()
     {
-       text.setColor(1, 1, 1, 1);
+       text.setColor( ConstColor.WHITE );
     }
 
     @Override
     protected void onMouseLeave()
     {
-       text.setColor(0.5f, 0.5f, 0.5f, 1);
+       text.setColor( ConstColor.GRAY );
     }
 
 

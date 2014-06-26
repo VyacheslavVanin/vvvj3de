@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @brief Layer used to contain GraphicObjects <br>
+ *  Layer used to contain GraphicObjects <br>
  *        Layers can be attached to Screen object.
  * @author vvv */
 public abstract class Layer
@@ -45,7 +45,7 @@ public abstract class Layer
     }
 
     /**
-     * @brief Set Layer Depth. Depth describes an order layers drawn
+     *  Set Layer Depth. Depth describes an order layers drawn
      * @param depth  */
     public void setDepth(float depth)
     {
@@ -62,16 +62,16 @@ public abstract class Layer
     }
 
     /**
-     * @brief Implement how to draw Objects which belong to this layer
+     *  Implement how to draw Objects which belong to this layer
      * @throws Exception */
     abstract public void draw() throws Exception;
 
     /**
-     * @brief implement what to do when resize (for example, change camera parameters )  */
+     *  implement what to do when resize (for example, change camera parameters )  */
     abstract public void onResize();
     
     /**
-     * @brief This method call before add object to list.<br> 
+     *  This method call before add object to list.<br> 
      *        If method return true then object obj will be added to list of objects<br>
      *        You can override this to filter objects
      * @param obj
@@ -79,13 +79,13 @@ public abstract class Layer
     protected boolean onAddObject(final GraphicObject obj) {return true;}
 
     /**
-     * @brief This method called before removal object obj from list of objects.<br>
+     *  This method called before removal object obj from list of objects.<br>
      *        You can override this if you need.
      * @param obj  */
     protected void onRemoveObject(final GraphicObject obj) {};
 
     /**
-     * @brief Add GraphicObject to layer
+     *  Add GraphicObject to layer
      * @param obj - object to add
      * @return true if added, false otherwise */
     public final boolean addObject(GraphicObject obj)
@@ -113,7 +113,7 @@ public abstract class Layer
     }
 
     /**
-     * @brief Remove object from list
+     *  Remove object from list
      * @param obj
      * @return  */
     public final boolean removeObject(GraphicObject obj)
@@ -124,7 +124,7 @@ public abstract class Layer
     }
 
     /**
-     * @brief get list of objects in layer
+     *  get list of objects in layer
      * @return  */
     protected final List<GraphicObject> getObjects()
     {

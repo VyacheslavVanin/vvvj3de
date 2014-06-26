@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import vvv.engine.Globals;
 
 /**
- * @brief Screen object used to hold Layers of GraphicObjects. 
+ *  Screen object used to hold Layers of GraphicObjects. 
  * @author vvv
  */
 public final class Screen
@@ -28,7 +28,7 @@ public final class Screen
     }
 
    /**
-    * @brief Set size of screen object (not real screen)
+    *  Set size of screen object (not real screen)
     * @param width - in pixels
     * @param height - in pixels */
     public void setSize(int width, int height)
@@ -48,7 +48,7 @@ public final class Screen
     }
 
     /**
-     * @brief Get height of Screen object
+     *  Get height of Screen object
      * @return height in pixels */
     public int getHeight()
     {
@@ -56,7 +56,7 @@ public final class Screen
     }
 
     /**
-     * @brief
+     * 
      * @return width in pixels */
     public int getWidth()
     {
@@ -64,7 +64,7 @@ public final class Screen
     }
 
     /**
-     * @brief Add layer to screen
+     *  Add layer to screen
      * @param layer - layer to add to Screen object 
      * @return true if layer added or false if layer already attached to this Screen */
     public boolean addLayer(Layer layer)
@@ -92,7 +92,7 @@ public final class Screen
     }
 
     /**
-     * @brief Remove specified Layer from list of attached Layers
+     *  Remove specified Layer from list of attached Layers
      * @param layer - layer to remove from object
      * @return true if removed or <br>false if there no such layer in list of attached layers */
     public boolean removeLayer(Layer layer)
@@ -106,7 +106,7 @@ public final class Screen
     }
 
     /**
-     * @brief Attach GUI layer to screen (Currently can be only one widget layer) 
+     *  Attach GUI layer to screen (Currently can be only one widget layer) 
      * @param layer - layer to attach
      * @return true if successful or false if failed to attach */
     public boolean setGuiLayer(WidgetLayer layer)
@@ -125,7 +125,7 @@ public final class Screen
     }
     
     /**
-     * @brief Check if Screen object contain specified layer
+     *  Check if Screen object contain specified layer
      * @param layer
      * @return true if contain and false otherwise */
     public boolean contains(Layer layer)
@@ -153,14 +153,14 @@ public final class Screen
     };
 
     /**
-     * @brief Sort layers by depth */
+     *  Sort layers by depth */
     public void sortLayers()
     {
         Collections.sort(layers, comparator);
     }
 
     /**
-     * @brief draw all layers of screen, first all layers from list of attached layers and then GUI layer*/
+     *  draw all layers of screen, first all layers from list of attached layers and then GUI layer*/
     public void draw()
     {
         Globals.Time.update();

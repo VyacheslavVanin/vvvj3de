@@ -43,19 +43,19 @@ public abstract class Widget extends GraphicObject
     public final int getHeight() { return this.height;}
     
     /**
-     * @brief Return local widget position respective to parent widget. 
+     *  Return local widget position respective to parent widget. 
      *        <br>If no parent widget then equals layer width
      * @return horizontal component of position in pixels */
     public final int getPosX()   { return this.local_position_x;  }
     
     /**
-     * @brief Return local widget position respective to parent widget. 
+     *  Return local widget position respective to parent widget. 
      *        <br>If no parent widget then equals layer width
      * @return vertical component of position in pixels */
     public final int getPosY()   { return this.local_position_y;  }
     
     /**
-     * @brief Set width of widget.
+     *  Set width of widget.
      * @param width Width of widget in pixels, should be non-negative value */
     protected final void  setWidth( int width)    
     {
@@ -68,7 +68,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Set height of widget.
+     *  Set height of widget.
      * @param height Height of widget in pixels, should be non-negative value */
     protected final void  setHeight( int height ) 
     { 
@@ -81,7 +81,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Set local position of widget on parent widget  
+     *  Set local position of widget on parent widget  
      * @param x - horizontal component
      * @param y - vertical component */
     public final void setPosition( int x, int y)
@@ -93,7 +93,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Set size of widget. Invokes onSetSize method.
+     *  Set size of widget. Invokes onSetSize method.
      * @param width Width in pixels
      * @param height Height in pixels
      */
@@ -122,7 +122,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Set visibility flag
+     *  Set visibility flag
      * @param b - if true widget visible, else hide widget */
     public final void setVisible( boolean b)
     {
@@ -130,7 +130,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Get visibility flag
+     *  Get visibility flag
      * @return visibility flag  */
     public final boolean isVisible()
     {
@@ -138,7 +138,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Set enabling flag of widget
+     *  Set enabling flag of widget
      * @param b - if true set widget to enabled state, else to disabled  */
     public final void setEnabled(boolean b)
     {
@@ -161,7 +161,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Get enable state of widget
+     *  Get enable state of widget
      * @return if true - widget enabled, if false - disabled */
     public final boolean isEnabled()
     {
@@ -169,35 +169,35 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Add ActionListener on MouseEnter-event  to widget
+     *  Add ActionListener on MouseEnter-event  to widget
      * @param listener  */
     public final void addOnMouseEnterListener(ActionListener listener) {
         this.onMouseEnterListener.addListener(listener);
     }
 
     /**
-     * @brief Add ActionListener on MouseLeave-event to widget
+     *  Add ActionListener on MouseLeave-event to widget
      * @param listener  */
     public final void addOnMouseLeaveListener(ActionListener listener) {
         this.onMouseLeaveListener.addListener(listener);
     }
 
     /**
-     * @brief Remove listener from widget
+     *  Remove listener from widget
      * @param listener */
     public final void removeOnMouseEnterListener(ActionListener listener) {
         this.onMouseEnterListener.removeListener(listener);
     }
 
     /**
-     * @brief Remove listener from widget
+     * Remove listener from widget
      * @param listener */
     public final void removeOnMouseLeaveListener(ActionListener listener) {
         this.onMouseLeaveListener.removeListener(listener);
     }
 
    /**
-    * @brief Check if widget contain point. (0,0 - bottom-left corner)
+    * Check if widget contain point. (0,0 - bottom-left corner)
     * @param x - x component of point in screen pixels
     * @param y - y component of point in screen pixels
     * @return true if contain or false if not */
@@ -251,7 +251,7 @@ public abstract class Widget extends GraphicObject
     }
         
     /**
-     * @brief Notify widget about MouseMove-event.
+     * Notify widget about MouseMove-event.
      * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
      * @param y - Mouse position y component in pixels 
      * @return  */
@@ -265,7 +265,7 @@ public abstract class Widget extends GraphicObject
     }
 
     /**
-     * @brief Notify widget about MouseButtonDown-event.
+     * Notify widget about MouseButtonDown-event.
      * @param button - button pressed ( 0 - left, 1 -right, 2 - middle and so on)
      * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
      * @param y - Mouse position y component in pixels 
@@ -285,7 +285,7 @@ public abstract class Widget extends GraphicObject
     }
 
     /**
-     * @brief Notify widget about MouseButtonUp-event.
+     * Notify widget about MouseButtonUp-event.
      * @param button - button released ( 0 - left, 1 -right, 2 - middle and so on)
      * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
      * @param y - Mouse position y component in pixels 
@@ -315,7 +315,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Get real position of widget in screen coordinates (0,0 - bottom-left corner) 
+     * Get real position of widget in screen coordinates (0,0 - bottom-left corner) 
      * @return x component of widget position */
     protected final int getGlobalPosX()
     {
@@ -332,7 +332,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Get real position of widget in screen coordinates (0,0 - bottom-left corner) 
+     * Get real position of widget in screen coordinates (0,0 - bottom-left corner) 
      * @return y component of widget position */
     protected final int getGlobalPosY()
     {
@@ -354,7 +354,7 @@ public abstract class Widget extends GraphicObject
     }
    
     /**
-     * @brief Remove child widget 
+     * Remove child widget 
      * @param child
      * @return true if removed, false if there was not such child widget on this widget */
     protected final boolean deleteChild( Widget child )
@@ -371,7 +371,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Add child Widget to current widget
+     * Add child Widget to current widget
      * @param child
      * @return true if added, false if child already in list of children */
     protected final boolean addChild( Widget child)
@@ -394,7 +394,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief Get list of child widgets attached to current widget
+     * Get list of child widgets attached to current widget
      * @return list of child widgets */
     protected final List<Widget> getChildren()
     {
@@ -402,7 +402,7 @@ public abstract class Widget extends GraphicObject
     }
     
     /**
-     * @brief return if mouse in Area of widget
+     * Return if mouse in Area of widget
      * @return */
     protected final boolean isMouseInArea() 
     {
@@ -421,6 +421,9 @@ public abstract class Widget extends GraphicObject
    
     protected void onSetSize( int w, int h) {};
     
+    /**
+     * Method called after widget changed its position or size.
+     * <br> Can be used to rearrange children widgets */
     protected abstract void onRefresh();
     
     /**

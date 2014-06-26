@@ -67,7 +67,7 @@ public final class DefaultButton extends AbstractButton {
         GridMeshCreator3x3.fillIndexBuffer(ibb);
 
         addChild(text);
-        text.setColor(0, 0, 0, 1);   
+        text.setColor( ConstColor.BLACK );   
         setPosition(0, 0);
         updateTextPosition();
     }
@@ -101,17 +101,11 @@ public final class DefaultButton extends AbstractButton {
         text.setPosition(textX, textY);
     }
 
-    public final void setColor(float r, float g, float b, float a) {
-        color = new ConstColor(r, g, b, a);
-    }
 
     public final void setColor(Color c) {
         color = c;
     }
 
-    public final void setTextColor(float r, float g, float b, float a) {
-        text.setColor(r, g, b, a);
-    }
     
     public final void setTextColor( Color c)
     {

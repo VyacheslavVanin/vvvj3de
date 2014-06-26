@@ -11,7 +11,7 @@ import vvv.engine.texture.Texture;
 /**
  *
  * @author Вячеслав
- * @brief  Class contain frames of one animation, and return current frame in 
+ *   Class contain frames of one animation, and return current frame in 
  *         current time
  */
 public final class SpriteAnimation
@@ -20,7 +20,7 @@ public final class SpriteAnimation
     private final long          duration;
     
     /**
-     * @brief Constructor
+     *  Constructor
      * @param list array of frames
      * @param duration  duration of animation loop 
      */

@@ -1,5 +1,6 @@
 package vvv.engine.widgets;
 
+import vvv.engine.ConstColor;
 import vvv.engine.text.Font;
 
 /**
@@ -13,17 +14,11 @@ public class TextButton extends AbstractButton
     public TextButton()
     {
         addChild(text);
-        text.setColor(0.5f, 0.5f, 0.5f, 1);
+        text.setColor( ConstColor.GRAY );
         setSize(text.getWidth(), text.getHeight());
         setPosition(0, 0);
     }
     
-    
-    
-    public void setTextColor(float r, float g, float b, float a)
-    {
-        text.setColor(r, g, b, a);
-    }
     
     public void setText( String text)
     {
@@ -51,13 +46,13 @@ public class TextButton extends AbstractButton
     @Override
     protected void onMouseEnter()
     {
-        setTextColor(1, 1, 1, 1);
+        text.setColor( ConstColor.WHITE );
     }
 
     @Override
     protected void onMouseLeave()
     {
-        setTextColor(0.5f, 0.5f, 0.5f, 1);
+        text.setColor( ConstColor.GRAY );
     }
 
     @Override

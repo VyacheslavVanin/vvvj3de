@@ -30,7 +30,7 @@ public class DefaultEditBox extends Widget {
     private final ColorRectangleWidget cursor = new ColorRectangleWidget( ConstColor.BLACK );
     private  boolean  inFocus = false;
     
-    private int cursorMargin = 3;
+    private static final int cursorMargin = 3;
     private HorizontalAlign align = HorizontalAlign.LEFT;
     private final ListenerContainer onPressEnterListeners = new ListenerContainer();
 
@@ -67,11 +67,11 @@ public class DefaultEditBox extends Widget {
         rightPart.setColor(c);
     }
 
-    public final void setTextColor(float r, float g, float b, float a) {
-        leftPart.setColor(r, g, b, a);
-        rightPart.setColor(r, g, b, a);
+    public final void setBackgroundColor( Color c )
+    {
+        background.setColor(c);
     }
-
+    
     public final void setFont(Font font) {
         leftPart.setFont(font);
         rightPart.setFont(font);
