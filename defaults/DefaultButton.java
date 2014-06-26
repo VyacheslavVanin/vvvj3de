@@ -4,7 +4,6 @@
  */
 package defaults;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,7 +57,7 @@ public final class DefaultButton extends AbstractButton {
         try {
             checked = DefaultGui.getButtonCheckedTexture();
             unchecked = DefaultGui.getButtonUncheckedTexture();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(DefaultPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         currentTexture = unchecked;
@@ -162,8 +161,8 @@ public final class DefaultButton extends AbstractButton {
     private static final Matrix4f tmp = new Matrix4f();
     private static final VariableColor colorToDraw = new VariableColor();
     private void drawButton() throws Exception {
-        ModelShader sh = DefaultGui.getColorMapShader();
-        Camera cam = getCamera();
+        final ModelShader sh = DefaultGui.getColorMapShader();
+        final Camera     cam = getCamera();
 
         colorToDraw.setColor(color);
         colorToDraw.mulColor(colorIntensity);
@@ -201,7 +200,7 @@ public final class DefaultButton extends AbstractButton {
     
     public final void setAutoSize(boolean b) {
         autosize = b;
-        text.setAutoSize(b);
+        text.setAutoSize( b );
     }
 
     @Override

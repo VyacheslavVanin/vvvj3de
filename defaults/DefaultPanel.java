@@ -4,7 +4,6 @@
  */
 package defaults;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.logging.Level;
@@ -56,7 +55,7 @@ public class DefaultPanel extends Panel {
     public DefaultPanel() {
         try {
             texture = DefaultGui.getPanelTexture();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(DefaultPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
 

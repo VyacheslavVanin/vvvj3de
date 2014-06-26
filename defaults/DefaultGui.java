@@ -5,7 +5,7 @@
 package defaults;
 
 import java.io.IOException;
-import vvv.engine.Singletone;
+import vvv.engine.LazyInitializer;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.texture.Texture;
 import vvv.engine.texture.TextureContainer;
@@ -30,8 +30,8 @@ public class DefaultGui
     private static final String GUI_COLOR_MAP_VERTEX_SHADER = "color_map.vs";
   
     
-    private static final Singletone<TextureContainer> guiTextures = 
-            new Singletone<>(new Singletone.SingletoneCreator<TextureContainer>() 
+    private static final LazyInitializer<TextureContainer> guiTextures = 
+            new LazyInitializer<>(new LazyInitializer.Creator<TextureContainer>() 
     {
         @Override
         public TextureContainer create() throws IOException
@@ -48,8 +48,8 @@ public class DefaultGui
         }
     });
     
-    private static final Singletone<ModelShader> panelShader = 
-            new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() 
+    private static final LazyInitializer<ModelShader> panelShader = 
+            new LazyInitializer<>( new LazyInitializer.Creator<ModelShader>() 
             {
                 @Override
                 public ModelShader create() throws IOException
@@ -61,8 +61,8 @@ public class DefaultGui
                 }
             });
     
-    private static final  Singletone<ModelShader> colorMapShader = 
-            new Singletone<>(new Singletone.SingletoneCreator<ModelShader>() {
+    private static final  LazyInitializer<ModelShader> colorMapShader = 
+            new LazyInitializer<>(new LazyInitializer.Creator<ModelShader>() {
 
         @Override
         public ModelShader create() throws IOException
@@ -74,52 +74,52 @@ public class DefaultGui
         }
     });
     
-    static private TextureContainer getGuiTextures() throws IOException
+    static private TextureContainer getGuiTextures() throws Exception
     {
         return guiTextures.get();
     }
     
-    static public Texture getCheckBoxCheckedTexture() throws IOException
+    static public Texture getCheckBoxCheckedTexture() throws Exception
     {
         return getGuiTextures().GetTexture(GUI_CHECKBOX_CHECKED);
     }
     
-    static public Texture getCheckBoxUncheckedTexture() throws IOException
+    static public Texture getCheckBoxUncheckedTexture() throws Exception
     {
         return getGuiTextures().GetTexture(GUI_CHECKBOX_UNCHECKED);
     }
     
-    static public Texture getPanelTexture() throws IOException
+    static public Texture getPanelTexture() throws Exception
     {
         return getGuiTextures().GetTexture(GUI_PANEL);
     }
     
-    static public ModelShader getPanelShader() throws IOException
+    static public ModelShader getPanelShader() throws Exception
     {
         return panelShader.get();
     }
     
-    static public Texture getButtonCheckedTexture() throws IOException
+    static public Texture getButtonCheckedTexture() throws Exception
     {
         return getGuiTextures().GetTexture( GUI_BUTTON_CHECKED);
     }
     
-    static public Texture getButtonUncheckedTexture() throws IOException
+    static public Texture getButtonUncheckedTexture() throws Exception
     {
         return getGuiTextures().GetTexture( GUI_BUTTON_UNCHECKED);
     }
     
-    static public ModelShader getColorMapShader() throws IOException
+    static public ModelShader getColorMapShader() throws Exception
     {
         return colorMapShader.get();
     }
     
-    static public ModelShader getSpriteShader() throws IOException
+    static public ModelShader getSpriteShader() throws Exception
     {
         return Defaults.getSpriteShader();
     }
     
-    static public ModelShader getTextShader() throws IOException
+    static public ModelShader getTextShader() throws Exception
     {
         return Defaults.getTextShader();
     }

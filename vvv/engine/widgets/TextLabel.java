@@ -6,13 +6,11 @@ package vvv.engine.widgets;
 
 import defaults.DefaultSystemColors;
 import defaults.Defaults;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lwjgl.util.vector.Matrix4f;
 import vvv.engine.Camera;
 import vvv.engine.Color;
-import vvv.engine.ConstColor;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.text.Font;
 import vvv.engine.text.TextLine;
@@ -41,7 +39,7 @@ public class TextLabel extends Widget
         {
             textLine.setFont(Defaults.getFont());
         }
-        catch(IOException ex)
+        catch(Exception ex)
         {
             Logger.getLogger(TextLabel.class.getName()).log(Level.SEVERE, null, ex);
         }

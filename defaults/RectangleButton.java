@@ -4,7 +4,6 @@
  */
 package defaults;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import vvv.engine.texture.Texture;
@@ -25,7 +24,7 @@ public abstract class RectangleButton extends AbstractButton
         try {
             checked = DefaultGui.getButtonCheckedTexture();
             unchecked = DefaultGui.getButtonUncheckedTexture();
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(DefaultPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         texture = unchecked;

@@ -27,7 +27,7 @@ public class TestCheckBox extends AbstractCheckBox
             textureChecked   = DefaultGui.getCheckBoxCheckedTexture();
             textureUnchecked = DefaultGui.getCheckBoxUncheckedTexture();
         }
-        catch(IOException ex)
+        catch(Exception ex)
         {
             Logger.getLogger(TestCheckBox.class.getName()).log(Level.SEVERE, null, ex);
         }

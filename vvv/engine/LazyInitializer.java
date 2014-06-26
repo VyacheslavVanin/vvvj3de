@@ -4,34 +4,37 @@
  */
 package vvv.engine;
 
-import java.io.IOException;
-
 /**
  *
  * @author vvv
+ * @param <T>
  */
-public class Singletone<T>
+public class LazyInitializer<T>
 {
     private final Object lock = new Object();
     private volatile T singletone = null;
-    private SingletoneCreator<T> creator = null;
+    private Creator<T> creator = null;
     
-    static public interface SingletoneCreator<T>
+    static public interface Creator<T>
     {
-        public T create() throws IOException;
+        public T create() throws Exception;
     }
     
-    public Singletone( SingletoneCreator<T> creator)
+    public LazyInitializer( Creator<T> creator)
     {
         this.creator = creator;
     }
     
     public void set(T value)
     {
+        if( value == null )
+        {
+            throw new IllegalArgumentException("Value must be non null");
+        }
         this.singletone = value;
     }
     
-    public T get() throws IOException
+    public T get() throws Exception
     {
         if( singletone == null )
         {

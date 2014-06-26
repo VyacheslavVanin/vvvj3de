@@ -6,7 +6,7 @@ package defaults;
 
 import java.io.IOException;
 import static org.lwjgl.opengl.GL11.*;
-import vvv.engine.Singletone;
+import vvv.engine.LazyInitializer;
 import vvv.engine.shader.ModelShader;
 import vvv.engine.text.Font;
 import vvv.engine.texture.Texture;
@@ -30,9 +30,9 @@ public class Defaults
     private static final String DEFAULT_SOLID_VERTEX_SHADER_NAME = "defaults/shaders/solidColor.vs";
     private static final String DEFAULT_SOLID_FRAGMENT_SHADER_NAME = "defaults/shaders/solidColor.fs";
     
-    private static final Singletone<Texture> defaultTexture = 
-            new Singletone<>(
-                              new Singletone.SingletoneCreator<Texture>() 
+    private static final LazyInitializer<Texture> defaultTexture = 
+            new LazyInitializer<>(
+                              new LazyInitializer.Creator<Texture>() 
     {
         @Override
         public Texture create() throws IOException
@@ -43,9 +43,9 @@ public class Defaults
         }
     });
     
-    private static final Singletone<Font>    defaultFont = 
-            new Singletone<>( 
-                              new Singletone.SingletoneCreator<Font>() 
+    private static final LazyInitializer<Font>    defaultFont = 
+            new LazyInitializer<>( 
+                              new LazyInitializer.Creator<Font>() 
     {
         @Override
         public Font create() throws IOException
@@ -55,8 +55,8 @@ public class Defaults
         }
     });
     
-    private static final Singletone<ModelShader> spriteShader =
-            new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() 
+    private static final LazyInitializer<ModelShader> spriteShader =
+            new LazyInitializer<>( new LazyInitializer.Creator<ModelShader>() 
     {
         @Override
         public ModelShader create() throws IOException
@@ -68,8 +68,8 @@ public class Defaults
         }
     });
     
-    private static final Singletone<ModelShader> textShader =
-            new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() 
+    private static final LazyInitializer<ModelShader> textShader =
+            new LazyInitializer<>( new LazyInitializer.Creator<ModelShader>() 
     {
         @Override
         public ModelShader create() throws IOException
@@ -81,8 +81,8 @@ public class Defaults
         }
     });
     
-    private static final Singletone<ModelShader> solidColorShader = 
-	    new Singletone<>( new Singletone.SingletoneCreator<ModelShader>() {
+    private static final LazyInitializer<ModelShader> solidColorShader = 
+	    new LazyInitializer<>( new LazyInitializer.Creator<ModelShader>() {
 
 	    @Override
 	    public ModelShader create() throws IOException 
@@ -105,12 +105,12 @@ public class Defaults
     }
  
 
-    static public Texture getTexture() throws IOException
+    static public Texture getTexture() throws Exception
     {
         return defaultTexture.get();
     }
 
-    static public Font getFont() throws IOException
+    static public Font getFont() throws Exception
     {
         return defaultFont.get();
     }
@@ -127,19 +127,19 @@ public class Defaults
         glDisable(GL_BLEND);
     }
     
-    static public ModelShader getSpriteShader() throws IOException
+    static public ModelShader getSpriteShader() throws Exception
     {
         return spriteShader.get();
     }
     
-    static public ModelShader getTextShader() throws IOException
+    static public ModelShader getTextShader() throws Exception
     {
         return textShader.get();
     }
     
-    static public ModelShader getSolidColorShader() throws IOException
+    static public ModelShader getSolidColorShader() throws Exception
     {
-	return solidColorShader.get();
+        return solidColorShader.get();
     }
     
 }
