@@ -130,4 +130,16 @@ public abstract class Layer
     {
         return objects;
     }
+    
+    public final void clear()
+    {
+        final int s = objects.size();
+        for(int i = 0; i < s; ++i)
+        {
+            final GraphicObject o = objects.get(i);
+            o.setLayer(null);
+            onRemoveObject(o);
+        }
+        objects.clear();
+    }
 }
