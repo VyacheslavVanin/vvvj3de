@@ -24,25 +24,29 @@ public final class SpriteAnimation
      * @param list array of frames
      * @param duration  duration of animation loop 
      */
-    public  SpriteAnimation( ArrayList<Texture> list, long duration)
+    public  SpriteAnimation( List<Texture> list, long duration)
     {
-        if(list == null)
+        if(list == null || list.isEmpty() )
         {
-            throw new IllegalArgumentException( "list must be non null" );
+            throw new IllegalArgumentException( "list must not be empty" );
+        }
+        if(duration == 0)
+        {
+            throw new IllegalArgumentException( "duration must be non null" );
         }
         this.frames = list;
         this.duration = duration;
     }
      
     /**
-     * 
+     * Get current frame of animation 
      * @param begin start time of animation
      * @param now current time in milliseconds from epoch (System.currentTimeMillis())
      * @param speed play speed multiplier 
      * @param looped is animation Looped
      * @return  Texture corresponding to current time (now)
      */
-    public Texture getCurrent(long begin, long now, float speed, boolean looped)
+    Texture getCurrent(long begin, long now, float speed, boolean looped)
     {    
         final int numFrames = frames.size();
         final long frameDuration = (long)(duration/speed) / numFrames;
