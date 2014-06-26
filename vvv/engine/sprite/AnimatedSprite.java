@@ -39,21 +39,21 @@ public class AnimatedSprite extends Sprite
     public void  playAnimation()
     {
         state = ANIMATION_STATE.PLAY;
-        animationStartTime = System.currentTimeMillis();
+        animationStartTime = Globals.Time.get();
     }
     
     public void  pauseAnimation()
     {
         if( state != ANIMATION_STATE.PAUSED )
         {
-            animationPauseTime = System.currentTimeMillis();
+            animationPauseTime = Globals.Time.get();
             state = ANIMATION_STATE.PAUSED;
         }
     }
     
     public void resetAnimation()
     {
-        animationStartTime = System.currentTimeMillis();
+        animationStartTime = Globals.Time.get();
         animationPauseTime = animationStartTime;
     }
     
