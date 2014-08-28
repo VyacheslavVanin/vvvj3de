@@ -242,7 +242,6 @@ public abstract class Widget extends GraphicObject
             
             final int size = children.size();
             for(int i =0; i < size; ++i)
-            //for( Widget chld: children )
             {
                final Widget chld = children.get(i);
                chld.draw();
@@ -254,12 +253,19 @@ public abstract class Widget extends GraphicObject
      * Notify widget about MouseMove-event.
      * @param x - Mouse position x component in pixels (0,0 is in bottom-left corner of screen)
      * @param y - Mouse position y component in pixels 
-     * @return  */
+     * @return  true if mouse moved over the widget and false if not */
     final boolean invokeMouseMove( int x, int y) 
     {
-        if(enabled && visible)
+        if(visible)
         {
-            onMouseMoveBase(x, y);
+            if(enabled)
+            {
+                return onMouseMoveBase(x, y);
+            }
+            else
+            {
+                return isContainPoint(x, y);
+            }
         }
         return false;
     }
@@ -445,9 +451,15 @@ public abstract class Widget extends GraphicObject
     protected void onLooseFocus() {}
     
     protected void onKeyPress( int key, char character){}
-    
-    private void onMouseMoveBase(int x, int y)
+   
+    /**
+     * Template method what to do when mouse moved
+     * @param x
+     * @param y
+     * @return true if mouse moved over widget and false if not */
+    private boolean onMouseMoveBase(int x, int y)
     {
+        boolean ret = false;
         if( isContainPoint(x, y) )
         {
             if( !inArea )
@@ -455,6 +467,7 @@ public abstract class Widget extends GraphicObject
                 inArea = true;
                 onMouseEnterBase();
             }
+            ret = true;
         }
         else
         {
@@ -466,6 +479,7 @@ public abstract class Widget extends GraphicObject
         }
         
         onMouseMove(x, y);
+        return ret;
     }
     
     private void onMouseEnterBase()

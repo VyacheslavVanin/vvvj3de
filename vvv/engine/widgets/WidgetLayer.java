@@ -71,22 +71,18 @@ public class WidgetLayer extends Layer
      *  Notify WidgetLayer 
      * @param x
      * @param y 
-     */
-    public void onMouseMove( int x, int y )
+     * @return true if mouse moved over any widget and false if there no widgets under pointer */
+    public boolean onMouseMove( int x, int y)
     {
         final List<GraphicObject> objects = getObjects();
         final int numOjects = objects.size();
+        boolean ret = false;
         for(int i=0; i < numOjects; ++i )
         {
             final Widget wgt = (Widget)objects.get(i);
-            if( wgt.isVisible() && wgt.isEnabled() )
-            {
-                if( wgt.invokeMouseMove(x, y) )
-                {
-                    break;
-                }
-            }
+            ret |= wgt.invokeMouseMove(x, y);
         }
+        return ret;
     }
     
     public boolean onLeftMouseButtonDown( int button, int x, int y) 
