@@ -123,7 +123,7 @@ public abstract class Widget extends GraphicObject
     
     /**
      *  Set visibility flag
-     * @param b - if true widget visible, else hide widget */
+     * @param b - true to make widget visible, and false to hide widget */
     public final void setVisible( boolean b)
     {
         this.visible = b;
@@ -139,7 +139,7 @@ public abstract class Widget extends GraphicObject
     
     /**
      *  Set enabling flag of widget
-     * @param b - if true set widget to enabled state, else to disabled  */
+     * @param b - true to enable widget, and false to disable  */
     public final void setEnabled(boolean b)
     {
         if( this.enabled != b )

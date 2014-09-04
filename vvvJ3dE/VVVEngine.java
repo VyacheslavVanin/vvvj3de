@@ -1,7 +1,8 @@
-package lwjgl;
+package vvvJ3dE;
 
 import defaults.DefaultButton;
 import defaults.DefaultCheckbox;
+import defaults.DefaultEditBox;
 import defaults.DefaultHorizontalSlider;
 import defaults.DefaultPanel;
 import defaults.DefaultSystemColors;
@@ -22,6 +23,8 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
 import vvv.engine.Camera;
+import vvv.engine.ConstColor;
+import vvv.engine.KeyboardInterpret;
 import vvv.engine.VariableColor;
 import vvv.engine.sprite.AnimatedSprite;
 import vvv.engine.sprite.SpriteAnimation;
@@ -31,7 +34,7 @@ import vvv.engine.texture.TextureContainer;
 import vvv.engine.texture.TextureLowLevel;
 import vvv.engine.texture.TextureLowLevel.TextureNotLoadedException;
 import vvv.engine.widgets.*;
-import vvv.math.FloatMath;
+
 
 
 /**
@@ -92,6 +95,23 @@ public class VVVEngine
         DISPLAY_WIDTH = width;
         this.fullScreen = fullScreen;
     }
+
+    public void addLayer(Layer layer)
+    {
+        throw new RuntimeException("Not implemented yet");
+    }
+    
+    public void removeLayer(Layer layer)
+    {
+        throw new RuntimeException("Not implemented yet");
+    }
+
+    public void setGUILayer(WidgetLayer layer)
+    {
+        throw new RuntimeException("Not implemented yet");
+    }
+    
+    
     
     public void create() throws LWJGLException
     {
@@ -137,7 +157,7 @@ public class VVVEngine
         Display.destroy();
     }
 
-    public void vvvInitTexture() throws IOException
+    private void vvvInitTexture() throws IOException
     {
         tcontainer = new TextureContainer();
        
@@ -181,10 +201,10 @@ public class VVVEngine
         tll = texlist[0];
     }
     
-    public void vvvInitAnimation()
+    private void vvvInitAnimation()
     {   
         
-        ArrayList<Texture> frames = new ArrayList<>();
+        final ArrayList<Texture> frames = new ArrayList<>();
         for(int i = 0; i < 10; ++i)
         {
             frames.add( tcontainer.GetTexture("images/rendered/idle/000" + i + ".png"));
@@ -224,7 +244,7 @@ public class VVVEngine
                 spr.setScale( tll.getWidth(), tll.getHeight(), 1 );
                 spr.setPosition( sprite1.getPosition().getX(), 
                                  sprite1.getPosition().getY(),
-                                 sprite1.getPosition().getZ()+1);
+                                 sprite1.getPosition().getZ());
                 bgSpriteLayer.addObject(spr);
             }
         };
@@ -245,9 +265,9 @@ public class VVVEngine
                 for( int i = 0; i < 5; ++i)
                 {
                     DefaultButton bb = new DefaultButton("Button " + i);
-                    bb.setAutoSize(false);
-                    bb.setText("Very very Long String 1234567890!");
-                    bb.setSize( 200, bb.getHeight()); 
+                   // bb.setAutoSize(false);
+                   // bb.setText("Very very Long String 1234567890!");
+                   // bb.setSize( 200, bb.getHeight()); 
                     bb.addOnClickListener(listener);
                     vlayout.addWidget(bb);
                 }
@@ -278,7 +298,7 @@ public class VVVEngine
                
                 
                 
-                ActionListener sliderListener = new ActionListener() 
+                final ActionListener sliderListener = new ActionListener() 
                 {
                     @Override
                     public void action() 
@@ -287,13 +307,32 @@ public class VVVEngine
                         //VariableColor c = DefaultSystemColors.getPanelColor();
                         //c.setAlpha( slider.getValue() / (float)slider.getRange() );
                         //panel.setWidth( 200 + slider.getValue()/(float)slider.getRange() * 200 );
-                        panel.setSize( 300 + slider.getValue()/(float)slider.getRange() * 200, panel.getHeight());
+                        //panel.setSize( 300 + slider.getValue()/(float)slider.getRange() * 200, panel.getHeight());
+                        //image.setPosition( image.getPosX(), slider.getValue() * 2);
+                        final float sliderRelativeValue = slider.getRelativeValue();
+                        image.setSize( (int)(100 * sliderRelativeValue), (int)(100 * sliderRelativeValue) );
                     }
                 };
-                slider = new DefaultHorizontalSlider();
-                slider.setRange(50);
+                slider = new DefaultHorizontalSlider(100);
                 slider.addOnDragListener(sliderListener);
                 vlayout.addWidget(slider);
+                
+                
+                
+                final ActionListener enterListener = new ActionListener() 
+                {
+                    @Override
+                    public void action() 
+                    {
+                        tl.setText( "You entered: " + edit1.getText());
+                        edit1.setText("");
+                    }
+                };
+                DefaultEditBox eb = new DefaultEditBox();
+                eb.addOnPressEnterListener(enterListener);
+               // eb.setAlign(HorizontalAlign.CENTER);
+                edit1 = eb;
+                vlayout.addWidget(eb);
                 
                 
                 
@@ -314,22 +353,42 @@ public class VVVEngine
             panel4.addWidget(hlayout);
         panel4.addWidget(hlayout);    
         wl.addObject(panel4);
+        
+        
+        
         panel = panel4;
         
                 
         tl = new TextLabel( "text" );
-        tl.setColor(1, 1, 1, 1);
+        tl.setColor( ConstColor.WHITE );
         tl.setPosition(500, 100);
         wl.addObject(tl);
               
-        screen.setGuiLayer(wl); 
+        
+        image = new ImageWidget(tll);
+        image.setPosition(4, 4);
+        wl.addObject(image);
+        
+        crw = new ColorRectangleWidget( ConstColor.RED );
+        crw.setPosition( 800, 600);
+        crw.setSize( 50, 50 );
+        crw.setColor( new ConstColor(1, 1, 1, 0.2f) );
+        wl.addObject(crw);
+      
+        
+        screen.setGuiLayer(wl);
+        //screen.setGuiLayer( new WidgetLayer());
+        //screen.addLayer(wl);
     }
+    DefaultEditBox edit1;
+    ColorRectangleWidget crw = null;
+    ImageWidget image = null;
     Panel     panel = null;
     TextLabel activeLabel = null;
     int       clickcounter = 0;
     Widget TestDisable = null;
     
-    public void vvvInit() throws IOException
+    public void vvvInit() throws Exception
     {  
         vvvInitTexture();
         vvvInitAnimation();
@@ -337,14 +396,14 @@ public class VVVEngine
         screen = new Screen();
         SpriteLayer backGroundLayer = new SpriteLayer();
             
-        screen.addLayer(backGroundLayer);
+            screen.addLayer(backGroundLayer);
             backGroundLayer.setShader( defaults.Defaults.getSpriteShader() );
 
-            Random r = new Random();
+            final Random r = new Random();
 
-            for(int i=0; i < 20000; ++i)
+            for(int i=0; i < 2000; ++i)
             {
-                StaticSprite     spr = new StaticSprite();
+                final StaticSprite     spr = new StaticSprite();
                 tll = texlist[i%10];
                 spr.setTexture( tll );
                 spr.setScale( tll.getWidth(), tll.getHeight(), 1 );
@@ -384,7 +443,7 @@ public class VVVEngine
         {
             vvvInit();
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             Logger.getLogger(VVVEngine.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -392,149 +451,202 @@ public class VVVEngine
 
     private DefaultHorizontalSlider slider;
     private TextLabel tl = null;
-    private String texts = "";
     
     private final float velocity = 250;
-    public void processKeyboard()
-    {   
- 
-        while( Keyboard.next() )
+    
+    private final KeyboardInterpret ki = new KeyboardInterpret()
+    {
+        @Override
+        public void controlled( int key, char character)
         {
-            char c = Keyboard.getEventCharacter();
-            int  i = Keyboard.getEventKey();
+            final WidgetLayer layer = screen.getGuiLayer();
+            layer.onKeyPress(key, character);
+        }
+
+        @Override
+        public void raw(int key, boolean state, char character) 
+        {
             
-            if( Keyboard.getEventKeyState() )
-            {    
-                System.out.println("+ " + c + " " + i);
-                tl.setText( texts + c );
-                texts = texts + c;
-            }
-            else
-            {
-                System.out.println("- " + c + " " + i);
-            }
-            
-            if( i == Keyboard.KEY_V )
-            {
-                Display.setVSyncEnabled(true);
-            }
-            else if( i == Keyboard.KEY_B)
-            {
-                Display.setVSyncEnabled(false);
-            }
-            
-        }        
+        }       
+    };
+    
+    private void processKeyboard()
+    {   
+        ki.process();   
     }
 
     
-    Vector2f  tvup = new Vector2f(0, 1);
+    Vector2f  tvup  = new Vector2f(0, 1);
     Vector2f  mouse = new Vector2f();
     Vector2f  direction = new Vector2f(0,1);
     
     boolean   lmbDown = false;
     Vector2f  guiMouse = new Vector2f();
     Vector2f  lastMouse = new Vector2f();
-    
-    public void processMouse()
-    {
-        guiMouse.set(Mouse.getX(), Mouse.getY()); 
-        mouse.x = Mouse.getX() - DISPLAY_WIDTH/2  ;
-        mouse.y = Mouse.getY() - DISPLAY_HEIGHT/2 ;
-        
-        WidgetLayer wl = screen.getGuiLayer();
-        
-        if( Mouse.isButtonDown(0) )
-        {
-            if( lmbDown == false )
-            {
-                wl.onLeftMouseButtonDown(guiMouse.x, guiMouse.y);
-                lmbDown = true;
-            }
-        }
-        else
-        {
-            if( lmbDown == true)
-            {
-                wl.onLeftMouseButtonUp(guiMouse.x, guiMouse.y);
-                lmbDown = false;
-            }
-        }
-        
-        if( !lastMouse.equals( guiMouse ) )
-        {
-            lastMouse.set(guiMouse);
-            wl.onMouseMove( guiMouse.x, guiMouse.y );
-        }
 
-        if( mouse.lengthSquared() > 0)
-        {
-            mouse.normalise();
-        }
-        else
-        {
-            mouse.x = 1;
-            mouse.y = 0;
-        }
+    
+    
+    private void processMouse()
+    {
+//        guiMouse.set(Mouse.getX(), Mouse.getY()); 
+//        mouse.x = Mouse.getX() - DISPLAY_WIDTH/2  ;
+//        mouse.y = Mouse.getY() - DISPLAY_HEIGHT/2 ;
         
-        float a = Vector2f.angle(tvup, mouse);
-        if( mouse.x > 0)
+          WidgetLayer wl = screen.getGuiLayer();
+//        
+//        
+//        
+//        if( Mouse.isButtonDown(0) )
+//        {
+//            if( lmbDown == false )
+//            {
+//                wl.onLeftMouseButtonDown(guiMouse.x, guiMouse.y);
+//                lmbDown = true;
+//            }
+//        }
+//        else
+//        {
+//            if( lmbDown == true)
+//            {
+//                wl.onLeftMouseButtonUp(guiMouse.x, guiMouse.y);
+//                lmbDown = false;
+//            }
+//        }
+//        
+//        
+//        
+//        if( !lastMouse.equals( guiMouse ) )
+//        {
+//            lastMouse.set(guiMouse);
+//            wl.onMouseMove( guiMouse.x, guiMouse.y );
+//        }
+//
+//        if( mouse.lengthSquared() > 0)
+//        {
+//            mouse.normalise();
+//        }
+//        else
+//        {
+//            mouse.x = 1;
+//            mouse.y = 0;
+//        }
+//        
+//        float a = Vector2f.angle(tvup, mouse);
+//        if( mouse.x > 0)
+//        {
+//            a *= -1;
+//        }
+//        sprite1.setRotation(a, 0, 0, 1);
+//        direction.x = -FloatMath.sin(a);
+//        direction.y = FloatMath.cos(a);
+//        
+//        if( Mouse.isButtonDown(0))
+//        {
+//            //final float velocity = 500.0f;
+//            float dtf;
+//            long dt = 0;
+//            long  t = System.currentTimeMillis();
+//            if(MB0Pressed == false)
+//            {                            
+//            }
+//            else
+//            {       
+//                dt =  t - timeLastPressed; 
+//            }
+//            dtf = dt / 1000.0f;
+//            timeLastPressed = t;
+//            
+//            MB0Pressed = true;
+//            
+//            float s = dtf * velocity;
+//            sprite1.move( direction.x * s, direction.y * s, 0);
+//            bgCamera.move(direction.x * s, direction.y * s, 0);
+//            frontCamera.move(direction.x * s, direction.y * s, 0);
+//            sprite1.setAnimation(animationRotation);
+//        }
+//        else
+//        {
+//           MB0Pressed = false;
+//           sprite1.setAnimation(animationIdle); 
+//        }
+//        
+//        int dw = Mouse.getDWheel();
+//        if( dw != 0 )
+//        {
+//            if( dw > 0 )
+//            {
+//               zoom *= 1.1;
+//            }
+//            else
+//            {
+//                zoom /= 1.1;
+//            } 
+//            float top   = DISPLAY_HEIGHT / 2 * zoom;
+//            float botom = -top;
+//            float left  = -DISPLAY_WIDTH / 2 * zoom;
+//            float right = -left;
+//            
+//            bgCamera.setOrtho( top, botom, left, right, -1, 1);
+//            frontCamera.setOrtho( top, botom, left, right, -1, 1);
+//        }
+
+        while(Mouse.next())
         {
-            a *= -1;
-        }
-        sprite1.setRotation(a, 0, 0, 1);
-        direction.x = -FloatMath.sin(a);
-        direction.y = FloatMath.cos(a);
-        
-        if( Mouse.isButtonDown(0))
-        {
-            //final float velocity = 500.0f;
-            float dtf;
-            long dt = 0;
-            long  t = System.currentTimeMillis();
-            if(MB0Pressed == false)
-            {                            
-            }
-            else
-            {       
-                dt =  t - timeLastPressed; 
-            }
-            dtf = dt / 1000.0f;
-            timeLastPressed = t;
-            
-            MB0Pressed = true;
-            
-            float s = dtf * velocity;
-            sprite1.move( direction.x * s, direction.y * s, 0);
-            bgCamera.move(direction.x * s, direction.y * s, 0);
-            frontCamera.move(direction.x * s, direction.y * s, 0);
-            sprite1.setAnimation(animationRotation);
-        }
-        else
-        {
-           MB0Pressed = false;
-           sprite1.setAnimation(animationIdle); 
-        }
-        
-        int dw = Mouse.getDWheel();
-        if( dw != 0 )
-        {
-            if( dw > 0 )
+            final int mx = Mouse.getEventX();
+            final int my = Mouse.getEventY();
+            final int dx = Mouse.getDX();
+            final int dy = Mouse.getDY();
+             
+            final int buttonEvent = Mouse.getEventButton();
+            if( buttonEvent != -1)
             {
-               zoom *= 1.1;
+                final boolean mb_state  = Mouse.getEventButtonState();
+                if( mb_state )
+                {
+                    final boolean inWidget = wl.onLeftMouseButtonDown( buttonEvent, mx, my);
+                    if( inWidget == false )
+                    {
+                        System.out.println("Mimo");
+                    }
+                }
+                else
+                {
+                    wl.onLeftMouseButtonUp( buttonEvent, mx, my);
+                }        
             }
-            else
-            {
-                zoom /= 1.1;
-            } 
-            float top   = DISPLAY_HEIGHT / 2 * zoom;
-            float botom = -top;
-            float left  = -DISPLAY_WIDTH / 2 * zoom;
-            float right = -left;
             
-            bgCamera.setOrtho( top, botom, left, right, -1, 1);
-            frontCamera.setOrtho( top, botom, left, right, -1, 1);
-        }
-       // sprite1.setPosition( squareX-DISPLAY_WIDTH/2, squareY-DISPLAY_HEIGHT/2, 0 );
+            
+            if( dx != 0 || dy != 0 )
+            {
+                boolean onwidgets = wl.onMouseMove( mx, my );
+                if(onwidgets)
+                {
+                    tl.setColor( ConstColor.GREEN );
+                }
+                else
+                {
+                    tl.setColor( ConstColor.RED );
+                }
+            }
+            
+            final int wheel = Mouse.getEventDWheel();
+            if( wheel != 0 )
+            {
+                if (wheel > 0) {
+                    zoom *= 1.1;
+                }
+                else {
+                    zoom /= 1.1;
+                }
+                float top = DISPLAY_HEIGHT / 2 * zoom;
+                float botom = -top;
+                float left = -DISPLAY_WIDTH / 2 * zoom;
+                float right = -left;
+
+                bgCamera.setOrtho(top, botom, left, right, -1, 1);
+                frontCamera.setOrtho(top, botom, left, right, -1, 1);
+            }   
+        }            
     }
     private float zoom = 1.0f;
     
@@ -546,11 +658,7 @@ public class VVVEngine
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
        
-        // Scissor test
-       // glScissor( 50, 50, 400, 400);
-       // glEnable(GL_SCISSOR_TEST);
-       // glDisable(GL_SCISSOR_TEST);
-        
+ 
         screen.draw();
     }
 

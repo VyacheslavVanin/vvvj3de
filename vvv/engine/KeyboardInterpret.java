@@ -12,7 +12,7 @@ import org.lwjgl.input.Keyboard;
  *
  * @author vvv
  */
-public class KeyboardInterpret 
+public abstract class KeyboardInterpret 
 {
     
     private long beginRepeatDelay = 500;
@@ -75,17 +75,13 @@ public class KeyboardInterpret
      * @param key - scan code of key
      * @param state - true if pressed, false if released
      * @param character - character with current keyboard layout, language and so on */
-    public void raw( int key, boolean state, char character)
-    {
-    }
+    public abstract void raw( int key, boolean state, char character);
     
     /**
      *  Called as raw but may also called in such cases as repeat keypress when hold key for a while
      * @param key
      * @param character */
-    public void controlled(int key, char character)
-    {
-    }
+    public abstract void controlled(int key, char character);
 
     /**
      * @return the beginRepeatDelay

@@ -4,7 +4,6 @@
  */
 package vvv.engine.sprite;
 
-import java.util.ArrayList;
 import java.util.List;
 import vvv.engine.texture.Texture;
 

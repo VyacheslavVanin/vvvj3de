@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package lwjgl;
+package vvvJ3dE;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -20,7 +20,7 @@ public class testFrustrum
         VVVEngine l = new VVVEngine();
         try
         {
-            l.setDisplayMode(1920, 1080, false);
+            l.setDisplayMode(1920, 1000, false);
             l.create();
             l.run();         
         }

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package lwjgl;
+package vvvJ3dE;
 
 import java.awt.Color;
 import java.awt.Graphics;
